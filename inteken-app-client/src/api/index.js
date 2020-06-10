@@ -1,5 +1,6 @@
 //Internal API
 import I18n from "i18n-js";
+import {navigate} from "svelte-routing";
 
 let csrfToken = null;
 
@@ -9,7 +10,6 @@ function validateResponse(res) {
 
     if (!res.ok) {
         if (res.type === "opaqueredirect") {
-            setTimeout(() => window.location.reload(), 100);
             return res;
         }
         throw res;
@@ -22,7 +22,7 @@ function validFetch(path, options) {
     options = options || {};
     options.credentials = "same-origin";
     options.redirect = "manual";
-    options. headers = {
+    options.headers = {
         Accept: "application/json",
         "Content-Type": "application/json",
         "Accept-Language": I18n.locale,
@@ -43,16 +43,19 @@ function postPutJson(path, body, method) {
     return fetchJson(path, {method, body: JSON.stringify(body)});
 }
 
-//Base
+export function logout() {
+    return fetchJson("/intake/api/logout").then(() => navigate("/login?logout=true"));
+}
+
+export function configuration() {
+    return fetchJson("/intake/api/config");
+}
+
 export function me() {
     return fetchJson("/intake/api/me");
 }
 
-export function configuration() {
-    return fetchJson("/config");
-}
-
 export function register(course) {
-    return postPutJson("/inatke/api/register", {course}, "PUT");
+    return postPutJson("/intake/api/register", {course}, "PUT");
 }
 

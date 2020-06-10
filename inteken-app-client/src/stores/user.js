@@ -10,8 +10,7 @@ export const user = writable({
     uid: "",
 });
 
-export const config = writable({
-});
+export const config = writable({});
 
 export const redirectPath = writable("");
 

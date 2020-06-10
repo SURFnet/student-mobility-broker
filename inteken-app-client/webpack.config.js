@@ -62,6 +62,12 @@ module.exports = {
                 ]
             },
             {
+                test: /\.(png|jpg|jpeg|gif)$/,
+                use:  [
+                    'file-loader',
+                ],
+            },
+            {
                 test: /\.svg$/,
                 loader: 'svg-inline-loader',
                 options: {
@@ -83,10 +89,10 @@ module.exports = {
     ],
     devtool: prod ? false : 'source-map',
     devServer: {
-        port: 3001,
+        port: 3003,
         proxy: {
-            '/intake/api': 'http://localhost:8088',
-            '/config': 'http://localhost:8088'
+            '/intake/api': 'http://localhost:8091',
+            '/config': 'http://localhost:8091'
         },
         historyApiFallback: true
     }

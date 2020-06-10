@@ -11,7 +11,7 @@
 </script>
 <style>
     .button {
-        background-color: #0077c8;
+        background-color: var(--color-primary-green);
         border-radius: 8px;
         padding: 10px 20px;
         display: inline-block;
@@ -28,24 +28,21 @@
         }
     }
     .button:hover {
-        background-color: #004c97;
-        color: #94d6ff;
+        background-color: var(--color-secondary-green);
+        color: whitesmoke;
     }
 
     .button.active {
-        background-color: #003980;
         order: 1;
         margin-left: 20px;
     }
 
     .button.cancel {
-        color: #0077c8;
+        color: var(--color-secondary-green);
         background-color: white;
-        border: 1px solid #0066b8;
     }
 
     .button.cancel:hover {
-        color: #0066b8;
         background-color: whitesmoke;
     }
 

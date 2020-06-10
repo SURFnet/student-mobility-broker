@@ -1,7 +1,7 @@
 <script>
 
     import I18n from "i18n-js";
-    import eduidLogo from "../img/logo_eduID.svg";
+    import logo from "../img/student-clipart.png";
     import {navigate} from "svelte-routing";
     import {logout} from "../api";
     import {user} from "../stores/user";
@@ -17,7 +17,7 @@
                 guest: true,
                 usePassword: false
             };
-            navigate("/landing?logout=true");
+            navigate("/login?logout=true");
         });
     }
 
@@ -30,23 +30,24 @@
         max-width: var(--width-app);
         margin: 0 auto;
         display: flex;
-        background-color: var(--color-primary-blue);
+        background-color: var(--color-primary-grey);
         align-items: center;
         align-content: center;
         position: relative;
         flex-direction: row;
-        height: 80px;
         color: #94d6ff;
-        border-left: 28px solid var(--color-primary-blue);
+        border-left: 28px solid var(--color-primary-grey);
 
     }
 
     .logo {
         padding: 10px 0;
+        max-width: 340px;
     }
 
     h1 {
-        display: none;
+        color: var(--color-primary-green);
+        margin-left: 25px;
     }
 
     @media (max-width: 800px) {
@@ -63,9 +64,7 @@
 <div class="header">
 
     <div class="logo">
-        <a href="/">
-            {@html eduidLogo}
-        </a>
+        <a href="/"><img src={logo} alt=""></a>
     </div>
     <h1>{I18n.ts("header.title")}</h1>
     {#if !$user.guest}

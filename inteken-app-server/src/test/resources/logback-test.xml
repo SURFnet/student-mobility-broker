@@ -5,7 +5,7 @@
             </pattern>
         </encoder>
         <filter class="intake.config.CustomThresholdFilter">
-            <level>DEBUG</level>
+            <level>INFO</level>
         </filter>
     </appender>
 
@@ -13,7 +13,7 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="org.springframework.security" level="DEBUG"/>
+    <logger name="org.springframework.security" level="WARN"/>
 
     <logger name="intake" level="DEBUG"/>
 

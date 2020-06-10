@@ -6,21 +6,20 @@
     import Button from "../components/Button.svelte";
 
     let isLogoutRedirect = false;
-    let isAccountDeletionRedirect = false;
 
     onMount(() => {
         const urlSearchParams = new URLSearchParams(window.location.search);
         isLogoutRedirect = urlSearchParams.get("logout");
-        isAccountDeletionRedirect = urlSearchParams.get("delete");
-        if (!isLogoutRedirect && !isAccountDeletionRedirect) {
-            navigate("/404");
-        }
     });
+
+    const login = () => {
+        window.location.href = $config.server_login + "?location=" + $redirectPath;
+    }
 
 </script>
 
 <style>
-    .landing {
+    .login {
         display: flex;
         flex-direction: column;
         background-color: white;
@@ -42,20 +41,27 @@
     p {
         color: var(--color-primary-black);
         font-size: 18px;
+        margin: 25px 0;
+    }
+
+    div.options {
+        margin-top: 75px;
     }
 
 </style>
 
 
-<div class="landing">
+<div class="login">
     <div class="inner">
         {#if isLogoutRedirect}
-            <h3>{I18n.ts("landing.logoutTitle")}</h3>
-            <p>{I18n.ts("landing.logoutStatus")}</p>
+            <h3>{I18n.ts("login.logoutTitle")}</h3>
+            <p>{I18n.ts("login.logoutStatus")}</p>
+        {:else}
+            <p>{I18n.ts("login.info")}</p>
+            <p>{I18n.ts("login.process")}</p>
         {/if}
-        {#if isAccountDeletionRedirect}
-            <h3>{I18n.ts("landing.deleteTitle")}</h3>
-            <p>{I18n.ts("landing.deleteStatus")}</p>
-        {/if}
+        <div class="options">
+        <Button href="/login" label={I18n.t("login.login")} onClick={login}/>
+        </div>
     </div>
 </div>

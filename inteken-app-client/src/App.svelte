@@ -3,78 +3,61 @@
     import {Route, Router, navigate} from "svelte-routing";
     import {onMount} from "svelte";
     import Cookies from "js-cookie";
-    import Landing from "./routes/Landing.svelte";
     import NotFound from "./routes/NotFound.svelte";
-    import EditName from "./routes/EditName.svelte";
-    import Institution from "./routes/Institution.svelte";
-    import MigrationError from "./routes/MigrationError.svelte";
-    import Password from "./routes/Password.svelte";
-    import WebAuthn from "./routes/WebAuthn.svelte";
-    import RememberMe from "./routes/RememberMe.svelte";
+    import Login from "./routes/Login.svelte";
+    import Info from "./routes/Info.svelte";
     import Home from "./routes/Home.svelte";
     import Header from "./components/Header.svelte";
     import {me, configuration} from "./api";
-    import {user, config, redirectPath, duplicatedEmail} from "./stores/user";
+    import {user, config, redirectPath} from "./stores/user";
     import I18n from "i18n-js";
 
     export let url = "";
     let loaded = false;
 
-    onMount(() => configuration()
-            .then(json => {
-                $config = json;
-                if (typeof window !== "undefined") {
-                    const urlSearchParams = new URLSearchParams(window.location.search);
-                    if (urlSearchParams.has("lang")) {
-                        I18n.locale = urlSearchParams.get("lang");
-                    } else if (Cookies.get("lang", {domain: $config.domain})) {
-                        I18n.locale = Cookies.get("lang", {domain: $config.domain});
-                    } else {
-                        I18n.locale = navigator.language.toLowerCase().substring(0, 2);
-                    }
-                } else {
-                    I18n.locale = "en";
-                }
-                if (["nl", "en"].indexOf(I18n.locale) < 0) {
-                    I18n.locale = "en";
-                }
-                if (window.location.pathname.indexOf("landing") > -1) {
-                    loaded = true;
-                } else {
-                    me()
-                            .then(json => {
-                                loaded = true;
-                                for (var key in json) {
-                                    if (json.hasOwnProperty(key)) {
-                                        $user[key] = json[key];
-                                    }
-                                }
-                                $user.guest = false;
-                            })
-                            .catch(e => {
-                                loaded = true;
-                                $redirectPath = window.location.pathname;
-                                const urlSearchParams = new URLSearchParams(window.location.search);
-                                const logout = urlSearchParams.get("logout");
-                                const afterDelete = urlSearchParams.get("delete");
-                                if (e.status === 409) {
-                                    e.json().then(res => {
-                                        $duplicatedEmail = res.email;
-                                        navigate("/migration-error");
-                                    });
-                                } else if (logout) {
-                                    navigate("/landing?logout=true");
-                                } else if (afterDelete) {
-                                    navigate("/landing?delete=true");
-                                } else {
-                                    const path = encodeURIComponent($redirectPath || "/");
-                                    window.location.href = `${$config.loginUrl}?redirect_path=${path}`;
-                                }
-                            })
-                }
+    if (typeof window !== "undefined") {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        if (urlSearchParams.has("lang")) {
+            I18n.locale = urlSearchParams.get("lang");
+        } else if (Cookies.get("lang", {domain: $config.domain})) {
+            I18n.locale = Cookies.get("lang", {domain: $config.domain});
+        } else {
+            I18n.locale = navigator.language.toLowerCase().substring(0, 2);
+        }
+    } else {
+        I18n.locale = "en";
+    }
+    if (["nl", "en"].indexOf(I18n.locale) < 0) {
+        I18n.locale = "en";
+    }
 
+    const navigateToLogin = () => {
+        loaded = true;
+        $redirectPath = window.location.pathname + window.location.search;
+        navigate(`/login`);
+    }
+
+    onMount(() => {
+        configuration().then(json => {
+            $config = json;
+            me().then(json => {
+                if (json.type === "opaqueredirect" && json.ok === false) {
+                    navigateToLogin();
+                    return;
+                }
+                for (var key in json) {
+                    if (json.hasOwnProperty(key)) {
+                        $user[key] = json[key];
+                    }
+                }
+                $user.guest = false;
+                loaded = true;
+            }).catch(e => {
+                navigateToLogin();
             })
-    );
+        });
+
+    });
 
 </script>
 
@@ -83,14 +66,15 @@
     :global(:root) {
         --color-primary-blue: #0062b0;
         --color-primary-green: #008738;
+        --color-secondary-green: #015e22;
         --color-primary-black: #202020;
         --color-primary-red: #ff0000;
-        --color-primary-grey: #c4cdd5;
+        --color-primary-grey: #f7f8f7;
         --color-background: #f9f9f9;
         --width-app: 1024px;
     }
 
-    .myconext {
+    .education {
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -117,7 +101,7 @@
     }
 
     @media (max-width: 1250px) {
-        .myconext {
+        .education {
             margin: 0 15px;
         }
 
@@ -127,7 +111,7 @@
     }
 
     @media (max-width: 800px) {
-        .myconext {
+        .education {
             margin: 0;
         }
 
@@ -180,49 +164,21 @@
         }
     }
 </style>
-{#if loaded && !$user.guest}
-    <div class="myconext">
+{#if loaded}
+    <div class="education">
         <div class="container">
             <Header/>
             <div class="content">
                 <Router url="{url}">
                     <Route path="/" component={Home}/>
-                    <Route path="/profile">
-                        <Home bookmark="profile"/>
-                    </Route>
-                    <Route path="/account">
-                        <Home bookmark="account"/>
+                    <Route path="/courses">
+                        <Home bookmark="courses"/>
                     </Route>
                     <Route path="/institutions">
                         <Home bookmark="institutions"/>
                     </Route>
-                    <Route path="/security">
-                        <Home bookmark="security"/>
-                    </Route>
-                    <Route path="/landing" component={Landing}/>
-                    <Route path="/edit" component={EditName}/>
-                    <Route path="/institution" component={Institution}/>
-                    <Route path="/migration">
-                        <Home bookmark="migration"/>
-                    </Route>
-                    <Route path="/password" component={Password}/>
-                    <Route path="/webauthn" component={WebAuthn}/>
-                    <Route path="/rememberme" component={RememberMe}/>
-                    <Route component={NotFound}/>
-                </Router>
-            </div>
-        </div>
-        <Footer/>
-    </div>
-{:else if loaded && $user.guest}
-    <div class="myconext">
-        <div class="container">
-            <Header/>
-            <div class="content">
-                <Router url="{url}">
-                    <Route path="/" component={Home}/>
-                    <Route path="/landing" component={Landing}/>
-                    <Route path="/migration-error" component={MigrationError}/>
+                    <Route path="/login" component={Login}/>
+                    <Route path="/info" component={Info}/>
                     <Route component={NotFound}/>
                 </Router>
             </div>

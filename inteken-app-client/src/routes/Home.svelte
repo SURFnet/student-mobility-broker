@@ -8,23 +8,18 @@
     import chevron_left from "../icons/chevron-left.svg";
     import chevron_right from "../icons/chevron-right.svg";
     import {navigate} from "svelte-routing";
+    import Info from "./Info.svelte";
     import {onMount} from "svelte";
 
-    import Profile from "./Profile.svelte";
-    import Security from "./Security.svelte";
-    import Institutions from "./Institutions.svelte"
-    import Account from "./Account.svelte";
-    import Migration from "./Migration.svelte";
     import Flash from "../components/Flash.svelte";
 
     export let bookmark;
 
     const tabs = [
-        {name: "profile", component: Profile, icon: personal_info},
-        {name: "security", component: Security, icon: security},
-        {name: "institutions", component: Institutions, icon: teams},
-        {name: "account", component: Account, icon: data_activity},
-        {name: "migration", component: Migration, icon: data_activity, ignore: true}
+        {name: "info", component: Info, icon: personal_info},
+        // {name: "security", component: Security, icon: security},
+        // {name: "institutions", component: Institutions, icon: teams},
+        // {name: "account", component: Account, icon: data_activity},
     ];
 
     let currentTab = tabs[0];

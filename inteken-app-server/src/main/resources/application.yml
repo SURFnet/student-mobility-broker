@@ -2,16 +2,20 @@ logging:
   level:
     root: INFO
     oidc: DEBUG
-    org.springframework.: DEBUG
+    org.springframework.security: DEBUG
 
 server:
-  port: 8088
+  port: 8091
 
 # used by the git plugin
 info:
   build:
     artifact: "@project.artifactId@"
     version: "@project.version@"
+
+config:
+  client_url: http://localhost:3003
+  server_login: http://localhost:8080/intake/api/sso
 
 oidc:
   account_linking_context_class_ref: https://eduid.nl/trust/linked-institution
@@ -24,7 +28,7 @@ spring:
           oidc:
             client-id: student.mobility.rp.localhost
             client-secret: secret
-            redirect-uri: http://localhost:8088/redirect_uri
+            redirect-uri: http://localhost:8091/redirect_uri
             authorization-grant-type: authorization_code
         provider:
           oidc:
