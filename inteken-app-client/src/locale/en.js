@@ -18,7 +18,8 @@ I18n.translations.en = {
   },
   home: {
     welcome: "Welcome {{name}}",
-    info: "Personal info"
+    info: "Personal info",
+    courses: "Courses"
   },
   footer: {
     privacy: "Privacy policy",

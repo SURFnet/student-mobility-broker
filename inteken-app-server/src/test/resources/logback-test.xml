@@ -4,16 +4,17 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
             </pattern>
         </encoder>
-        <filter class="intake.config.CustomThresholdFilter">
-            <level>INFO</level>
+        <filter class="filter.CustomThresholdFilter">
+            <level>WARN</level>
+<!--            <clazz>java.lang.IllegalArgumentException</clazz>-->
         </filter>
     </appender>
 
-    <root level="INFO">
+    <root level="WARN">
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="org.springframework.security" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
 
     <logger name="intake" level="DEBUG"/>
 

@@ -1,0 +1,34 @@
+- name: Groningen
+  schacHome: groningen.org
+  apiBaseUrl: http://localhost:8091/groningen
+  courses:
+    - name: Psychology
+      identifier: A700ECDA-5FCF-4AF6-BA6E-32EFFF02B290
+      description:  The science of behavior and mind
+      requiredScopes:
+        - student_information
+- name: UvA
+  schacHome: uva.org
+  apiBaseUrl: http://localhost:8091/uva
+  courses:
+    - name: Economics
+      identifier: 198258DA-BBA3-47FA-95A1-3B29DD64B988
+      description: >
+        Social science that studies the production, distribution, and
+        consumption of goods and services
+      requiredScopes:
+        - student_information
+- name: Open University
+  schacHome: ou.org
+  apiBaseUrl: http://localhost:8091/ou
+  courses:
+    - name: Psychology
+      identifier: 96CDEEB0-7742-47AC-9A5D-BA19E9355564
+      description:  The science of behavior and mind
+      requiredScopes:
+        - student_information
+    - name: History
+      identifier: 57761270-2DFC-498E-88DC-CF8DB5FC5B1A
+      description: Study of the past
+      requiredScopes:
+        - student_information

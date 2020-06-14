@@ -1,11 +1,14 @@
 package intake.api;
 
+import intake.repository.CatalogRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,37 +21,40 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class IntakeEndpoint {
+@RequestMapping("/intake/api")
+public class User {
 
     private final Map<String, String> config;
 
-    public IntakeEndpoint() {
+    public User(@Value("${config.client_url}") String clientUrl,
+                @Value("${config.server_login}") String serverLogin) {
         config = new HashMap<>();
-        config.put("client_url", "http://localhost:3003");
-        config.put("server_login", "http://localhost:8091/intake/api/sso");
+        config.put("client_url", clientUrl);
+        config.put("server_login", serverLogin);
     }
 
-    @GetMapping("/intake/api/config")
+    @GetMapping("/config")
     public ResponseEntity config() {
         return ResponseEntity.ok(config);
     }
 
-    @GetMapping("/intake/api/sso")
+    @GetMapping("/sso")
     public ResponseEntity sso(@RequestParam(value = "location", required = false, defaultValue = "/") String location)
             throws URISyntaxException {
         return ResponseEntity.status(HttpStatus.FOUND).location(new URI(config.get("client_url") + location)).build();
     }
 
-    @GetMapping("/intake/api/me")
+    @GetMapping("/me")
     public ResponseEntity me(Authentication authentication) {
         Map<String, Object> attributes = ((DefaultOAuth2User) authentication.getPrincipal()).getAttributes();
         return ResponseEntity.ok(attributes);
     }
 
-    @GetMapping("/intake/api/logout")
+    @GetMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
+
         SecurityContextHolder.getContext().setAuthentication(null);
         SecurityContextHolder.clearContext();
         return ResponseEntity.ok(Collections.singletonMap("status", "ok"));

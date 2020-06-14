@@ -28,7 +28,9 @@
         <div class="modal-body">
             <p>{@html question}</p>
         </div>
-
+        <div class="slots">
+            <slot/>
+        </div>
         <div class="options">
             <Button className="cancel" onClick={cancel}
                     label={I18n.ts("modal.cancel")}/>
@@ -68,6 +70,10 @@
     }
 
     .modal-body {
+        padding: 18px 32px;
+    }
+
+    div.slots {
         padding: 18px 32px;
     }
 

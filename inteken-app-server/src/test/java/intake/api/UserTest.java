@@ -1,5 +1,6 @@
 package intake.api;
 
+import intake.AbstractIntegrationTest;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
@@ -9,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Map;
@@ -18,15 +21,8 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class IntakeEndpointTest {
-
-    @LocalServerPort
-    protected int port;
-
-    @Before
-    public void before() throws Exception {
-        RestAssured.port = port;
-    }
+@ActiveProfiles(value = "prod", inheritProfiles = false)
+public class UserTest extends AbstractIntegrationTest {
 
     @Test
     public void me() {
@@ -46,6 +42,6 @@ public class IntakeEndpointTest {
                 .get("/intake/api/config")
                 .as(new TypeRef<Map<String, String>>() {
                 });
-        System.out.println(config);
+        assertEquals("http://localhost:3003", config.get("client_url"));
     }
 }

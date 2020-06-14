@@ -5,6 +5,7 @@
     import data_activity from "../icons/data_activity.svg";
     import teams from "../icons/teams.svg";
     import personal_info from "../icons/personal_info.svg";
+    import home from "../icons/home.svg";
     import chevron_left from "../icons/chevron-left.svg";
     import chevron_right from "../icons/chevron-right.svg";
     import {navigate} from "svelte-routing";
@@ -17,7 +18,7 @@
 
     const tabs = [
         {name: "info", component: Info, icon: personal_info},
-        // {name: "security", component: Security, icon: security},
+        {name: "courses", component: Courses, icon: home},
         // {name: "institutions", component: Institutions, icon: teams},
         // {name: "account", component: Account, icon: data_activity},
     ];

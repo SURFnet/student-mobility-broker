@@ -40,21 +40,21 @@
     onMount(() => {
         configuration().then(json => {
             $config = json;
-            me().then(json => {
-                if (json.type === "opaqueredirect" && json.ok === false) {
-                    navigateToLogin();
-                    return;
-                }
-                for (var key in json) {
-                    if (json.hasOwnProperty(key)) {
-                        $user[key] = json[key];
-                    }
-                }
-                $user.guest = false;
-                loaded = true;
-            }).catch(e => {
-                navigateToLogin();
-            })
+            me()
+                    .then(json => {
+                        if (json.type === "opaqueredirect" && json.ok === false) {
+                            navigateToLogin();
+                            return;
+                        }
+                        for (var key in json) {
+                            if (json.hasOwnProperty(key)) {
+                                $user[key] = json[key];
+                            }
+                        }
+                        $user.guest = false;
+                        loaded = true;
+                    })
+                    .catch(() => navigateToLogin())
         });
 
     });

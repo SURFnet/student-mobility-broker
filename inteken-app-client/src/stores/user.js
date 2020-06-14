@@ -1,14 +1,6 @@
 import {writable} from 'svelte/store';
 
-export const user = writable({
-    id: "",
-    email: "",
-    givenName: "",
-    familyName: "",
-    guest: true,
-    schacHomeOrganization: "",
-    uid: "",
-});
+export const user = writable({});
 
 export const config = writable({});
 

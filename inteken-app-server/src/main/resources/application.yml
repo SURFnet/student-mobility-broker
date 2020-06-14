@@ -6,6 +6,8 @@ logging:
 
 server:
   port: 8091
+  error:
+    path: /error
 
 # used by the git plugin
 info:
@@ -15,7 +17,10 @@ info:
 
 config:
   client_url: http://localhost:3003
-  server_login: http://localhost:8080/intake/api/sso
+  server_login: http://localhost:8091/intake/api/sso
+
+catalog:
+  path: classpath:/catalog.yml
 
 oidc:
   account_linking_context_class_ref: https://eduid.nl/trust/linked-institution
