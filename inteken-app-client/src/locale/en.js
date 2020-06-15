@@ -44,6 +44,8 @@ I18n.translations.en = {
     scopes: "Required scopes",
     registrationUrl: "Registration URL",
     registerConfirmation: "Are you sure you want to start the registration for course {{name}} at {{institution}}?",
+    noPreConfiguredSchachHomeOrganization: "Your eduID account is linked to home institution(s):",
+    noPreConfiguredSchachHomeOrganizationWarning: "However none of these institutions are configured in the the Student Mobility app",
     chooseSchacHome: "You have multiple home institutions linked to your eduID account.",
     chooseSchacHomeInfo: "Please choose one of your home institutions to be used in the registration process.",
     flash: {

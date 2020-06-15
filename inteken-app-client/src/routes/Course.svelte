@@ -15,8 +15,9 @@
     let loaded = false;
     let showModal = false;
     let registerUrl = "";
-    let schacHomeInstitution = "";
+    let schacHomeInstitution = "nope";
     let schacHomeInstitutions = [];
+    let linkedSchacHomeInstitutions = [];
 
     onMount(() => {
         const urlSearchParams = new URLSearchParams(window.location.search);
@@ -28,7 +29,7 @@
                     institution = res[1];
                     loaded = true;
 
-                    const linkedSchacHomeInstitutions = $user.eduperson_scoped_affiliation.map(s => s.substring(s.indexOf("@") + 1));
+                    linkedSchacHomeInstitutions = $user.eduperson_scoped_affiliation.map(s => s.substring(s.indexOf("@") + 1));
                     schacHomeInstitutions = linkedSchacHomeInstitutions.filter(sh => res[2].includes(sh));
                     schacHomeInstitution = schacHomeInstitutions[0];
                 });
@@ -158,6 +159,18 @@
         width: 100%;
     }
 
+    div.no-schac-home {
+        margin: 40px 0 15px 0;
+        display: flex;
+        flex-direction: column;
+        color: var(--color-primary-red)
+    }
+
+    div.no-schac-home ul {
+        margin: 20px 0 20px 40px;
+        list-style: circle;
+    }
+
     div.home-institutions {
         display: flex;
         flex-direction: column;
@@ -229,15 +242,28 @@
             </table>
 
             {#if registerUrl}
-            <div class="registration" >
-                <label>{I18n.t("course.registrationUrl")} </label>
-                <input disabled value={registerUrl}>
-            </div>
+                <div class="registration">
+                    <label>{I18n.t("course.registrationUrl")} </label>
+                    <input disabled value={registerUrl}>
+                </div>
+            {/if}
+            {#if !schacHomeInstitution}
+                <div class="no-schac-home">
+                    <p>{I18n.t("course.noPreConfiguredSchachHomeOrganization" )} </p>
+                    <ul>
+                        {#each linkedSchacHomeInstitutions as schacHome}
+                            <li>{schacHome}</li>
+                        {/each}
+                    </ul>
+                    <p>{I18n.t("course.noPreConfiguredSchachHomeOrganizationWarning")}</p>
+
+                </div>
             {/if}
             <div class="options">
                 <Button className="cancel" label={I18n.t("course.cancel")} onClick={cancel}/>
 
-                <Button label={I18n.t("course.register")} onClick={registerCourse(true)}/>
+                <Button label={I18n.t("course.register")} disabled={!schacHomeInstitution}
+                        onClick={registerCourse(true)}/>
             </div>
         </div>
 
