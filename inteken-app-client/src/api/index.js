@@ -59,7 +59,23 @@ export function institutions() {
   return fetchJson("/intake/api/institutions");
 }
 
-export function register(schacHomeInstitution, courseIdentifier) {
-  return postPutJson("/intake/api/register", {schacHomeInstitution, courseIdentifier, preview: true}, "PUT");
+export function institutionSchacHomes() {
+  return fetchJson("/intake/api/institutions-schac-home");
+}
+
+export function institutionBySchacHome(schacHome) {
+  return fetchJson(`/intake/api/institution?schac_home=${schacHome}`);
+}
+
+export function courseByIdentifier(identifier) {
+  return fetchJson(`/intake/api/course?identifier=${identifier}`);
+}
+
+export function register(schacHomeInstitution, schacHomeGuestInstitution, courseIdentifier) {
+  return postPutJson("/intake/api/register", {
+    schacHomeInstitution,
+    schacHomeGuestInstitution,
+    courseIdentifier,
+    preview: true}, "PUT");
 }
 

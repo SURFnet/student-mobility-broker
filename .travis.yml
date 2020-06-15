@@ -1,0 +1,26 @@
+language: java
+jdk:
+- oraclejdk8
+dist: trusty
+node_js:
+- '8'
+
+cache:
+  yarn: true
+  directories:
+  - node_modules
+before_install:
+- pip install --user codecov
+- nvm install 8
+- npm install -g yarn
+- yarn install
+install:
+- cd inteken-app-client && yarn install && cd ..
+- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+script:
+- mvn test
+- cd inteken-app-client && yarn build && yarn test && cd ..
+after_script:
+- pkill mongod
+after_success:
+- codecov

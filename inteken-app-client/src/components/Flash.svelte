@@ -9,7 +9,7 @@
         color: white;
         position: absolute;
         width: 100%;
-        height: 28px;
+        height: 30px;
         z-index: 6;
         left: 0;
         background-color: green;

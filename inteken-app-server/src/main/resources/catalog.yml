@@ -8,7 +8,7 @@
       requiredScopes:
         - student_information
 - name: UvA
-  schacHome: uva.org
+  schacHome: uva.nl
   apiBaseUrl: http://localhost:8091/uva
   courses:
     - name: Economics
@@ -20,7 +20,7 @@
         - student_information
 - name: Open University
   schacHome: ou.org
-  apiBaseUrl: http://localhost:8091/ou
+  apiBaseUrl: http://localhost:8091/open-university
   courses:
     - name: Psychology
       identifier: 96CDEEB0-7742-47AC-9A5D-BA19E9355564

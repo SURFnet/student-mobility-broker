@@ -12,14 +12,48 @@ I18n.translations.en = {
     logoutTitle: "You have been logged out",
     logoutStatus: "To finalise the logout process you must now close this browser.",
   },
+  home: {
+    welcome: "Welcome {{name}}",
+    profile: "Personal info",
+    courses: "Courses"
+  },
+  profile: {
+    title: "Personal information",
+    info: "Basic information like your name and email address.",
+    email: "Email address",
+    schacHomeOrganization: "Institution ID",
+    name: "Name",
+    profile: "Profile",
+    eduperson_scoped_affiliation: "Affiliations",
+    eduid: "eduID"
+  },
+  courses: {
+    title: "Courses",
+    info: "All courses. go to the details of a course to register",
+    institution: "Institution",
+    link: "{{name}} (<span style='font-style: italic;font-weight: normal'>{{institution}}</span>)"
+  },
+  course: {
+    title: "Details",
+    info: "Details for course {{name}}",
+    name: "Name",
+    description: "Description",
+    institution: "Institution",
+    register: "Register",
+    cancel: "Cancel",
+    scopes: "Required scopes",
+    registrationUrl: "Registration URL",
+    registerConfirmation: "Are you sure you want to start the registration for course {{name}} at {{institution}}?",
+    chooseSchacHome: "You have multiple home institutions linked to your eduID account.",
+    chooseSchacHomeInfo: "Please choose one of your home institutions to be used in the registration process.",
+    flash: {
+      registered: "Successfully started the registration for course {{name}} at {{institution}}"
+    }
+
+  },
   notFound: {
     title: "Whoops...",
     title2: "Something went wrong (404)."
-  },
-  home: {
-    welcome: "Welcome {{name}}",
-    info: "Personal info",
-    courses: "Courses"
   },
   footer: {
     privacy: "Privacy policy",
@@ -32,5 +66,3 @@ I18n.translations.en = {
     confirm: "Confirm"
   },
 };
-
-I18n.ts = (key, model) => I18n.t(key, model);

@@ -9,14 +9,7 @@
 
     const logoutUser = () => {
         logout().then(() => {
-            $user = {
-                id: "",
-                email: "",
-                givenName: "",
-                familyName: "",
-                guest: true,
-                usePassword: false
-            };
+            $user = {guest: true};
             navigate("/login?logout=true");
         });
     }
@@ -66,7 +59,7 @@
     <div class="logo">
         <a href="/"><img src={logo} alt=""></a>
     </div>
-    <h1>{I18n.ts("header.title")}</h1>
+    <h1>{I18n.t("header.title")}</h1>
     {#if !$user.guest}
         <div class="logout">
             <Button href="/logout" label={I18n.t("header.logout")} onClick={logoutUser} className="cancel small"/>

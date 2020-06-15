@@ -5,12 +5,13 @@
     import Cookies from "js-cookie";
     import NotFound from "./routes/NotFound.svelte";
     import Login from "./routes/Login.svelte";
-    import Info from "./routes/Info.svelte";
+    import Course from "./routes/Course.svelte";
     import Home from "./routes/Home.svelte";
     import Header from "./components/Header.svelte";
     import {me, configuration} from "./api";
     import {user, config, redirectPath} from "./stores/user";
     import I18n from "i18n-js";
+    import Flash from "./components/Flash.svelte";
 
     export let url = "";
     let loaded = false;
@@ -167,6 +168,7 @@
 {#if loaded}
     <div class="education">
         <div class="container">
+            <Flash/>
             <Header/>
             <div class="content">
                 <Router url="{url}">
@@ -177,8 +179,11 @@
                     <Route path="/institutions">
                         <Home bookmark="institutions"/>
                     </Route>
+                    <Route path="course" component={Course}/>
+                    <Route path="/profile">
+                        <Home bookmark="profile"/>
+                    </Route>
                     <Route path="/login" component={Login}/>
-                    <Route path="/info" component={Info}/>
                     <Route component={NotFound}/>
                 </Router>
             </div>

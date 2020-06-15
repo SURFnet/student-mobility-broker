@@ -9,7 +9,8 @@
     import chevron_left from "../icons/chevron-left.svg";
     import chevron_right from "../icons/chevron-right.svg";
     import {navigate} from "svelte-routing";
-    import Info from "./Info.svelte";
+    import Profile from "./Profile.svelte";
+    import Courses from "./Courses.svelte";
     import {onMount} from "svelte";
 
     import Flash from "../components/Flash.svelte";
@@ -17,7 +18,7 @@
     export let bookmark;
 
     const tabs = [
-        {name: "info", component: Info, icon: personal_info},
+        {name: "profile", component: Profile, icon: personal_info},
         {name: "courses", component: Courses, icon: home},
         // {name: "institutions", component: Institutions, icon: teams},
         // {name: "account", component: Account, icon: data_activity},
@@ -160,7 +161,7 @@
                         {@html tab.icon}
                         <a href="/{tab.name}"
                            on:click|preventDefault|stopPropagation={switchTab(tab.name)}>
-                            {I18n.ts(`home.${tab.name}`)}
+                            {I18n.t(`home.${tab.name}`)}
                         </a>
                     </li>
                 {/if}
@@ -168,7 +169,6 @@
         </ul>
     </nav>
     <div class="component-container">
-        <Flash/>
         <svelte:component this={currentTab.component}/>
     </div>
 

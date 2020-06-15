@@ -54,11 +54,11 @@
 <div class="login">
     <div class="inner">
         {#if isLogoutRedirect}
-            <h3>{I18n.ts("login.logoutTitle")}</h3>
-            <p>{I18n.ts("login.logoutStatus")}</p>
+            <h3>{I18n.t("login.logoutTitle")}</h3>
+            <p>{I18n.t("login.logoutStatus")}</p>
         {:else}
-            <p>{I18n.ts("login.info")}</p>
-            <p>{I18n.ts("login.process")}</p>
+            <p>{I18n.t("login.info")}</p>
+            <p>{I18n.t("login.process")}</p>
         {/if}
         <div class="options">
         <Button href="/login" label={I18n.t("login.login")} onClick={login}/>

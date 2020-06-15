@@ -47,7 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DefaultOAuth2AuthorizationRequestResolver authorizationRequestResolver =
                 new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, "/oauth2/authorization");
         authorizationRequestResolver.setAuthorizationRequestCustomizer(customizer ->
+                //This is the enforce account linking by eduID
                 customizer.additionalParameters(Collections.singletonMap("acr_values", acrValue)));
+
         http.csrf().disable()
                 .authorizeRequests(authorize -> authorize.anyRequest().authenticated())
                 .oauth2Login()

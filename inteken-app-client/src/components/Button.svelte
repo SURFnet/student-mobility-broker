@@ -40,6 +40,7 @@
     .button.cancel {
         color: var(--color-secondary-green);
         background-color: white;
+        border: 1px solid var(--color-secondary-green);
     }
 
     .button.cancel:hover {

@@ -44,33 +44,71 @@ public class EducationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void t404() {
+    public void institutionsSchacHomes() {
+        List<String> institutions = given()
+                .when()
+                .contentType(ContentType.JSON)
+                .get("/intake/api/institutions-schac-home")
+                .as(new TypeRef<List<String>>() {
+                });
+        assertEquals(3, institutions.size());
+    }
+
+    @Test
+    public void findInstitutionBySchacHome() {
+        String schacHome = "groningen.org";
+        Institution institution = given()
+                .when()
+                .contentType(ContentType.JSON)
+                .queryParam("schac_home", schacHome)
+                .get("/intake/api/institution")
+                .as(new TypeRef<Institution>() {
+                });
+        assertEquals(schacHome, institution.getSchacHome());
+    }
+
+    @Test
+    public void findInstitutionBySchacHome404() {
         given()
                 .when()
                 .contentType(ContentType.JSON)
-                .get("/intake/api/404")
+                .queryParam("schac_home", "nope")
+                .get("/intake/api/institution")
                 .then()
                 .statusCode(404);
     }
 
     @Test
+    public void findCourseByIdentifier() {
+        String identifier = "198258DA-BBA3-47FA-95A1-3B29DD64B988";
+        Course course = given()
+                .when()
+                .contentType(ContentType.JSON)
+                .queryParam("identifier", identifier)
+                .get("/intake/api/course")
+                .as(new TypeRef<Course>() {
+                });
+        assertEquals(identifier, course.getIdentifier());
+    }
+
+    @Test
     public void registerPreview() {
-        String expected = "http://localhost:8091/uva?course=57761270-2DFC-498E-88DC-CF8DB5FC5B1A&scope=student_information&apiUrl=http://localhost:8091/ou";
-        this.doRegistration("ou.org", "uva.org", "History", true)
+        String expected = "http://localhost:8091/uva?course=57761270-2DFC-498E-88DC-CF8DB5FC5B1A&scope=student_information&apiUrl=http://localhost:8091/open-university";
+        this.doRegistration("ou.org", "uva.nl", "History", true)
                 .body("url", equalTo(expected));
     }
 
     @Test
     public void registerRedirect() {
-        String expected = "http://localhost:8091/uva?course=57761270-2DFC-498E-88DC-CF8DB5FC5B1A&scope=student_information&apiUrl=http://localhost:8091/ou";
-        this.doRegistration("ou.org", "uva.org", "History", false)
+        String expected = "http://localhost:8091/uva?course=57761270-2DFC-498E-88DC-CF8DB5FC5B1A&scope=student_information&apiUrl=http://localhost:8091/open-university";
+        this.doRegistration("ou.org", "uva.nl", "History", false)
                 .statusCode(302)
                 .header("Location", equalTo(expected));
     }
 
     @Test
     public void registerNoAffiliation() {
-        this.doRegistration("groningen.org", "uva.org", "Psychology", false)
+        this.doRegistration("groningen.org", "uva.nl", "Psychology", false)
                 .statusCode(409);
     }
 
