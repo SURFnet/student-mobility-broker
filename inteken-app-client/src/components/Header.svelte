@@ -3,15 +3,36 @@
     import I18n from "i18n-js";
     import logo from "../img/student-clipart.png";
     import {navigate} from "svelte-routing";
+    import {onMount} from "svelte";
     import {logout} from "../api";
-    import {user} from "../stores/user";
+    import {user, config} from "../stores/user";
     import Button from "./Button.svelte";
+
+    onMount(() => {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        if (urlSearchParams.has("login")) {
+            me().then(json => {
+                for (var key in json) {
+                    if (json.hasOwnProperty(key)) {
+                        $user[key] = json[key];
+                    }
+                }
+                $user.guest = false;
+            });
+        }
+    });
 
     const logoutUser = () => {
         logout().then(() => {
             $user = {guest: true};
-            navigate("/login?logout=true");
         });
+    }
+
+    const loginUser = () => {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        urlSearchParams.set("login", "true");
+        const location = `${window.location.pathname}?${urlSearchParams.toString()}`;
+        window.location.href = $config.server_login + `?location=${encodeURIComponent(location)}`;
     }
 
 </script>
@@ -49,7 +70,7 @@
         }
     }
 
-    div.logout {
+    div.logout, div.login {
         margin: 0 25px 0 auto;
     }
 
@@ -63,6 +84,10 @@
     {#if !$user.guest}
         <div class="logout">
             <Button href="/logout" label={I18n.t("header.logout")} onClick={logoutUser} className="cancel small"/>
+        </div>
+    {:else}
+        <div class="login">
+            <Button href="/login" label={I18n.t("header.login")} onClick={loginUser} className="cancel small"/>
         </div>
     {/if}
 </div>

@@ -31,10 +31,6 @@ function validFetch(path, options) {
   return fetch(path, options).then(res => validateResponse(res));
 }
 
-function fetchDelete(path) {
-  return validFetch(path, {method: "delete"});
-}
-
 function fetchJson(path, options = {}) {
   return validFetch(path, options);
 }
@@ -44,35 +40,35 @@ function postPutJson(path, body, method) {
 }
 
 export function logout() {
-  return fetchJson("/intake/api/logout").then(() => navigate("/login?logout=true"));
+  return fetchJson("/intake/api/private/logout");
 }
 
 export function configuration() {
-  return fetchJson("/intake/api/config");
+  return fetchJson("/intake/api/public/config");
 }
 
 export function me() {
-  return fetchJson("/intake/api/me");
+  return fetchJson("/intake/api/private/me");
 }
 
 export function institutions() {
-  return fetchJson("/intake/api/institutions");
+  return fetchJson("/intake/api/public/institutions");
 }
 
 export function institutionSchacHomes() {
-  return fetchJson("/intake/api/institutions-schac-home");
+  return fetchJson("/intake/api/public/institutions-schac-home");
 }
 
 export function institutionBySchacHome(schacHome) {
-  return fetchJson(`/intake/api/institution?schac_home=${schacHome}`);
+  return fetchJson(`/intake/api/public/institution?schac_home=${schacHome}`);
 }
 
 export function courseByIdentifier(identifier) {
-  return fetchJson(`/intake/api/course?identifier=${identifier}`);
+  return fetchJson(`/intake/api/public/course?identifier=${identifier}`);
 }
 
 export function register(schacHomeInstitution, schacHomeGuestInstitution, courseIdentifier) {
-  return postPutJson("/intake/api/register", {
+  return postPutJson("/intake/api/private/register", {
     schacHomeInstitution,
     schacHomeGuestInstitution,
     courseIdentifier,

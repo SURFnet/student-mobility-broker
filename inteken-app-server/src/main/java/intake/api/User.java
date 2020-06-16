@@ -33,24 +33,24 @@ public class User {
         config.put("server_login", serverLogin);
     }
 
-    @GetMapping("/config")
+    @GetMapping("/public/config")
     public ResponseEntity config() {
         return ResponseEntity.ok(config);
     }
 
-    @GetMapping("/sso")
+    @GetMapping("/private/sso")
     public ResponseEntity sso(@RequestParam(value = "location", required = false, defaultValue = "/") String location)
             throws URISyntaxException {
         return ResponseEntity.status(HttpStatus.FOUND).location(new URI(config.get("client_url") + location)).build();
     }
 
-    @GetMapping("/me")
+    @GetMapping("/private/me")
     public ResponseEntity me(Authentication authentication) {
         Map<String, Object> attributes = ((DefaultOAuth2User) authentication.getPrincipal()).getAttributes();
         return ResponseEntity.ok(attributes);
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/private/logout")
     public ResponseEntity logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();

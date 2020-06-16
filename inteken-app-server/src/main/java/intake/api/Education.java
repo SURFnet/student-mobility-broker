@@ -38,27 +38,27 @@ public class Education {
         this.catalogRepository = catalogRepository;
     }
 
-    @GetMapping("/institutions")
+    @GetMapping("/public/institutions")
     public List<Institution> institutions() {
         return catalogRepository.institutions();
     }
 
-    @GetMapping("/institutions-schac-home")
+    @GetMapping("/public/institutions-schac-home")
     public List<String> institutionsSchacHomes() {
         return catalogRepository.institutions().stream().map(Institution::getSchacHome).collect(Collectors.toList());
     }
 
-    @GetMapping("/institution")
+    @GetMapping("/public/institution")
     public Institution findInstitutionBySchacHome(@RequestParam("schac_home") String schacHome) {
         return catalogRepository.findInstitutionBySchacHome(schacHome);
     }
 
-    @GetMapping("/course")
+    @GetMapping("/public/course")
     public Course findCourseByIdentifier(@RequestParam("identifier") String identifier) {
         return catalogRepository.findCourseByIdentifier(identifier);
     }
 
-    @PutMapping("/register")
+    @PutMapping("/private/register")
     @SuppressWarnings("unchecked")
     public ResponseEntity register(Authentication authentication, @RequestBody Registration registration) {
         LOG.info(String.format("Registration %s URL for  %s", registration, authentication.getPrincipal()));

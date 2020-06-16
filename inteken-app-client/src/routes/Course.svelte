@@ -1,7 +1,7 @@
 <script>
-    import {user, flash} from "../stores/user";
+    import {user, config, flash} from "../stores/user";
     import I18n from "i18n-js";
-    import {register, courseByIdentifier, institutionBySchacHome, institutionSchacHomes} from "../api";
+    import {register, courseByIdentifier, institutionBySchacHome, institutionSchacHomes, me} from "../api";
     import {navigate} from "svelte-routing";
     import chevron_left from "../icons/chevron-left.svg";
     import Button from "../components/Button.svelte";
@@ -10,37 +10,63 @@
     import Spinner from "../components/Spinner.svelte";
     import Flash from "../components/Flash.svelte";
 
-    let course = {};
+    let course = {requiredScopes: []};
     let institution = {};
     let loaded = false;
     let showModal = false;
     let registerUrl = "";
+    let registrationUrlParams = [];
     let schacHomeInstitution = "nope";
     let schacHomeInstitutions = [];
     let linkedSchacHomeInstitutions = [];
+    let allInstitutionSchacHomes = [];
 
     onMount(() => {
         const urlSearchParams = new URLSearchParams(window.location.search);
         const identifier = urlSearchParams.get("identifier");
         const schacHome = urlSearchParams.get("schacHome");
+        const register = "true" === urlSearchParams.get("register");
         Promise.all([courseByIdentifier(identifier), institutionBySchacHome(schacHome), institutionSchacHomes()])
                 .then(res => {
                     course = res[0];
                     institution = res[1];
+                    allInstitutionSchacHomes = res[2];
                     loaded = true;
-
-                    linkedSchacHomeInstitutions = $user.eduperson_scoped_affiliation.map(s => s.substring(s.indexOf("@") + 1));
-                    schacHomeInstitutions = linkedSchacHomeInstitutions.filter(sh => res[2].includes(sh));
-                    schacHomeInstitution = schacHomeInstitutions[0];
+                    if (register) {
+                        me().then(json => {
+                            for (var key in json) {
+                                if (json.hasOwnProperty(key)) {
+                                    $user[key] = json[key];
+                                }
+                            }
+                            $user.guest = false;
+                            registerCourse(true)();
+                        });
+                    }
                 });
     });
 
     const registerCourse = showConfirmation => () => {
+        if ($user.guest) {
+            const location = `/course?identifier=${course.identifier}&schacHome=${institution.schacHome}&register=true`
+            window.location.href = $config.server_login + `?location=${encodeURIComponent(location)}`;
+            return;
+        }
+        linkedSchacHomeInstitutions = $user.eduperson_scoped_affiliation.map(s => s.substring(s.indexOf("@") + 1));
+        schacHomeInstitutions = linkedSchacHomeInstitutions.filter(sh => allInstitutionSchacHomes.includes(sh));
+        schacHomeInstitution = schacHomeInstitutions[0];
+
+        if (!schacHomeInstitution) {
+            return;
+        }
+
         if (showConfirmation) {
             showModal = true;
         } else {
             register(schacHomeInstitution, institution.schacHome, course.identifier).then(json => {
                 registerUrl = json.url;
+                new URLSearchParams(json.url.substring(json.url.indexOf("?")))
+                        .forEach((v, k) => registrationUrlParams.push({key: k, value: v}));
                 flash.setValue(I18n.t("course.flash.registered", {name: course.name, institution: institution.name}));
                 showModal = false;
             });
@@ -56,6 +82,10 @@
         width: 100%;
         display: flex;
         height: 100%;
+    }
+
+    .placeholder {
+        min-height: 75vh;
     }
 
     @media (max-width: 820px) {
@@ -151,12 +181,23 @@
     }
 
     div.registration input {
-        margin-top: 15px;
+        margin: 15px 0;
         border-radius: 8px;
         border: solid 1px #676767;
         padding: 14px;
         font-size: 16px;
         width: 100%;
+        font-family: Courier, serif;
+    }
+
+    div.query-params {
+        margin-top: 15px;
+        border-radius: 8px;
+        border: solid 1px #676767;
+        padding: 15px;
+        color: rgb(84, 84, 84);
+        background-color: rgba(239, 239, 239, 0.3);
+        font-family: Courier, serif;
     }
 
     div.no-schac-home {
@@ -240,11 +281,23 @@
                 </tr>
                 </tbody>
             </table>
-
+            {#if $user.guest}
+                <div class="registration">
+                    <label>{I18n.t("course.login")} </label>
+                </div>
+            {/if}
             {#if registerUrl}
                 <div class="registration">
                     <label>{I18n.t("course.registrationUrl")} </label>
                     <input disabled value={registerUrl}>
+                    <label>{I18n.t("course.registrationUrlParams")} </label>
+                    <div class="query-params">
+                        {#each registrationUrlParams as param}
+                            <p><span class="key">{`"${param.key}": `}</span><span
+                                    class="value">{`"${param.value}"`}</span></p>
+                        {/each}
+                    </div>
+
                 </div>
             {/if}
             {#if !schacHomeInstitution}
@@ -269,7 +322,9 @@
 
     </div>
 {:else}
-    <Spinner/>
+    <div class="placeholder">
+        <Spinner/>
+    </div>
 {/if}
 
 {#if showModal}

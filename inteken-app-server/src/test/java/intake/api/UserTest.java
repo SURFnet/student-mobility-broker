@@ -29,7 +29,7 @@ public class UserTest extends AbstractIntegrationTest {
         Map<String, Object> user = given()
                 .when()
                 .contentType(ContentType.JSON)
-                .get("/intake/api/me")
+                .get("/intake/api/private/me")
                 .as(new TypeRef<Map<String, Object>>() {
                 });
         assertEquals("john.doe@ou.org", user.get("email"));
@@ -41,7 +41,7 @@ public class UserTest extends AbstractIntegrationTest {
                 .when()
                 .contentType(ContentType.JSON)
                 .queryParam("location", "/info")
-                .get("/intake/api/sso")
+                .get("/intake/api/private/sso")
                 .then()
                 .statusCode(302)
                 .header("Location","http://localhost:3003/info");
@@ -52,7 +52,7 @@ public class UserTest extends AbstractIntegrationTest {
         Map<String, String> res = given()
                 .when()
                 .contentType(ContentType.JSON)
-                .get("/intake/api/logout")
+                .get("/intake/api/private/logout")
                 .as(new TypeRef<Map<String, String>>() {
                 });
         assertEquals("ok", res.get("status"));

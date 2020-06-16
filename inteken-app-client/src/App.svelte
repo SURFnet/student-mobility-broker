@@ -32,30 +32,10 @@
         I18n.locale = "en";
     }
 
-    const navigateToLogin = () => {
-        loaded = true;
-        $redirectPath = window.location.pathname + window.location.search;
-        navigate(`/login`);
-    }
-
     onMount(() => {
         configuration().then(json => {
             $config = json;
-            me()
-                    .then(json => {
-                        if (json.type === "opaqueredirect" && json.ok === false) {
-                            navigateToLogin();
-                            return;
-                        }
-                        for (var key in json) {
-                            if (json.hasOwnProperty(key)) {
-                                $user[key] = json[key];
-                            }
-                        }
-                        $user.guest = false;
-                        loaded = true;
-                    })
-                    .catch(() => navigateToLogin())
+            loaded = true;
         });
 
     });

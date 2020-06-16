@@ -16,8 +16,6 @@ import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(value = "prod", inheritProfiles = false)
 public class UserNoProfileTest extends AbstractIntegrationTest {
 
@@ -26,7 +24,7 @@ public class UserNoProfileTest extends AbstractIntegrationTest {
         Headers headers = given().redirects().follow(false)
                 .when()
                 .contentType(ContentType.JSON)
-                .get("/intake/api/me")
+                .get("/intake/api/private/me")
                 .headers();
         String location = headers.get("Location").getValue();
         assertEquals("http://localhost:" + port + "/oauth2/authorization/oidc", location);
@@ -44,7 +42,7 @@ public class UserNoProfileTest extends AbstractIntegrationTest {
     public void config() {
         Map<String, String> config = given().when()
                 .contentType(ContentType.JSON)
-                .get("/intake/api/config")
+                .get("/intake/api/public/config")
                 .as(new TypeRef<Map<String, String>>() {
                 });
         assertEquals("http://localhost:3003", config.get("client_url"));

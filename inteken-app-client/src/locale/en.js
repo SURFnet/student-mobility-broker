@@ -3,7 +3,8 @@ import I18n from "i18n-js";
 I18n.translations.en = {
   header: {
     title: "Student Mobility",
-    logout: "Logout"
+    logout: "Logout",
+    login: "Login",
   },
   login: {
     login: "Login",
@@ -43,6 +44,8 @@ I18n.translations.en = {
     cancel: "Cancel",
     scopes: "Required scopes",
     registrationUrl: "Registration URL",
+    registrationUrlParams: "Registration URL query parameters",
+    login: "When you hit the register button below then you will redirected to eduID where you can login or create a new eduID account",
     registerConfirmation: "Are you sure you want to start the registration for course {{name}} at {{institution}}?",
     noPreConfiguredSchachHomeOrganization: "Your eduID account is linked to home institution(s):",
     noPreConfiguredSchachHomeOrganizationWarning: "However none of these institutions are configured in the the Student Mobility app",

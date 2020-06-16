@@ -13,13 +13,10 @@
     import Courses from "./Courses.svelte";
     import {onMount} from "svelte";
 
-    import Flash from "../components/Flash.svelte";
-
-    export let bookmark;
+    export let bookmark = "courses";
 
     const tabs = [
-        {name: "profile", component: Profile, icon: personal_info},
-        {name: "courses", component: Courses, icon: home},
+        {name: "courses", component: Courses, icon: home}
         // {name: "institutions", component: Institutions, icon: teams},
         // {name: "account", component: Account, icon: data_activity},
     ];
@@ -28,7 +25,12 @@
     let displayMenu = false;
     let menuIcon = chevron_right;
 
-    onMount(() => currentTab = bookmark ? currentTab = tabs.find(tab => tab.name === bookmark) : tabs[0]);
+    onMount(() => {
+      if (!$user.guest) {
+        tabs.push({name: "profile", component: Profile, icon: personal_info});
+      }
+      currentTab = bookmark ? currentTab = tabs.find(tab => tab.name === bookmark) : tabs[0];
+    });
 
     const switchTab = name => () => navigate(`/${name}`);
 
