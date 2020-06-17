@@ -30,7 +30,7 @@ I18n.translations.en = {
   },
   courses: {
     title: "Courses",
-    info: "All courses. go to the details of a course to register",
+    info: "All courses. Go to the details of a course to register",
     institution: "Institution",
     link: "{{name}} (<span style='font-style: italic;font-weight: normal'>{{institution}}</span>)"
   },

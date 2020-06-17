@@ -4,7 +4,7 @@
     import logo from "../img/student-clipart.png";
     import {navigate} from "svelte-routing";
     import {onMount} from "svelte";
-    import {logout} from "../api";
+    import {logout, me} from "../api";
     import {user, config} from "../stores/user";
     import Button from "./Button.svelte";
 
@@ -25,6 +25,7 @@
     const logoutUser = () => {
         logout().then(() => {
             $user = {guest: true};
+            navigate("/")
         });
     }
 

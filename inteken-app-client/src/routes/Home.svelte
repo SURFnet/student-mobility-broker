@@ -16,9 +16,8 @@
     export let bookmark = "courses";
 
     const tabs = [
-        {name: "courses", component: Courses, icon: home}
-        // {name: "institutions", component: Institutions, icon: teams},
-        // {name: "account", component: Account, icon: data_activity},
+        {name: "courses", component: Courses, icon: home},
+        {name: "profile", component: Profile, icon: personal_info}
     ];
 
     let currentTab = tabs[0];
@@ -26,9 +25,6 @@
     let menuIcon = chevron_right;
 
     onMount(() => {
-      if (!$user.guest) {
-        tabs.push({name: "profile", component: Profile, icon: personal_info});
-      }
       currentTab = bookmark ? currentTab = tabs.find(tab => tab.name === bookmark) : tabs[0];
     });
 
@@ -157,7 +153,7 @@
            on:click|preventDefault|stopPropagation={showMenu}>{@html menuIcon}</a>
         <ul class:hide={!displayMenu}>
             {#each tabs as tab}
-                {#if !tab.ignore}
+                {#if tab.name !== "profile" || !$user.guest}
                     <li class:active={tab.name === currentTab.name}
                         on:click|preventDefault|stopPropagation={switchTab(tab.name)}>
                         {@html tab.icon}

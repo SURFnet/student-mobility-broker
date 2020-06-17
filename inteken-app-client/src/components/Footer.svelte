@@ -109,7 +109,7 @@
             <a href={helpUrl} target="_blank">{I18n.t("footer.help")}</a>
         </div>
 
-        <ul>
+        <ul style="display: none">
             <li class="{I18n.locale === 'en' ? 'active' : 'non_active'}">
                 <a href="/en" on:click|preventDefault|stopPropagation={changeLanguage("en")}>EN</a>
             </li>
