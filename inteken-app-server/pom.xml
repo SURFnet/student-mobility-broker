@@ -10,9 +10,9 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>server</artifactId>
-	<packaging>jar</packaging>
-	<name>server</name>
+	<artifactId>inteken-app-server</artifactId>
+	<packaging>pom</packaging>
+	<name>inteken-app-server</name>
 	<version>0.0.1</version>
 
 	<properties>
