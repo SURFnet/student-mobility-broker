@@ -1,7 +1,7 @@
 package intake.api;
 
-import exception.NoScopedAffiliationException;
-import exception.NotFoundException;
+import intake.exception.NoScopedAffiliationException;
+import intake.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

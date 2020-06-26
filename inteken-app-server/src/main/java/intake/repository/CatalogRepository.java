@@ -3,7 +3,7 @@ package intake.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import exception.NotFoundException;
+import intake.exception.NotFoundException;
 import intake.model.Course;
 import intake.model.Institution;
 import lombok.SneakyThrows;

@@ -1,21 +1,13 @@
 package intake.api;
 
-import exception.NotFoundException;
+import intake.exception.NotFoundException;
 import intake.AbstractIntegrationTest;
-import intake.model.Course;
-import intake.model.Institution;
 import intake.model.Registration;
 import intake.repository.CatalogRepository;
-import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;

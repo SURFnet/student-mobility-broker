@@ -1,6 +1,6 @@
 package intake.api;
 
-import exception.NoScopedAffiliationException;
+import intake.exception.NoScopedAffiliationException;
 import intake.model.Course;
 import intake.model.Institution;
 import intake.model.Registration;
