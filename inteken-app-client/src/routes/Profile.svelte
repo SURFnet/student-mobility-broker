@@ -82,7 +82,7 @@
                 <tbody>
                 <tr>
                     <td class="attr">{I18n.t("profile.name")}</td>
-                    <td class="value">{$user.name}</td>
+                    <td class="value">{$user.preferred_username}</td>
                 </tr>
                 <tr>
                     <td class="attr">{I18n.t("profile.email")}</td>

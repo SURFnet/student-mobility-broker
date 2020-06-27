@@ -2,7 +2,7 @@ logging:
   level:
     root: INFO
     oidc: DEBUG
-    org.springframework.security: WARN
+    org.springframework.security: DEBUG
 
 server:
   port: 8091
@@ -41,8 +41,10 @@ spring:
           oidc:
             authorization-uri: https://connect.test2.surfconext.nl/oidc/authorize
             token-uri: https://connect.test2.surfconext.nl/oidc/token
-            user-info-uri: https://connect.test2.surfconext.nl/oidc/userinfo
+            # we deliberately omit the user-info-uri as we request the useer claims in the ID token
+            # user-info-uri: https://connect.test2.surfconext.nl/oidc/userinfo
             user-name-attribute: sub
+            jwk-set-uri: https://connect.test2.surfconext.nl/oidc/certs
 
 management:
   endpoints:

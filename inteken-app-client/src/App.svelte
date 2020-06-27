@@ -47,6 +47,7 @@
                             $user[key] = json[key];
                         }
                     }
+                    debugger;
                     $user.guest = false;
                 }
             }).catch(() => {

@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,7 +64,7 @@ public class Education {
         LOG.info(String.format("Registration %s URL for  %s", registration, authentication.getPrincipal()));
 
         //The user has to have a scoped affiliation for the schacHomeInstitution
-        List<String> eduPersonScopedAffiliations = (List<String>) ((DefaultOAuth2User) authentication.getPrincipal())
+        List<String> eduPersonScopedAffiliations = (List<String>) ((DefaultOidcUser) authentication.getPrincipal())
                 .getAttributes()
                 .getOrDefault("eduperson_scoped_affiliation", new ArrayList<String>());
 
