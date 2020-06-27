@@ -1,6 +1,5 @@
 package intake.api;
 
-import intake.repository.CatalogRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

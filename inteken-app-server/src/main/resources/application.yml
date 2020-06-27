@@ -53,4 +53,3 @@ management:
       show-details: when_authorized
     info:
       enabled: true
-      show-details: when_authorized
