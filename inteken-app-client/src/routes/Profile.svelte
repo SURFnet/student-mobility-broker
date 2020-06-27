@@ -1,6 +1,7 @@
 <script>
     import {user} from "../stores/user";
     import I18n from "i18n-js";
+    import Spinner from "../components/Spinner.svelte";
 
 </script>
 
@@ -43,9 +44,11 @@
     table {
         width: 100%;
     }
+
     td {
         border-bottom: 1px solid var(--color-primary-grey);
     }
+
     td.attr {
         width: 30%;
         padding: 20px;
@@ -68,34 +71,38 @@
 
 <div class="profile">
     <div class="inner">
-        <h2>{I18n.t("profile.title")}</h2>
-        <p class="info">{I18n.t("profile.info")}</p>
-        <p class="info2">{I18n.t("profile.profile")}</p>
-        <table cellspacing="0">
-            <thead></thead>
-            <tbody>
-            <tr>
-                <td class="attr">{I18n.t("profile.name")}</td>
-                <td class="value">{$user.name}</td>
-            </tr>
-            <tr>
-                <td class="attr">{I18n.t("profile.email")}</td>
-                <td class="value">{$user.email}</td>
-            </tr>
-            <tr>
-                <td class="attr">{I18n.t("profile.eduperson_scoped_affiliation")}</td>
-                <td class="value">
-                    {#each $user.eduperson_scoped_affiliation as affiliation}
-                        <span>{`${affiliation}`}</span>
-                    {/each}
-                </td>
-            </tr>
-            <tr>
-                <td class="attr">{I18n.t("profile.eduid")}</td>
-                <td class="value">{$user.eduid}</td>
-            </tr>
-            </tbody>
-        </table>
+        {#if $user.guest}
+            <Spinner/>
+        {:else}
+            <h2>{I18n.t("profile.title")}</h2>
+            <p class="info">{I18n.t("profile.info")}</p>
+            <p class="info2">{I18n.t("profile.profile")}</p>
+            <table cellspacing="0">
+                <thead></thead>
+                <tbody>
+                <tr>
+                    <td class="attr">{I18n.t("profile.name")}</td>
+                    <td class="value">{$user.name}</td>
+                </tr>
+                <tr>
+                    <td class="attr">{I18n.t("profile.email")}</td>
+                    <td class="value">{$user.email}</td>
+                </tr>
+                <tr>
+                    <td class="attr">{I18n.t("profile.eduperson_scoped_affiliation")}</td>
+                    <td class="value">
+                        {#each $user.eduperson_scoped_affiliation as affiliation}
+                            <span>{`${affiliation}`}</span>
+                        {/each}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="attr">{I18n.t("profile.eduid")}</td>
+                    <td class="value">{$user.eduid}</td>
+                </tr>
+                </tbody>
+            </table>
+        {/if}
     </div>
 
 </div>

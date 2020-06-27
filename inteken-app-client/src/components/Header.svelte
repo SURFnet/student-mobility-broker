@@ -23,9 +23,10 @@
     });
 
     const logoutUser = () => {
+        $user = {guest: true};
         logout().then(() => {
-            $user = {guest: true};
-            navigate("/")
+            navigate("/", true);
+
         });
     }
 

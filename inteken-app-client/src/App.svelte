@@ -36,6 +36,23 @@
         configuration().then(json => {
             $config = json;
             loaded = true;
+            $user.guest = true;
+            me().then(json => {
+                //redirect
+                if (!json.sub) {
+                    $user = {guest: true};
+                } else {
+                    for (var key in json) {
+                        if (json.hasOwnProperty(key)) {
+                            $user[key] = json[key];
+                        }
+                    }
+                    $user.guest = false;
+                }
+            }).catch(() => {
+                $user = {guest: true};
+            });
+
         });
 
     });
