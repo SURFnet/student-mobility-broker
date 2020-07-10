@@ -32,3 +32,12 @@
       description: Study of the past
       requiredScopes:
         - student_information
+- name: Example University
+  schacHome: example.com
+  apiBaseUrl: http://localhost:8091/open-university
+  courses:
+    - name: Crash Course Fishing
+      identifier: 3FEB4311-FB27-4989-934E-98C954A3C966
+      description:  The science of fishing
+      requiredScopes:
+        - openid

@@ -26,13 +26,13 @@ public class EducationNoProfileTest extends AbstractIntegrationTest {
                 .get("/intake/api/public/institutions")
                 .as(new TypeRef<List<Institution>>() {
                 });
-        assertEquals(3, institutions.size());
+        assertEquals(4, institutions.size());
 
         List<Course> courses = institutions.stream()
                 .map(Institution::getCourses)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        assertEquals(4, courses.size());
+        assertEquals(5, courses.size());
     }
 
     @Test
@@ -43,7 +43,7 @@ public class EducationNoProfileTest extends AbstractIntegrationTest {
                 .get("/intake/api/public/institutions-schac-home")
                 .as(new TypeRef<List<String>>() {
                 });
-        assertEquals(3, institutions.size());
+        assertEquals(4, institutions.size());
     }
 
     @Test
