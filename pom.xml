@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.openconext</groupId>
-	<artifactId>intake-app</artifactId>
+	<groupId>org.surfnet</groupId>
+	<artifactId>student-mobility-broker</artifactId>
 	<version>10.0.0</version>
-	<name>intake-app</name>
-	<description>student-mobility-intake-app</description>
+	<name>student-mobility-broker</name>
+	<description>student-mobility-broker-app</description>
 	<packaging>pom</packaging>
 
 	<parent>
@@ -18,8 +18,8 @@
 	</parent>
 
 	<modules>
-		<module>inteken-app-server</module>
-		<module>inteken-app-client</module>
+		<module>student-mobility-broker-server</module>
+		<module>student-mobility-broker-client</module>
 	</modules>
 
 	<build>
