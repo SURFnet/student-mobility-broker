@@ -39,7 +39,7 @@ spring:
             authorization-grant-type: authorization_code
         provider:
           oidc:
-            # we deliberately omit the user-info-uri as we request the useer claims in the ID token
+            # we deliberately omit the user-info-uri as we request the user claims in the ID token
             # user-info-uri: https://connect.test2.surfconext.nl/oidc/userinfo
 #            authorization-uri: https://connect.test2.surfconext.nl/oidc/authorize
 #            token-uri: https://connect.test2.surfconext.nl/oidc/token
