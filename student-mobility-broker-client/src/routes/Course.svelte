@@ -3,7 +3,7 @@
     import I18n from "i18n-js";
     import {register, courseByIdentifier, institutionBySchacHome, institutionSchacHomes, me} from "../api";
     import {navigate} from "svelte-routing";
-    import chevron_left from "../icons/chevron-left.svg";
+    import logoEduid from "../img/logo_eduID.svg";
     import Button from "../components/Button.svelte";
     import {onMount} from "svelte";
     import Modal from "../components/Modal.svelte";
@@ -60,6 +60,6 @@
             <label for="returnTo">ReturnTO</label>
             <input value={returnTo} name="returnTo" id="returnTo"/>
 
-            <button type="submit"><span>Submit</span></button>
+            <button type="submit"><span>{@html logoEduid}Submit</span></button>
         </form>
     </div>
