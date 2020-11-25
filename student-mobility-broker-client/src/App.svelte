@@ -6,6 +6,7 @@
     import NotFound from "./routes/NotFound.svelte";
     import Login from "./routes/Login.svelte";
     import Course from "./routes/Course.svelte";
+    import Enroll from "./routes/Enroll.svelte";
     import Home from "./routes/Home.svelte";
     import Header from "./components/Header.svelte";
     import {me, configuration} from "./api";
@@ -36,24 +37,6 @@
         configuration().then(json => {
             $config = json;
             loaded = true;
-            $user.guest = true;
-            me().then(json => {
-                //redirect
-                if (!json.sub) {
-                    $user = {guest: true};
-                } else {
-                    for (var key in json) {
-                        if (json.hasOwnProperty(key)) {
-                            $user[key] = json[key];
-                        }
-                    }
-                    debugger;
-                    $user.guest = false;
-                }
-            }).catch(() => {
-                $user = {guest: true};
-            });
-
         });
 
     });
@@ -177,7 +160,8 @@
                     <Route path="/institutions">
                         <Home bookmark="institutions"/>
                     </Route>
-                    <Route path="course" component={Course}/>
+                    <Route path="/enroll" component={Enroll}/>
+                    <Route path="/course" component={Course}/>
                     <Route path="/profile">
                         <Home bookmark="profile"/>
                     </Route>

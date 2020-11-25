@@ -12,7 +12,7 @@
 
     const offering = "http://offering";
     const person = "http://person";
-    const scope = "todo";
+    const scope = "profile";
     const returnTo = "http://returnTo";
     let loaded = false;
     let showModal = false;
