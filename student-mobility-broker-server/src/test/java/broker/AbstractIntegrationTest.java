@@ -1,4 +1,4 @@
-package intake;
+package broker;
 
 import io.restassured.RestAssured;
 import org.junit.Before;

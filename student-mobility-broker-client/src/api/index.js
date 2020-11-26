@@ -20,7 +20,7 @@ function validateResponse(res) {
 
 function validFetch(path, options) {
   options = options || {};
-  options.credentials = "same-origin";
+  options.credentials = "include";
   options.redirect = "manual";
   options.headers = {
     Accept: "application/json",

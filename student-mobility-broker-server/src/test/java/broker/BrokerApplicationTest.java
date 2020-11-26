@@ -1,8 +1,8 @@
-package intake;
+package broker;
 
 import org.junit.Test;
 
-public class IntakeApplicationTest {
+public class BrokerApplicationTest {
 
     @Test
     public void main() {

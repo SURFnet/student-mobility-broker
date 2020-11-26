@@ -1,0 +1,4 @@
+- schacHome: groningen.org
+  courseEndpoint: http://localhost:8076/offerings
+  personsEndpoint: http://localhost:8076/persons/me
+  registrationEndpoint: http://localhost:8092/api/enrollment
