@@ -15,11 +15,11 @@ before_install:
 - npm install -g yarn
 - yarn install
 install:
-- cd inteken-app-client && yarn install && cd ..
+- cd student-mobility-broker-client && yarn install && cd ..
 - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script:
 - mvn test
-- cd inteken-app-client && yarn build && yarn test && cd ..
+- cd student-mobility-broker-client && yarn build && yarn test && cd ..
 after_script:
 - pkill mongod
 after_success:
