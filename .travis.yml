@@ -3,7 +3,7 @@ jdk:
 - oraclejdk8
 dist: trusty
 node_js:
-- '8'
+- '10'
 
 cache:
   yarn: true
@@ -11,7 +11,7 @@ cache:
   - node_modules
 before_install:
 - pip install --user codecov
-- nvm install 8
+- nvm install 10.14.2
 - npm install -g yarn
 - yarn install
 install:
