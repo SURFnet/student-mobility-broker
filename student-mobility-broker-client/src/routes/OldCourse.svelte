@@ -1,5 +1,5 @@
 <script>
-    import {user, config, flash} from "../stores/user";
+    import {user, config, flash} from "../stores/config";
     import I18n from "i18n-js";
     import {register, courseByIdentifier, institutionBySchacHome, institutionSchacHomes, me} from "../api";
     import {navigate} from "svelte-routing";

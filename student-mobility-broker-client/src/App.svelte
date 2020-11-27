@@ -1,45 +1,52 @@
 <script>
-    import Footer from "./components/Footer.svelte";
-    import {Route, Router, navigate} from "svelte-routing";
-    import {onMount} from "svelte";
-    import Cookies from "js-cookie";
-    import NotFound from "./routes/NotFound.svelte";
-    import Login from "./routes/Login.svelte";
-    import Course from "./routes/Course.svelte";
-    import Enroll from "./routes/Enroll.svelte";
-    import Home from "./routes/Home.svelte";
-    import Header from "./components/Header.svelte";
-    import {me, configuration} from "./api";
-    import {user, config, redirectPath} from "./stores/user";
-    import I18n from "i18n-js";
-    import Flash from "./components/Flash.svelte";
+  import Footer from "./components/Footer.svelte";
+  import {Route, Router} from "svelte-routing";
+  import {onMount} from "svelte";
+  import Cookies from "js-cookie";
+  import NotFound from "./routes/NotFound.svelte";
+  import Course from "./routes/Course.svelte";
+  import Header from "./components/Header.svelte";
+  import {broker, features, selectedOffering} from "./api";
+  import {config} from "./stores/config";
+  import {offering} from "./stores/offering";
+  import I18n from "i18n-js";
+  import {getParameterByName} from "./utils/queryParameters";
 
-    export let url = "";
-    let loaded = false;
+  export let url = "";
+  let loaded = false;
 
-    if (typeof window !== "undefined") {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        if (urlSearchParams.has("lang")) {
-            I18n.locale = urlSearchParams.get("lang");
-        } else if (Cookies.get("lang", {domain: $config.domain})) {
-            I18n.locale = Cookies.get("lang", {domain: $config.domain});
-        } else {
-            I18n.locale = navigator.language.toLowerCase().substring(0, 2);
-        }
+  if (typeof window !== "undefined") {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    if (urlSearchParams.has("lang")) {
+      I18n.locale = urlSearchParams.get("lang");
+    } else if (Cookies.get("lang", {domain: $config.domain})) {
+      I18n.locale = Cookies.get("lang", {domain: $config.domain});
     } else {
-        I18n.locale = "en";
+      I18n.locale = navigator.language.toLowerCase().substring(0, 2);
     }
-    if (["nl", "en"].indexOf(I18n.locale) < 0) {
-        I18n.locale = "en";
-    }
+  } else {
+    I18n.locale = "en";
+  }
+  if (["nl", "en"].indexOf(I18n.locale) < 0) {
+    I18n.locale = "en";
+  }
 
-    onMount(() => {
-        configuration().then(json => {
-            $config = json;
-            loaded = true;
+  onMount(() => {
+    features().then(json => {
+      $config = json;
+      const init = getParameterByName("init") === "true";
+      if ($config.local && !init) {
+        broker("utrecht.nl", "eindhoven.nl", "1");
+      } else {
+        selectedOffering().then(json => {
+          $offering = json;
+          loaded = true;
         });
+      }
 
     });
+
+  });
 
 </script>
 
@@ -149,23 +156,9 @@
 {#if loaded}
     <div class="education">
         <div class="container">
-            <Flash/>
-            <Header/>
             <div class="content">
                 <Router url="{url}">
-                    <Route path="/" component={Home}/>
-                    <Route path="/courses">
-                        <Home bookmark="courses"/>
-                    </Route>
-                    <Route path="/institutions">
-                        <Home bookmark="institutions"/>
-                    </Route>
-                    <Route path="/enroll" component={Enroll}/>
-                    <Route path="/course" component={Course}/>
-                    <Route path="/profile">
-                        <Home bookmark="profile"/>
-                    </Route>
-                    <Route path="/login" component={Login}/>
+                    <Route path="/" component={Course}/>
                     <Route component={NotFound}/>
                 </Router>
             </div>

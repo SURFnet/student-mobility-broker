@@ -6,20 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.util.Assert;
 
-import java.net.URI;
+import java.io.Serializable;
 
 @NoArgsConstructor
 @Getter
 @Setter
-public class BrokerRequest {
+public class BrokerRequest implements Serializable {
 
     private String homeInstitutionSchacHome;
     private String guestInstitutionSchacHome;
-    private URI offeringOOAPIUri;
+    private String offeringID;
 
     public void validate() {
         Assert.notNull(homeInstitutionSchacHome, "homeInstitutionSchacHome is required");
         Assert.notNull(guestInstitutionSchacHome, "guestInstitutionSchacHome is required");
-        Assert.notNull(offeringOOAPIUri, "offeringOOAPIUri is required");
+        Assert.notNull(offeringID, "offeringID is required");
     }
 }

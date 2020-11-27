@@ -11,12 +11,10 @@ import java.net.URI;
 
 @AllArgsConstructor
 @Getter
-@Setter
 public class EnrollmentRequest implements Serializable {
 
-    private URI offering;
-    private URI person;
+    private String offeringURI;
+    private String personURI;
     private String scope;
-    private URI returnTo;
 
 }

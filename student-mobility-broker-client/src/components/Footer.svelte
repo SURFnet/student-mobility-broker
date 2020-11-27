@@ -3,7 +3,7 @@
     import I18n from "i18n-js";
     import Cookies from "js-cookie";
     import surfLogo from "../img/logo-surf.svg";
-    import {config} from "../stores/user";
+    import {config} from "../stores/config";
 
     const changeLanguage = lang => () => {
         const urlSearchParams = new URLSearchParams(window.location.search);

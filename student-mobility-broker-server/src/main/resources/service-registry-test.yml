@@ -1,26 +1,26 @@
 - schacHome: utrecht.nl
   name: Utrecht University
-  courseEndpoint: http://localhost:8076/offerings
-  personsEndpoint: http://localhost:8076/persons/me
-  registrationEndpoint: http://localhost:8092
+  courseEndpoint: http://localhost:8081/offerings
+  personsEndpoint: http://localhost:8081/persons/me
+  registrationEndpoint: http://localhost:8081
   registrationUser: user
   registrationPassword: secret
   logoURI: https://static.surfconext.nl/logos/idp/uu.png
   scopes: https://utrecht/api inteken
 - schacHome: eindhoven.nl
   name: Eindhoven University of Technology
-  courseEndpoint: http://localhost:8076/offerings
-  personsEndpoint: http://localhost:8076/persons/me
-  registrationEndpoint: http://localhost:8092
+  courseEndpoint: http://localhost:8081/offerings
+  personsEndpoint: http://localhost:8081/persons/me
+  registrationEndpoint: http://localhost:8081
   registrationUser: user
   registrationPassword: secret
   logoURI: https://static.surfconext.nl/logos/idp/tue.png
   scopes: https://utrecht/api inteken
 - schacHome: wageningen.nl
   name: Wageningen University & Research (WUR)
-  courseEndpoint: http://localhost:8076/offerings
-  personsEndpoint: http://localhost:8076/persons/me
-  registrationEndpoint: http://localhost:8092
+  courseEndpoint: http://localhost:8081/offerings
+  personsEndpoint: http://localhost:8081/persons/me
+  registrationEndpoint: http://localhost:8081
   registrationUser: user
   registrationPassword: secret
   logoURI: https://static.surfconext.nl/logos/idp/wur.png

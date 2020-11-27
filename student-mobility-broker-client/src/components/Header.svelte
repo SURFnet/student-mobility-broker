@@ -5,7 +5,7 @@
     import {navigate} from "svelte-routing";
     import {onMount} from "svelte";
     import {logout, me} from "../api";
-    import {user, config} from "../stores/user";
+    import {user, config} from "../stores/config";
     import Button from "./Button.svelte";
 
     onMount(() => {

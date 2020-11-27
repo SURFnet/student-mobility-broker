@@ -1,12 +1,7 @@
 //Internal API
 import I18n from "i18n-js";
-import {navigate} from "svelte-routing";
-
-let csrfToken = null;
 
 function validateResponse(res) {
-
-  csrfToken = res.headers.get("x-csrf-token") || csrfToken;
 
   if (!res.ok) {
     if (res.type === "opaqueredirect") {
@@ -26,7 +21,6 @@ function validFetch(path, options) {
     Accept: "application/json",
     "Content-Type": "application/json",
     "Accept-Language": I18n.locale,
-    "X-CSRF-TOKEN": csrfToken
   };
   return fetch(path, options).then(res => validateResponse(res));
 }
@@ -39,39 +33,36 @@ function postPutJson(path, body, method) {
   return fetchJson(path, {method, body: JSON.stringify(body)});
 }
 
-export function logout() {
-  return fetchJson("/intake/api/private/logout");
+// API
+export function features() {
+  return fetchJson("/api/features");
 }
 
-export function configuration() {
-  return fetchJson("/intake/api/public/config");
+export function selectedOffering() {
+  return fetchJson("/api/offering");
 }
 
-export function me() {
-  return fetchJson("/intake/api/private/me");
+const formPost = (fields, path) => {
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = path;
+  Object.entries(fields).forEach(field => {
+    const hiddenField = document.createElement("input");
+    hiddenField.type = "hidden";
+    hiddenField.name = field[0];
+    hiddenField.value = field[1];
+    form.appendChild(hiddenField);
+  });
+  document.body.appendChild(form);
+  form.submit();
 }
 
-export function institutions() {
-  return fetchJson("/intake/api/public/institutions");
+export function register(offeringURI, personURI, scope, path) {
+  formPost({ offeringURI, personURI, scope}, path)
 }
 
-export function institutionSchacHomes() {
-  return fetchJson("/intake/api/public/institutions-schac-home");
-}
-
-export function institutionBySchacHome(schacHome) {
-  return fetchJson(`/intake/api/public/institution?schac_home=${schacHome}`);
-}
-
-export function courseByIdentifier(identifier) {
-  return fetchJson(`/intake/api/public/course?identifier=${identifier}`);
-}
-
-export function register(schacHomeInstitution, schacHomeGuestInstitution, courseIdentifier) {
-  return postPutJson("/intake/api/private/register", {
-    schacHomeInstitution,
-    schacHomeGuestInstitution,
-    courseIdentifier,
-    preview: true}, "PUT");
+// This is normally called by the Catalog, but for testing purposes we call it
+export function broker(homeInstitutionSchacHome, guestInstitutionSchacHome, offeringID) {
+  formPost({ homeInstitutionSchacHome, guestInstitutionSchacHome, offeringID}, "http://localhost:8091/api/broker")
 }
 

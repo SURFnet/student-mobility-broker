@@ -1,5 +1,5 @@
 <script>
-    import {user, config, redirectPath} from "../stores/user";
+    import {user, config, redirectPath} from "../stores/config";
     import {onMount} from "svelte";
     import I18n from "i18n-js";
     import {navigate} from "svelte-routing";

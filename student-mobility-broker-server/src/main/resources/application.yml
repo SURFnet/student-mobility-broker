@@ -6,14 +6,15 @@ logging:
 
 server:
   port: 8091
-  error:
-    path: /error
+
+spring:
+  jackson:
+    default-property-inclusion: non_null
 
 config:
   # Set to False in every non-local environment
   local: True
-  client_url: http://localhost:3003
-  return_to: http://localhost:3003
+  broker_client_url: http://localhost:3003
 
 service_registry:
   path: classpath:/service-registry.yml

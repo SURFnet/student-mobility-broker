@@ -1,5 +1,5 @@
 <script>
-    import {user} from "../stores/user";
+    import {user} from "../stores/config";
     import I18n from "i18n-js";
     import Spinner from "../components/Spinner.svelte";
 

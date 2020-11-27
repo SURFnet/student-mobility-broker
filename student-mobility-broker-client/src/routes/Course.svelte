@@ -1,5 +1,5 @@
 <script>
-    import {user, config, flash} from "../stores/user";
+    import {user, config, flash} from "../stores/config";
     import I18n from "i18n-js";
     import {register, courseByIdentifier, institutionBySchacHome, institutionSchacHomes, me} from "../api";
     import {navigate} from "svelte-routing";
@@ -9,13 +9,15 @@
     import Modal from "../components/Modal.svelte";
     import Spinner from "../components/Spinner.svelte";
     import Flash from "../components/Flash.svelte";
-
-    const offering = "http://offering";
-    const person = "http://person";
+    import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
+    import scooter from "../lotties/lf20_Fyn2dD.json";
+    import {offering} from "../stores/offering";
+    const offeringURI = "http://offering";
+    const personURI = "http://person";
     const scope = "profile";
-    const returnTo = "http://returnTo";
     let loaded = false;
     let showModal = false;
+
 
     onMount(() => {
     });
@@ -46,20 +48,17 @@
     }
 
 </style>
-    <div class="course">
-        <form action="http://localhost:8092/enrollment" method="post">
-            <label for="offering">Offering</label>
-            <input value={offering} name="offering" id="offering"/>
-
-            <label for="person">Person</label>
-            <input value={person} name="person" id="person"/>
-
-            <label for="scope">Scope</label>
-            <input value={scope} name="scope" id="scope"/>
-
-            <label for="returnTo">ReturnTO</label>
-            <input value={returnTo} name="returnTo" id="returnTo"/>
-
-            <button type="submit"><span>{@html logoEduid}Submit</span></button>
-        </form>
-    </div>
+<div>
+    {JSON.stringify($offering.offering)}
+</div>
+<LottiePlayer
+        src={scooter}
+        autoplay="{true}"
+        loop="{true}"
+        controls="{false}"
+        renderer="svg"
+        background="transparent"
+        height="{600}"
+        width="{600}"
+        controlsLayout={null}
+/>

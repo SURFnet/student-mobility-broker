@@ -1,5 +1,5 @@
 <script>
-    import {flash} from "../stores/user";
+    import {flash} from "../stores/config";
     import closeIcon from "../icons/close_smll.svg";
 
 </script>
