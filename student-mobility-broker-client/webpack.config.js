@@ -41,9 +41,11 @@ module.exports = {
                         loader: 'svelte-loader',
                         options: {
                             preprocess: require('svelte-preprocess')({
+                                paths: ["src", "src/stylesheets"],
                                 postcss: true
                             }),
                             emitCss: true,
+                            hotReload: true,
                             accessors: true,
                             dev: true
                         },
@@ -53,10 +55,6 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    /**
-                     * MiniCssExtractPlugin doesn't support HMR.
-                     * For developing, use 'style-loader' instead.
-                     * */
                     prod ? MiniCssExtractPlugin.loader : 'style-loader',
                     'css-loader'
                 ]

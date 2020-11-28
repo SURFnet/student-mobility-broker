@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="36px" height="28px" viewBox="0 0 36 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="36px" height="28px" viewBox="0 0 36 28" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <title>Path Copy</title>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="edubroker-intekenen-okt" transform="translate(-370.000000, -202.000000)" stroke="#FFFFFF" stroke-width="2.5">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round"
+       stroke-linejoin="round">
+        <g id="edubroker-intekenen-okt" transform="translate(-370.000000, -202.000000)" stroke="#FFFFFF"
+           stroke-width="2.5">
             <g id="Group-2" transform="translate(339.000000, 174.000000)">
-                <path d="M65,30 L48.0144,52.6474667 C47.4575827,53.3889181 46.6065273,53.8523859 45.6815907,53.9178682 C44.7566541,53.9833504 43.8487908,53.6444078 43.1930667,52.9888 L33,42.8" id="Path-Copy"></path>
+                <path d="M65,30 L48.0144,52.6474667 C47.4575827,53.3889181 46.6065273,53.8523859 45.6815907,53.9178682 C44.7566541,53.9833504 43.8487908,53.6444078 43.1930667,52.9888 L33,42.8"
+                      id="Path-Copy"></path>
             </g>
         </g>
     </g>

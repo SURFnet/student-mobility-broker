@@ -29,10 +29,6 @@ function fetchJson(path, options = {}) {
   return validFetch(path, options);
 }
 
-function postPutJson(path, body, method) {
-  return fetchJson(path, {method, body: JSON.stringify(body)});
-}
-
 // API
 export function features() {
   return fetchJson("/api/features");
