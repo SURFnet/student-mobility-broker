@@ -1,5 +1,6 @@
 - schacHome: utrecht.nl
   name: Utrecht University
+  abbreviation: UU
   courseEndpoint: http://localhost:8076/offerings
   personsEndpoint: http://localhost:8076/persons/me
   registrationEndpoint: http://localhost:8092
@@ -9,6 +10,7 @@
   scopes: https://utrecht/api inteken
 - schacHome: eindhoven.nl
   name: Eindhoven University of Technology
+  abbreviation: TU/e
   courseEndpoint: http://localhost:8076/offerings
   personsEndpoint: http://localhost:8076/persons/me
   registrationEndpoint: http://localhost:8092
@@ -17,7 +19,8 @@
   logoURI: https://static.surfconext.nl/logos/idp/tue.png
   scopes: https://eindhoven/api inteken
 - schacHome: wageningen.nl
-  name: Wageningen University & Research (WUR)
+  name: Wageningen University & Research
+  abbreviation: WUR
   courseEndpoint: http://localhost:8076/offerings
   personsEndpoint: http://localhost:8076/persons/me
   registrationEndpoint: http://localhost:8092

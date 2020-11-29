@@ -2,7 +2,7 @@ const queryParameter = {
 
   //shameless refactor of https://gist.githubusercontent.com/pduey/2764606/raw/e8b9d6099f1e4161f7dd9f81d71c2c7a1fecbd5b/querystring.js
 
-  searchToHash: function (windowLocationSearch) {
+  searchToHash: windowLocationSearch => {
     const h = {};
     if (windowLocationSearch === undefined || windowLocationSearch.length < 1) {
       return h;
@@ -21,7 +21,7 @@ const queryParameter = {
     return h;
   },
 
-  hashToSearch: function (newSearchHash) {
+  hashToSearch: newSearchHash => {
     let search = "?";
     Object.keys(newSearchHash).forEach(key => {
       for (let i = 0; i < newSearchHash[key].length; i++) {

@@ -17,7 +17,9 @@
 
 </style>
 <div>
-    {JSON.stringify($offering.offering)}
+    <div >
+        TOFO
+    </div>
 </div>
 <LottiePlayer
         src={scooter}

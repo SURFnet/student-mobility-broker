@@ -78,7 +78,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         Map<String, String> enrollmentRequest = (Map<String, String>) result.get("enrollmentRequest");
         assertEquals("http://localhost:8081/offerings/1", enrollmentRequest.get("offeringURI"));
         assertEquals("http://localhost:8081/persons/me", enrollmentRequest.get("personURI"));
-        assertEquals("https://utrecht/api inteken", enrollmentRequest.get("scope"));
+        assertEquals("https://eindhoven/api inteken", enrollmentRequest.get("scope"));
     }
 
     private void startRegistration(SessionFilter sessionFilter) throws IOException {

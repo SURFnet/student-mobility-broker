@@ -3,7 +3,7 @@
   import {onMount} from "svelte";
   import Cookies from "js-cookie";
   import NotFound from "./routes/NotFound.svelte";
-  import Course from "./routes/Course.svelte";
+  import Offering from "./routes/Offering.svelte";
   import {broker, features, selectedOffering} from "./api";
   import {offering} from "./stores/offering";
   import I18n from "i18n-js";
@@ -50,7 +50,7 @@
 <style global lang="scss">
   @import "stylesheets/main";
 
-  .education {
+  .broker {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -103,14 +103,12 @@
   }
 </style>
 {#if loaded}
-    <div class="education">
+    <div class="broker">
         <div class="container">
-            <div class="content">
-                <Router url="{url}">
-                    <Route path="/" component={Course}/>
-                    <Route component={NotFound}/>
-                </Router>
-            </div>
+            <Router url="{url}">
+                <Route path="/" component={Offering}/>
+                <Route component={NotFound}/>
+            </Router>
         </div>
     </div>
 {:else}
