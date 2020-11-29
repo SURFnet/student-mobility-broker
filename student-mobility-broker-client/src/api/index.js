@@ -2,7 +2,6 @@
 import I18n from "i18n-js";
 
 function validateResponse(res) {
-
   if (!res.ok) {
     if (res.type === "opaqueredirect") {
       return res;
