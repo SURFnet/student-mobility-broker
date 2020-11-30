@@ -37,6 +37,11 @@ export function selectedOffering() {
   return fetchJson("/api/offering");
 }
 
+export function startRegistration(correlationID) {
+  return fetchJson("/api/start", {method: "POST", body: JSON.stringify({correlationID})});
+}
+
+
 const formPost = (fields, path) => {
   const form = document.createElement("form");
   form.method = "POST";
@@ -52,7 +57,7 @@ const formPost = (fields, path) => {
   form.submit();
 }
 
-export function register(offeringURI, personURI, scope, path) {
+export function authentication(offeringURI, personURI, scope, path) {
   formPost({ offeringURI, personURI, scope}, path)
 }
 

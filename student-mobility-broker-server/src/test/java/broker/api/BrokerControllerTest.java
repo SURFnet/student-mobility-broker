@@ -56,7 +56,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("offeringID", "1")
                 .post("/api/broker")
                 .then()
-                .header("Location", "http://localhost:3003?init=true");
+                .header("Location", "http://localhost:3003?step=approve");
     }
 
     private void guiGetOffering(SessionFilter sessionFilter) throws IOException {

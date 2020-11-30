@@ -30,8 +30,8 @@
 
   onMount(() => {
     features().then(json => {
-      const init = getParameterByName("init") === "true";
-      if (json.local && !init) {
+      const step = getParameterByName("step");
+      if (json.local && !step) {
         //Mock the call from catalog to broker to ensure there is a selected offering
         broker("utrecht.nl", "eindhoven.nl", "1");
       } else {
@@ -58,12 +58,17 @@
   }
 
   .container {
-    max-width: var(--width-app);
+    max-width: 720px;
     margin: 0 auto;
     width: 100%;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 720px) {
+      padding: 0 20px;
+    }
   }
+
 
   .loader:empty,
   .loader:empty:after {

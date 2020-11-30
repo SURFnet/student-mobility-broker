@@ -54,7 +54,7 @@ public class BrokerController {
         brokerRequest.validate();
         //This establishes a session ID for the client
         request.getSession().setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
-        return new RedirectView(clientUrl + "?init=true");
+        return new RedirectView(clientUrl + "?step=approve");
     }
 
     /*

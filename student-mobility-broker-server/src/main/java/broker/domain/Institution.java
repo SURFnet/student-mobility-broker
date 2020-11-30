@@ -44,6 +44,7 @@ public class Institution implements Serializable {
         Institution institution = new Institution();
         institution.name = this.name;
         institution.logoURI = this.logoURI;
+        institution.abbreviation = this.abbreviation;
         return institution;
     }
 
