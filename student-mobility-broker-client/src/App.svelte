@@ -54,21 +54,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin-bottom: 100px;
   }
-
-  .container {
-    max-width: 720px;
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-
-    @media (max-width: 720px) {
-      padding: 0 20px;
-    }
-  }
-
 
   .loader:empty,
   .loader:empty:after {
@@ -109,12 +95,10 @@
 </style>
 {#if loaded}
     <div class="broker">
-        <div class="container">
-            <Router url="{url}">
-                <Route path="/" component={Offering}/>
-                <Route component={NotFound}/>
-            </Router>
-        </div>
+        <Router url="{url}">
+            <Route path="/" component={Offering}/>
+            <Route component={NotFound}/>
+        </Router>
     </div>
 {:else}
     <div class="loader"></div>
