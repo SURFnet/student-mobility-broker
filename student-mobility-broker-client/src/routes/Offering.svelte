@@ -60,6 +60,7 @@
       activity = I18n.t("offering.progress.1", {abbreviation: $offering.homeInstitution.abbreviation});
       setTimeout(changeActivity(2), 1500);
       setTimeout(() => start = true, 75);
+      //TODO see if there is something in the playstore to send along with the correlation ID
       startRegistration(getParameterByName("correlationID")).then(res => {
         result = res;
         hasErrors = res.code !== 200;

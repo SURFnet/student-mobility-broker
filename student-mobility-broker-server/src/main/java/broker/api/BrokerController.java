@@ -102,7 +102,7 @@ public class BrokerController {
         headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
         headers.setBasicAuth(homeInstitution.getRegistrationUser(), homeInstitution.getRegistrationPassword());
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
-        String url = homeInstitution.getRegistrationEndpoint() + "/api/start";
+        String url = homeInstitution.getRegistrationEndpoint().toString();
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, mapRef);
         return responseEntity.getBody();
     }

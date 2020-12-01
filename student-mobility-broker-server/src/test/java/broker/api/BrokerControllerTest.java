@@ -101,7 +101,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
 
     private void startRegistration(SessionFilter sessionFilter) throws IOException {
         String correlationID = "123456";
-        stubFor(post(urlPathMatching("/api/start"))
+        stubFor(post(urlPathMatching("/api/enrollment"))
                 .withHeader("X-Correlation-ID", new EqualToPattern(correlationID))
                 .withBasicAuth("user", "secret")
                 .willReturn(aResponse()
