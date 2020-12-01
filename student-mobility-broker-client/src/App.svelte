@@ -4,8 +4,10 @@
   import Cookies from "js-cookie";
   import NotFound from "./routes/NotFound.svelte";
   import Offering from "./routes/Offering.svelte";
+  import PlayGround from "./routes/PlayGround.svelte";
   import {broker, features, selectedOffering} from "./api";
   import {offering} from "./stores/offering";
+  import {config} from "./stores/config";
   import I18n from "i18n-js";
   import {getParameterByName} from "./utils/queryParameters";
 
@@ -30,8 +32,9 @@
 
   onMount(() => {
     features().then(json => {
+      $config = json;
       const step = getParameterByName("step");
-      if (json.local && !step) {
+      if (json.local && !step && window.location.pathname.indexOf("play") < 0) {
         //Mock the call from catalog to broker to ensure there is a selected offering
         broker("utrecht.nl", "eindhoven.nl", "1");
       } else {
@@ -97,6 +100,9 @@
     <div class="broker">
         <Router url="{url}">
             <Route path="/" component={Offering}/>
+            {#if $config.allowPlayground}
+                <Route path="/play" component={PlayGround}/>
+            {/if}
             <Route component={NotFound}/>
         </Router>
     </div>

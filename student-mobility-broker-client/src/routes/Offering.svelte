@@ -53,7 +53,7 @@
 
   onMount(() => {
     step = getParameterByName("step");
-    if (step === "enroll" || true) {
+    if (step === "enroll") {
       const name = getParameterByName("name");
       showScooter = true;
       title = I18n.t("offering.wait", {name});

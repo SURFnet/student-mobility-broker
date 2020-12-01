@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -37,13 +38,30 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         startRegistration(sessionFilter);
     }
 
+    @Test
+    public void playground() {
+        Map<String, Object> body = new HashMap<>();
+        body.put("code", 400);
+        body.put("message", "Something bad happened");
+        Map<String, Object> result = given()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .body(body)
+                .when()
+                .post("/api/start")
+                .as(new TypeRef<Map<String, Object>>() {
+                });
+        assertEquals(result.keySet(), body.keySet());
+    }
+
     private void featureToggles() {
         given()
                 .accept(ContentType.JSON)
                 .when()
                 .get("/api/features")
                 .then()
-                .body("local", equalTo(true));
+                .body("local", equalTo(true))
+                .body("allowPlayground", equalTo(true));
 
     }
 
