@@ -18,6 +18,10 @@
   import pin from "../icons/icons-studmob/pin.svg";
   import ects from "../icons/icons-studmob/school-book-trophy.svg";
   import lang from "../icons/icons-studmob/messages-bubble-square-text.svg";
+  import highFive from "../icons/icons-studmob/undraw_High_five.svg";
+  import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg";
+  import lightBulb from "../icons/icons-studmob/Lightbulb.svg";
+  import questions from "../icons/icons-studmob/undraw_faq_rjoy.svg";
   import {offering} from "../stores/offering";
   import {LottiePlayer} from '@lottiefiles/svelte-lottie-player';
   import scooter from "../lotties/lf20_Fyn2dD.json";
@@ -27,21 +31,37 @@
   import Button from "../components/Button.svelte";
   import hand from "../icons/icons-studmob/noun_Up hand drawn arrow_1563367.svg";
 
+  let title = I18n.t("offering.approve");
+  let activity;
   let step = "approve";
   let showScooter = false;
   let finishedRegistration = false;
   let result;
   let hasErrors = false;
+  let start = false;
 
   const formatOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
 
+  const changeActivity = count => () => {
+    activity = I18n.t(`offering.progress.${count}`, {abbreviation: $offering.homeInstitution.abbreviation});
+    if (count < 4) {
+      setTimeout(changeActivity(++count), 1500);
+    } else {
+      showScooter = false;
+    }
+  }
+
   onMount(() => {
     step = getParameterByName("step");
-    if (step === "enroll") {
+    if (step === "enroll" || true) {
+      const name = getParameterByName("name");
       showScooter = true;
+      title = I18n.t("offering.wait", {name});
+      activity = I18n.t("offering.progress.1", {abbreviation: $offering.homeInstitution.abbreviation});
+      setTimeout(changeActivity(2), 1500);
+      setTimeout(() => start = true, 75);
       startRegistration(getParameterByName("correlationID")).then(res => {
         result = res;
-        showScooter = false;
         hasErrors = res.code !== 200;
         finishedRegistration = !hasErrors && !result.redirect;
       })
@@ -204,10 +224,12 @@
 
           span {
             margin: auto;
+
             :global(svg) {
               width: 45px;
             }
           }
+
           span.eduID {
             :global(svg) {
               width: 60px;
@@ -317,10 +339,10 @@
     display: flex;
 
     .course {
-      width: 60%;
+      width: 100%;
       padding: 25px;
-      border: 2px solid var(--color-primary-grey);
       margin-right: 15px;
+      border: 2px solid var(--color-primary-grey);
 
       table {
         width: 100%;
@@ -369,8 +391,7 @@
     }
 
     .status {
-      width: 40%;
-      margin: 15px 0 0 15px;
+      margin: 15px 0 0 30px;
       display: flex;
       flex-direction: column;
 
@@ -386,6 +407,34 @@
         }
 
         &.personal {
+          font-style: italic;
+        }
+      }
+
+      .scooter {
+        display: flex;
+        margin-left: 40px;
+        flex-direction: column;
+        align-items: center;
+        align-content: center;
+
+        span.progress {
+          padding: 1em 2em;
+          text-align: center;
+          color: white;
+          background: red;
+          background: linear-gradient(to left, var(--color-primary-grey) 50%, var(--color-primary-blue) 50%) right;
+          background-size: 200%;
+          transition: 6.0s linear;
+
+          &.start {
+            background-position: left;
+          }
+        }
+
+        span.activity {
+          margin-top: 10px;
+          font-size: 15px;
           font-style: italic;
         }
       }
@@ -406,7 +455,7 @@
                 </div>
             {/each}
         </div>
-        <h2>{I18n.t("offering.approve")}</h2>
+        <h2>{title}</h2>
         <div class="details">
             <div class="course">
                 <table>
@@ -450,7 +499,23 @@
                 </table>
             </div>
             <div class="status">
-                {#if step === "approve"}
+                {#if showScooter}
+                    <div class="scooter">
+                        <LottiePlayer
+                                src={scooter}
+                                autoplay="{true}"
+                                loop="{true}"
+                                controls="{false}"
+                                renderer="svg"
+                                background="transparent"
+                                height="{250}"
+                                width="{250}"
+                                controlsLayout={null}
+                        />
+                        <span class:start class="progress">{I18n.t("offering.enrolling")}</span>
+                        <span class="activity">{activity}</span>
+                    </div>
+                {:else if step === "approve"}
                     <span class="label">{I18n.t("offering.homeInstitution")}</span>
                     <span class="value last">{$offering.homeInstitution.name}</span>
 
@@ -459,24 +524,21 @@
                     <span class="value personal last">{I18n.t("offering.subPersonalGrant", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
                     <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
                             onClick={startAuthentication}/>
-                {:else if showScooter}
-                    <LottiePlayer
-                            src={scooter}
-                            autoplay="{true}"
-                            loop="{true}"
-                            controls="{false}"
-                            renderer="svg"
-                            background="transparent"
-                            height="{600}"
-                            width="{600}"
-                            controlsLayout={null}
-                    />
                 {:else if hasErrors}
-                    <span>ERRORS</span>
+                    {@html moody}
+                    <h3>{I18n.t("offering.next")}</h3>
+                    <span class="final-action">{@html lightBulb}{I18n.t("offering.receiveMail")}</span>
                 {:else if result && result.redirect}
-                    <span>REDIRECT</span>
+                    {@html questions}
+                    <h3>{I18n.t("offering.almost")}</h3>
+                    <p>{I18n.t("offering.questions")}</p>
+                    <span>{I18n.t("offering.questionsDetail")}</span>
+                    <span>{I18n.t("offering.questionsWhere")}</span>
+                    <Button onClick={() => window.location.href = result.redirect} label={I18n.t("offering.goToLMS")} />
                 {:else if finishedRegistration}
-                    <span>SUCCESS</span>
+                    {@html highFive}
+                    <h3>{I18n.t("offering.next")}</h3>
+                    <span class="final-action">{@html lightBulb}{I18n.t("offering.receiveMail")}</span>
                 {/if}
             </div>
         </div>

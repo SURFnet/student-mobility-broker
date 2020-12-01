@@ -69,7 +69,7 @@
     position: relative;
     text-indent: -9999em;
     border: 1.1em solid white;
-    border-top-color: var(--color-primary-green);
+    border-top-color: var(--color-primary-blue);
     border-bottom-color: var(--color-primary-blue);
     transform: translateZ(0);
     animation: load8 1.5s infinite linear;
