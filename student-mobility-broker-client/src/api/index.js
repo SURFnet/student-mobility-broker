@@ -37,8 +37,8 @@ export function selectedOffering() {
   return fetchJson("/api/offering");
 }
 
-export function startRegistration(correlationID) {
-  return fetchJson("/api/start", {method: "POST", body: JSON.stringify({correlationID})});
+export function startRegistration(body) {
+  return fetchJson("/api/start", {method: "POST", body: JSON.stringify(body)});
 }
 
 

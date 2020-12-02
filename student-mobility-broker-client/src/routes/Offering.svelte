@@ -23,6 +23,8 @@
   import lightBulb from "../icons/icons-studmob/Lightbulb.svg";
   import questions from "../icons/icons-studmob/undraw_faq_rjoy.svg";
   import {offering} from "../stores/offering";
+  import {config} from "../stores/config";
+  import {playground} from "../stores/playground";
   import {LottiePlayer} from '@lottiefiles/svelte-lottie-player';
   import scooter from "../lotties/lf20_Fyn2dD.json";
   import {authentication, startRegistration} from "../api";
@@ -30,6 +32,7 @@
   import {getParameterByName} from "../utils/queryParameters";
   import Button from "../components/Button.svelte";
   import hand from "../icons/icons-studmob/noun_Up hand drawn arrow_1563367.svg";
+  import {navigate} from "svelte-routing";
 
   let title = I18n.t("offering.approve");
   let activity;
@@ -42,6 +45,7 @@
   let finished = false;
 
   const formatOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+  const timeoutStep = 1000;
 
   const changeTitle = () => {
     if (finishedRegistration) {
@@ -56,7 +60,7 @@
   const changeActivity = count => () => {
     activity = I18n.t(`offering.progress.${count}`, {abbreviation: $offering.homeInstitution.abbreviation});
     if (count < 4) {
-      setTimeout(changeActivity(++count), 1500);
+      setTimeout(changeActivity(++count), timeoutStep);
     } else {
       if (result) {
         showScooter = false;
@@ -74,18 +78,38 @@
       showScooter = true;
       title = I18n.t("offering.wait", {name});
       activity = I18n.t("offering.progress.1", {abbreviation: $offering.homeInstitution.abbreviation});
-      setTimeout(changeActivity(2), 1500);
+      setTimeout(changeActivity(1), timeoutStep);
       setTimeout(() => start = true, 75);
-      //TODO see if there is something in the playstore to send along with the correlation ID
-      startRegistration(getParameterByName("correlationID")).then(res => {
-        result = res;
-        hasErrors = res.code !== 200;
-        finishedRegistration = !hasErrors && !result.redirect;
-        if (finished) {
-          showScooter = false;
-          changeTitle();
-        }
-      })
+
+      const correlationID = getParameterByName("correlationID");
+      const body = $playground.active ?
+        {
+          code: $playground.code,
+          redirect: $playground.redirect,
+          message: $playground.message,
+          correlationID
+        } : {correlationID}
+
+      startRegistration(body)
+        .then(res => {
+          result = res;
+          result.code = parseInt(result.code, 10);
+          hasErrors = result.code !== 200;
+          finishedRegistration = !hasErrors && !result.redirect;
+          if (finished) {
+            showScooter = false;
+            changeTitle();
+          }
+        })
+        .catch(e => {
+          result = {code: 500, message: e.message};
+          hasErrors = true;
+          finishedRegistration = false;
+          if (finished) {
+            showScooter = false;
+            changeTitle();
+          }
+        });
     }
   });
 
@@ -96,11 +120,19 @@
       $offering.authenticationActionUrl);
   }
 
+  const gotoPlay = () => {
+    if ($config.allowPlayground) {
+      navigate("/play");
+    }
+
+  }
+
   $: icons = [
     {
       name: I18n.t("offering.wizard.course"),
       icon: check,
-      className: "done"
+      className: "done",
+      action: gotoPlay
     },
     {
       name: I18n.t("offering.wizard.transfer"),
@@ -247,12 +279,14 @@
 
             :global(svg) {
               width: 45px;
+              height: auto;
             }
           }
 
           span.eduID {
             :global(svg) {
               width: 60px;
+              height: auto;
             }
           }
         }
@@ -277,7 +311,7 @@
 
       p {
         font-weight: bold;
-        margin-top: 10px;
+        margin: 10px 0 4px 0;
       }
 
       &.done, &.current {
@@ -300,6 +334,7 @@
 
         :global(svg) {
           width: 45px;
+          height: auto;
         }
       }
 
@@ -388,6 +423,7 @@
 
           :global(svg) {
             width: 28px;
+            height: auto;
           }
         }
 
@@ -414,8 +450,8 @@
       margin-left: auto;
       display: flex;
       flex-direction: column;
-      min-width: 45%;
-      max-width: 45%;
+      min-width: 40%;
+      max-width: 40%;
 
       span {
         margin-bottom: 10px;
@@ -436,11 +472,9 @@
       .result {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        align-content: center;
 
         h3 {
-            text-align: center;
+          margin-bottom: 20px;
         }
 
         span.progress {
@@ -449,7 +483,7 @@
           color: white;
           background: linear-gradient(to left, var(--color-primary-grey) 50%, var(--color-primary-blue) 50%) right;
           background-size: 200%;
-          transition: 6.0s linear;
+          transition: 4.0s linear;
 
           &.start {
             background-position: left;
@@ -466,23 +500,41 @@
         }
 
         div.hero {
+          margin-bottom: 20px;
+
           :global(svg) {
-            max-width: 300px;
-            max-height: 300px;
+            width: 275px;
+            height: auto;
           }
+
         }
 
         div.final-action {
           display: flex;
-          margin-top: 20px;
 
           :global(svg) {
-            margin-right: 15px;
-            width: 60px;
+            margin-right: 12px;
+            width: 66px;
+            height: auto;
+          }
 
+          span.error-message {
+            line-height: 22px;
           }
         }
 
+        div.redirect {
+          display: flex;
+          flex-direction: column;
+
+          p {
+            font-weight: bold;
+          }
+
+          span {
+            margin-bottom: 25px;
+          }
+        }
       }
 
       .no-results {
@@ -499,8 +551,8 @@
     <div class="offering">
         <h2>{I18n.t("offering.title", {abbreviation: $offering.homeInstitution.abbreviation})}</h2>
         <div class="icons">
-            {#each icons as {name, icon, className}, i}
-                <div class={`icon-container ${className}`}>
+            {#each icons as {name, icon, className, action}, i}
+                <div class={`icon-container ${className}`} on:click={() => action & action()}>
                     <div class={`icon ${className} ${i === (icons.length - 1) ? "last" : ""} ${i === 0 ? "first" : ""}`}>
                         <span>{@html icon}</span>
                     </div>
@@ -580,29 +632,35 @@
                                 onClick={startAuthentication}/>
                     </div>
                 {:else if hasErrors}
-                    <div class="result error">
+                    <div class="result">
                         <div class="hero">
                             {@html moody}
                         </div>
-                        <h3>{I18n.t("offering.errorTitle")}</h3>
+                        <h3>{I18n.t("offering.errorTitle", {abbreviation: $offering.guestInstitution.abbreviation})}</h3>
                         <div class="final-action">
-                            <span>{result.message}</span>
+                            {#if result.message}
+                                <span class="error-message">{result.message}</span>
+                            {:else}
+                                <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
+                            {/if}
                         </div>
                     </div>
                 {:else if result && result.redirect}
-                    <div class="result redirect">
+                    <div class="result">
                         <div class="hero">
                             {@html questions}
                         </div>
                         <h3>{I18n.t("offering.almost")}</h3>
-                        <p>{I18n.t("offering.questions")}</p>
-                        <span>{I18n.t("offering.questionsDetail")}</span>
-                        <span>{I18n.t("offering.questionsWhere")}</span>
-                        <Button onClick={() => window.location.href = result.redirect}
-                                label={I18n.t("offering.goToLMS")}/>
+                        <div class="redirect">
+                            <p>{I18n.t("offering.questions")}</p>
+                            <span>{I18n.t("offering.questionsDetail")}</span>
+                            <span>{I18n.t("offering.questionsWhere", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                            <Button onClick={() => window.location.href = result.redirect}
+                                    label={I18n.t("offering.goToLMS")}/>
+                        </div>
                     </div>
                 {:else if finishedRegistration}
-                    <div class="result success">
+                    <div class="result">
                         <div class="hero">
                             {@html highFive}
                         </div>

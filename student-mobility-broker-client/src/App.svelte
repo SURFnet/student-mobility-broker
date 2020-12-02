@@ -1,5 +1,5 @@
 <script>
-  import {Route, Router} from "svelte-routing";
+  import {navigate, Route, Router} from "svelte-routing";
   import {onMount} from "svelte";
   import Cookies from "js-cookie";
   import NotFound from "./routes/NotFound.svelte";
@@ -31,13 +31,13 @@
     I18n.locale = "en";
   }
 
+
   onMount(() => {
     features().then(json => {
       $config = json;
       const step = getParameterByName("step");
       const playGround = window.location.pathname.indexOf("play") > -1;
-      //TODO refactor, check if playgroundEnabled from config
-      if (json.local && !step && !playGround) {
+      if (json.local && !step && !playGround && json.allowPlayground) {
         //Mock the call from catalog to broker to ensure there is a selected offering
         broker("utrecht.nl", "eindhoven.nl", "1");
       } else if (!playGround) {
@@ -45,7 +45,7 @@
           $offering = json;
           loaded = true;
         });
-      } else if (playGround) {
+      } else if (playGround && json.allowPlayground) {
         $offering = data;
         loaded = true;
       } else {
@@ -63,6 +63,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
   }
 
   .loader:empty,
