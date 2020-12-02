@@ -3,7 +3,8 @@
   abbreviation: UU
   courseEndpoint: http://localhost:8076/offerings
   personsEndpoint: http://localhost:8076/persons/me
-  registrationEndpoint: http://localhost:8092/api/enrollment
+  authenticationActionUrl:  http://localhost:8092/api/enrollment
+  registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
   registrationPassword: secret
   logoURI: https://static.surfconext.nl/logos/idp/uu.png
@@ -13,7 +14,8 @@
   abbreviation: TU/e
   courseEndpoint: http://localhost:8076/offerings
   personsEndpoint: http://localhost:8076/persons/me
-  registrationEndpoint: http://localhost:8092/api/enrollment
+  authenticationActionUrl:  http://localhost:8092/api/enrollment
+  registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
   registrationPassword: secret
   logoURI: https://static.surfconext.nl/logos/idp/tue.png
@@ -23,7 +25,8 @@
   abbreviation: WUR
   courseEndpoint: http://localhost:8076/offerings
   personsEndpoint: http://localhost:8076/persons/me
-  registrationEndpoint: http://localhost:8092/api/enrollment
+  authenticationActionUrl:  http://localhost:8092/api/enrollment
+  registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
   registrationPassword: secret
   logoURI: https://static.surfconext.nl/logos/idp/wur.png

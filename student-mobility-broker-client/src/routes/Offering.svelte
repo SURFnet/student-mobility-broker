@@ -39,15 +39,31 @@
   let result;
   let hasErrors = false;
   let start = false;
+  let finished = false;
 
   const formatOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+
+  const changeTitle = () => {
+    if (finishedRegistration) {
+      title = I18n.t("offering.done");
+    } else if (hasErrors) {
+      title = I18n.t("offering.error", {abbreviation: $offering.guestInstitution.abbreviation});
+    } else {
+      title = I18n.t("offering.almost");
+    }
+  }
 
   const changeActivity = count => () => {
     activity = I18n.t(`offering.progress.${count}`, {abbreviation: $offering.homeInstitution.abbreviation});
     if (count < 4) {
       setTimeout(changeActivity(++count), 1500);
     } else {
-      showScooter = false;
+      if (result) {
+        showScooter = false;
+        changeTitle();
+      } else {
+        finished = true;
+      }
     }
   }
 
@@ -65,6 +81,10 @@
         result = res;
         hasErrors = res.code !== 200;
         finishedRegistration = !hasErrors && !result.redirect;
+        if (finished) {
+          showScooter = false;
+          changeTitle();
+        }
       })
     }
   });
@@ -166,7 +186,6 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      flex-direction: column;
       @media (max-width: 720px) {
         padding: 0 20px;
       }
@@ -207,7 +226,7 @@
         background-color: white;
         padding: 10px 10px 10px 66px;
         border-radius: 4px;
-        margin-bottom: 25px;
+        margin-bottom: 30px;
 
         &:last-child {
           margin-bottom: 0;
@@ -340,9 +359,9 @@
     display: flex;
 
     .course {
-      width: 100%;
+      min-width: 50%;
+      max-width: 50%;
       padding: 25px;
-      margin-right: 15px;
       border: 2px solid var(--color-primary-grey);
 
       table {
@@ -365,7 +384,7 @@
         }
 
         td.icon {
-          padding: 10px 0 0px 0;
+          padding: 10px 0 0 0;
 
           :global(svg) {
             width: 28px;
@@ -392,9 +411,11 @@
     }
 
     .status {
-      margin: 15px 0 0 30px;
+      margin-left: auto;
       display: flex;
       flex-direction: column;
+      min-width: 45%;
+      max-width: 45%;
 
       span {
         margin-bottom: 10px;
@@ -412,18 +433,20 @@
         }
       }
 
-      .scooter {
+      .result {
         display: flex;
-        margin-left: 40px;
         flex-direction: column;
         align-items: center;
         align-content: center;
+
+        h3 {
+            text-align: center;
+        }
 
         span.progress {
           padding: 1em 2em;
           text-align: center;
           color: white;
-          background: red;
           background: linear-gradient(to left, var(--color-primary-grey) 50%, var(--color-primary-blue) 50%) right;
           background-size: 200%;
           transition: 6.0s linear;
@@ -437,8 +460,37 @@
           margin-top: 10px;
           font-size: 15px;
           font-style: italic;
+          max-width: 240px;
+          word-break: break-word;
+          text-align: center;
         }
+
+        div.hero {
+          :global(svg) {
+            max-width: 300px;
+            max-height: 300px;
+          }
+        }
+
+        div.final-action {
+          display: flex;
+          margin-top: 20px;
+
+          :global(svg) {
+            margin-right: 15px;
+            width: 60px;
+
+          }
+        }
+
       }
+
+      .no-results {
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column;
+      }
+
     }
   }
 
@@ -501,7 +553,7 @@
             </div>
             <div class="status">
                 {#if showScooter}
-                    <div class="scooter">
+                    <div class="result">
                         <LottiePlayer
                                 src={scooter}
                                 autoplay="{true}"
@@ -517,29 +569,49 @@
                         <span class="activity">{activity}</span>
                     </div>
                 {:else if step === "approve"}
-                    <span class="label">{I18n.t("offering.homeInstitution")}</span>
-                    <span class="value last">{$offering.homeInstitution.name}</span>
+                    <div class="no-results">
+                        <span class="label">{I18n.t("offering.homeInstitution")}</span>
+                        <span class="value last">{$offering.homeInstitution.name}</span>
 
-                    <span class="label">{I18n.t("offering.personal")}</span>
-                    <span class="value personal">{I18n.t("offering.subPersonal", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
-                    <span class="value personal last">{I18n.t("offering.subPersonalGrant", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
-                    <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
-                            onClick={startAuthentication}/>
+                        <span class="label">{I18n.t("offering.personal")}</span>
+                        <span class="value personal">{I18n.t("offering.subPersonal", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                        <span class="value personal last">{I18n.t("offering.subPersonalGrant", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                        <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
+                                onClick={startAuthentication}/>
+                    </div>
                 {:else if hasErrors}
-                    {@html moody}
-                    <h3>{I18n.t("offering.next")}</h3>
-                    <span class="final-action">{@html lightBulb}{I18n.t("offering.receiveMail")}</span>
+                    <div class="result error">
+                        <div class="hero">
+                            {@html moody}
+                        </div>
+                        <h3>{I18n.t("offering.errorTitle")}</h3>
+                        <div class="final-action">
+                            <span>{result.message}</span>
+                        </div>
+                    </div>
                 {:else if result && result.redirect}
-                    {@html questions}
-                    <h3>{I18n.t("offering.almost")}</h3>
-                    <p>{I18n.t("offering.questions")}</p>
-                    <span>{I18n.t("offering.questionsDetail")}</span>
-                    <span>{I18n.t("offering.questionsWhere")}</span>
-                    <Button onClick={() => window.location.href = result.redirect} label={I18n.t("offering.goToLMS")} />
+                    <div class="result redirect">
+                        <div class="hero">
+                            {@html questions}
+                        </div>
+                        <h3>{I18n.t("offering.almost")}</h3>
+                        <p>{I18n.t("offering.questions")}</p>
+                        <span>{I18n.t("offering.questionsDetail")}</span>
+                        <span>{I18n.t("offering.questionsWhere")}</span>
+                        <Button onClick={() => window.location.href = result.redirect}
+                                label={I18n.t("offering.goToLMS")}/>
+                    </div>
                 {:else if finishedRegistration}
-                    {@html highFive}
-                    <h3>{I18n.t("offering.next")}</h3>
-                    <span class="final-action">{@html lightBulb}{I18n.t("offering.receiveMail")}</span>
+                    <div class="result success">
+                        <div class="hero">
+                            {@html highFive}
+                        </div>
+                        <h3>{I18n.t("offering.next")}</h3>
+                        <div class="final-action">
+                            {@html lightBulb}
+                            <span>{I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                        </div>
+                    </div>
                 {/if}
             </div>
         </div>

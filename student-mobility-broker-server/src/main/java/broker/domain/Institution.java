@@ -19,6 +19,9 @@ public class Institution implements Serializable {
     //The abbreviation of an Institution
     private String abbreviation;
 
+    //Not secured endpoint where the authentication will start
+    private URI authenticationActionUrl;
+
     //Not secured endpoint where course information can be retrieved
     private URI courseEndpoint;
 

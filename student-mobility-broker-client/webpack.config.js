@@ -89,7 +89,6 @@ module.exports = {
     devServer: {
         port: 3003,
         proxy: {
-            '/api/enrollment': 'http://localhost:8092',
             '/api': 'http://localhost:8091'
         },
         historyApiFallback: true
