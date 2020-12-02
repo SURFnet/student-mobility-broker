@@ -53,9 +53,13 @@
     p {
       font-weight: bold;
       margin-top: 25px;
-      margin-bottom: 5px;
+      margin-bottom: 2px;
     }
 
+    span {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
 
     input {
       border: 1px solid #d8dbdf;
@@ -110,13 +114,16 @@
         <img src={$offering.guestInstitution.logoURI} alt=""/>
     </div>
     <p>Response code</p>
+    <span>It's either good or bad</span>
     <Select items={responses} isSearchable={false} showIndicator={true} isClearable={false}
             selectedValue={response} on:select={handleSelect}/>
 
-    <p>Redirect - in case of 200 response</p>
+    <p>Redirect</p>
+    <span>Optional and only for a 200 response</span>
     <input bind:value={redirect} disabled={response.value === 500} on:keyup={e=>e.key==="Enter" && start()}/>
 
-    <p>Message - in case of 500 response</p>
+    <p>Message</p>
+    <span>For a 500 response</span>
     <input bind:value={message} disabled={response.value !== 500} on:keyup={e=>e.key==="Enter" && start()}/>
     <div class="play" on:click={start}>
         {@html pressPlay}
