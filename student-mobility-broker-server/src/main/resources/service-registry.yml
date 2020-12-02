@@ -3,7 +3,7 @@
   abbreviation: UU
   courseEndpoint: http://localhost:8076/offerings
   personsEndpoint: http://localhost:8076/persons/me
-  authenticationActionUrl:  http://localhost:8092/api/enrollment
+  authenticationEndpoint:  http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
   registrationPassword: secret
@@ -14,7 +14,7 @@
   abbreviation: TU/e
   courseEndpoint: http://localhost:8076/offerings
   personsEndpoint: http://localhost:8076/persons/me
-  authenticationActionUrl:  http://localhost:8092/api/enrollment
+  authenticationEndpoint:  http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
   registrationPassword: secret
@@ -25,7 +25,7 @@
   abbreviation: WUR
   courseEndpoint: http://localhost:8076/offerings
   personsEndpoint: http://localhost:8076/persons/me
-  authenticationActionUrl:  http://localhost:8092/api/enrollment
+  authenticationEndpoint:  http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
   registrationPassword: secret
