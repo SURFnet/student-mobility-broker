@@ -21,6 +21,7 @@ I18n.translations.nl = {
     done: "Done for now, we'll be in touch",
     error: "Something went wrong...",
     errorTitle: "Provided details from {{abbreviation}}",
+    noResultErrorMessage: "No details were disclosed. Please contact <a href=\"mailto:student.mobiliteit@surf.nl\">student.mobiliteit@surf.nl</a>",
     almost: "Almost there, one more thing!",
     questions: "There are some extra questions",
     questionsDetail: "To finalise your enrollment for this specific course, some extra questions need to be answered",
