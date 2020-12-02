@@ -30,8 +30,8 @@
 <style lang="scss">
 
   .container {
-    max-width: 620px;
-    margin: 20px auto 40px auto;
+    max-width: 720px;
+    margin: 40px auto;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -56,7 +56,7 @@
       margin-bottom: 2px;
     }
 
-    span {
+    span.info {
       font-size: 14px;
       margin-bottom: 5px;
     }
@@ -114,16 +114,16 @@
         <img src={$offering.guestInstitution.logoURI} alt=""/>
     </div>
     <p>Response code</p>
-    <span>It's either good or bad</span>
+    <span class="info">It's either good or bad</span>
     <Select items={responses} isSearchable={false} showIndicator={true} isClearable={false}
             selectedValue={response} on:select={handleSelect}/>
 
     <p>Redirect</p>
-    <span>Optional and only for a 200 response</span>
+    <span class="info">Optional and only for a 200 response</span>
     <input bind:value={redirect} disabled={response.value === 500} on:keyup={e=>e.key==="Enter" && start()}/>
 
     <p>Message</p>
-    <span>For a 500 response</span>
+    <span class="info">For a 500 response</span>
     <input bind:value={message} disabled={response.value !== 500} on:keyup={e=>e.key==="Enter" && start()}/>
     <div class="play" on:click={start}>
         {@html pressPlay}
