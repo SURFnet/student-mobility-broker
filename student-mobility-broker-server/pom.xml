@@ -13,7 +13,7 @@
 	<artifactId>student-mobility-broker-server</artifactId>
 	<packaging>jar</packaging>
 	<name>student-mobility-broker-server</name>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 
 	<properties>
 		<java.version>1.8</java.version>
