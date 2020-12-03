@@ -10,7 +10,6 @@
   import {config} from "./stores/config";
   import I18n from "i18n-js";
   import {getParameterByName} from "./utils/queryParameters";
-  import data from "./data/offering.json";
 
   export let url = "";
   let loaded = false;
@@ -37,7 +36,7 @@
       $config = json;
       const step = getParameterByName("step");
       const playGround = window.location.pathname.indexOf("play") > -1;
-      if (json.local && !step && !playGround && json.allowPlayground) {
+      if (!step && !playGround && json.allowPlayground) {
         //Mock the call from catalog to broker to ensure there is a selected offering
         broker("utrecht.nl", "eindhoven.nl", "1", $config.startBrokerEndpoint);
       } else if (!playGround) {
@@ -45,9 +44,6 @@
           $offering = json;
           loaded = true;
         });
-      } else if (playGround && json.allowPlayground) {
-        $offering = data;
-        loaded = true;
       } else {
         loaded = true;
       }
