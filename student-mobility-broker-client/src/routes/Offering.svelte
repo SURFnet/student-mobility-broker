@@ -8,12 +8,6 @@
   import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg";
   import eduID from "../icons/logo_eduID.svg";
   import relax from "../icons/icons-studmob/cocktail-glass.svg";
-  import calendar from "../icons/icons-studmob/calendar-1.svg";
-  import places from "../icons/icons-studmob/human-resources-offer-employee.svg";
-  import launches from "../icons/icons-studmob/startup-launch.svg";
-  import pin from "../icons/icons-studmob/pin.svg";
-  import ects from "../icons/icons-studmob/school-book-trophy.svg";
-  import lang from "../icons/icons-studmob/messages-bubble-square-text.svg";
   import highFive from "../icons/icons-studmob/undraw_High_five.svg";
   import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg";
   import lightBulb from "../icons/icons-studmob/Lightbulb.svg";
@@ -400,7 +394,7 @@
         </div>
         <h2>{title}</h2>
         <div class="details">
-            <Course />
+            <Course/>
             <div class="status">
                 {#if step === STEPS.enroll}
                     <div class="result">
