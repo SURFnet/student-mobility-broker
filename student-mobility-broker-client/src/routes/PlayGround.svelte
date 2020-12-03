@@ -5,7 +5,6 @@
   import {navigate} from "svelte-routing";
   import Select from 'svelte-select';
   import {onMount} from "svelte";
-  import data from "../data/offering.json";
 
   const responses = [
     {value: 200, label: "200 - All is good"},
@@ -17,7 +16,6 @@
   let response = responses[0];
 
   onMount(() => {
-    $offering = data;
     playground.reset();
   });
 

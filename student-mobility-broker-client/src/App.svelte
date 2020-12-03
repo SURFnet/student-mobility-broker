@@ -10,6 +10,7 @@
   import {config} from "./stores/config";
   import I18n from "i18n-js";
   import {getParameterByName} from "./utils/queryParameters";
+  import data from "./data/offering.json";
 
   export let url = "";
   let loaded = false;
@@ -44,6 +45,9 @@
           $offering = json;
           loaded = true;
         });
+      } else if (playGround && json.allowPlayground) {
+        $offering = data;
+        loaded = true;
       } else {
         loaded = true;
       }
