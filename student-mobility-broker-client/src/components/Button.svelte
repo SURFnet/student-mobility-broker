@@ -29,6 +29,20 @@
       align-items: center;
     }
 
+    @media (max-width: 780px) {
+      padding: 0 20px;
+      width: 175px;
+
+      &.icon {
+        padding: 10px 20px;
+
+        span.html-icon {
+          display: none;
+        }
+      }
+
+    }
+
     &:hover {
       background-color: var(--color-primary-blue);
       color: whitesmoke;
@@ -51,7 +65,7 @@
    on:click|preventDefault|stopPropagation={() => !disabled && onClick()}
    on:keydown={handleLinkClick}>
     {#if icon}
-        <span>{@html icon}</span>
+        <span class="html-icon">{@html icon}</span>
     {/if}
     <span>{label}</span>
 </a>

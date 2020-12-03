@@ -33,6 +33,13 @@
       flex-direction: column;
       position: relative;
 
+      @media (max-width: 780px) {
+        margin-left: 50px;
+        span.hand {
+          display: none;
+        }
+      }
+
       span.hand {
         position: absolute;
         right: -60px;
@@ -70,6 +77,10 @@
         padding: 10px 10px 10px 66px;
         border-radius: 4px;
         margin-bottom: 30px;
+
+        @media (max-width: 780px) {
+          max-width: 420px;
+        }
 
         &:last-child {
           margin-bottom: 0;

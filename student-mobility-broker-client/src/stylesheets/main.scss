@@ -59,7 +59,7 @@ h3 {
   font-weight: bold;
 }
 
-@media (max-width: 580px) {
+@media (max-width: 780px) {
   table, thead, tbody, th, td, tr {
     display: block;
   }
@@ -70,12 +70,8 @@ h3 {
 
   td {
     position: relative;
-    padding: 20px;
+    padding: 2px;
     width: 100% !important;
   }
 
-  .options a:not(:first-child) {
-    margin-left: 10px !important;
-    margin-top: 25px !important;
-  }
 }

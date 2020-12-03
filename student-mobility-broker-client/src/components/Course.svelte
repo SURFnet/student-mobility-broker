@@ -54,6 +54,12 @@
         padding-left: 30px;
       }
 
+      @media (max-width: 780px) {
+        td.value {
+          padding-left: 0;
+        }
+      }
+
       &.values {
         margin: 10px 0 20px 0;
 

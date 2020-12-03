@@ -68,7 +68,6 @@
 
   const invariantState = (aResult, isFinished) => {
     result = aResult || result;
-    console.log("invariantState: result=" + JSON.stringify(result) + "  isFinished:" + isFinished);
     if (result && isFinished) {
       step = STEPS.finished;
       if (result.redirect) {
@@ -131,43 +130,16 @@
     }
   ];
 
+  $: statuses = [
+    "transparent",
+    "done",
+    pendingApproval(step) ? "todo" : "done",
+    registrationSuccessful(result, finished) ? "done" : "todo"
+  ];
+
 </script>
 
 <style lang="scss">
-
-  @mixin line {
-    height: 12px;
-    width: 100%;
-    top: 38px;
-    position: absolute;
-    content: '';
-    @media (max-width: 640px) {
-      display: none;
-    }
-  }
-
-  @mixin line-before {
-    @include line;
-    right: 84px;
-  }
-
-  @mixin line-after {
-    @include line;
-    right: -86px;
-  }
-
-  @mixin line-current-before {
-    @include line;
-    top: 35px;
-    right: 84px;
-  }
-
-  @mixin line-current-after {
-    @include line;
-    top: 35px;
-    right: -86px;
-    border-left: 1px solid var(--color-primary-blue)
-  }
 
   .container {
     max-width: 720px;
@@ -176,23 +148,28 @@
     display: flex;
     flex-direction: column;
 
-    @media (max-width: 720px) {
+    @media (max-width: 780px) {
       padding: 0 20px;
     }
   }
 
   h2 {
-    margin: 40px 0;
+    margin: 30px 0;
   }
 
   div.icons {
     display: flex;
     justify-content: space-between;
+    position: absolute;
+    top: -39px;
+    width: 100%;
 
     div.icon-container {
       display: flex;
       flex-direction: column;
       align-items: center;
+      z-index: 2;
+      background-color: transparent;
 
       p {
         font-weight: bold;
@@ -228,6 +205,7 @@
       }
 
       &.current {
+        background-color: white;
         border: 3px solid var(--color-primary-blue);
         color: var(--color-primary-blue);
         fill: var(--color-primary-blue);
@@ -237,42 +215,35 @@
         background-color: var(--color-secondary-blue);
       }
 
-      &.done:before {
-        @include line-before;
-        background-color: var(--color-primary-blue);
-      }
-
-      &.current:before {
-        @include line-current-before;
-        background-color: var(--color-primary-blue);
-      }
-
-      &.todo:before {
-        @include line-before;
-        background-color: var(--color-secondary-blue);
-      }
-
-      &.done:after {
-        @include line-after;
-        background-color: var(--color-primary-blue);
-      }
-
-      &.current:after {
-        @include line-current-after;
-        background-color: var(--color-secondary-blue);
-      }
-
-      &.todo:after {
-        @include line-after;
-        background-color: var(--color-secondary-blue);
-      }
-
-      &.first:before, &.last:after {
-        display: none;
-      }
-
     }
 
+  }
+
+  div.lines {
+    display: flex;
+    height: 12px;
+    width: 100%;
+    padding: 0 10px;
+    position: relative;
+    background-color: transparent;
+    margin: 70px 0 95px 0;
+
+    div.line {
+      height: 12px;
+      width: calc(100% / 3 - 2px);
+
+      &.transparent {
+        width: 6px;
+      }
+
+      &.todo {
+        background-color: var(--color-secondary-blue);
+      }
+
+      &.done {
+        background-color: var(--color-primary-blue);
+      }
+    }
   }
 
   .details {
@@ -309,6 +280,14 @@
           margin-bottom: 20px;
         }
 
+        @media (max-width: 780px) {
+          :global(div.lottie-player) {
+            width: 175px;
+            height: auto;
+          }
+
+        }
+
         span.progress {
           padding: 1em 2em;
           text-align: center;
@@ -337,6 +316,10 @@
           :global(svg) {
             width: 275px;
             height: auto;
+
+            @media (max-width: 780px) {
+              width: 175px;
+            }
           }
 
         }
@@ -382,15 +365,20 @@
 <div class="container">
     <div class="offering">
         <h2>{I18n.t("offering.title", {abbreviation: $offering.homeInstitution.abbreviation})}</h2>
-        <div class="icons">
-            {#each icons as {name, icon, className, action}, i}
-                <div class={`icon-container ${className}`} on:click={() => action & action()}>
-                    <div class={`icon ${className} ${i === (icons.length - 1) ? "last" : ""} ${i === 0 ? "first" : ""}`}>
-                        <span>{@html icon}</span>
-                    </div>
-                    <p>{name}</p>
-                </div>
+        <div class="lines">
+            {#each statuses as status}
+                <div class={`line ${status}`}></div>
             {/each}
+            <div class="icons">
+                {#each icons as {name, icon, className, action}}
+                    <div class={`icon-container ${className}`} on:click={() => action & action()}>
+                        <div class={`icon ${className}`}>
+                            <span>{@html icon}</span>
+                        </div>
+                        <p>{name}</p>
+                    </div>
+                {/each}
+            </div>
         </div>
         <h2>{title}</h2>
         <div class="details">
