@@ -62,7 +62,7 @@ export function authentication(offeringURI, personURI, scope, path) {
 }
 
 // This is normally called by the Catalog, but for testing purposes we call it
-export function broker(homeInstitutionSchacHome, guestInstitutionSchacHome, offeringID) {
-  formPost({ homeInstitutionSchacHome, guestInstitutionSchacHome, offeringID}, "http://localhost:8091/api/broker")
+export function broker(homeInstitutionSchacHome, guestInstitutionSchacHome, offeringID, startBrokerEndpoint) {
+  formPost({ homeInstitutionSchacHome, guestInstitutionSchacHome, offeringID}, startBrokerEndpoint)
 }
 

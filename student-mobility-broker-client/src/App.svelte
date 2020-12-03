@@ -39,7 +39,7 @@
       const playGround = window.location.pathname.indexOf("play") > -1;
       if (json.local && !step && !playGround && json.allowPlayground) {
         //Mock the call from catalog to broker to ensure there is a selected offering
-        broker("utrecht.nl", "eindhoven.nl", "1");
+        broker("utrecht.nl", "eindhoven.nl", "1", $config.startBrokerEndpoint);
       } else if (!playGround) {
         selectedOffering().then(json => {
           $offering = json;

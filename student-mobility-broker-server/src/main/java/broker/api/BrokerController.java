@@ -33,17 +33,19 @@ public class BrokerController {
 
     private final ServiceRegistry serviceRegistry;
     private final RestTemplate restTemplate = new RestTemplate();
-    private Map<String, Boolean> featureToggles = new HashMap<>();
+    private Map<String, Object> featureToggles = new HashMap<>();
     private final ParameterizedTypeReference<Map<String, Object>> mapRef = new ParameterizedTypeReference<Map<String, Object>>() {
     };
 
 
     public BrokerController(@Value("${config.broker_client_url}") String clientUrl,
+                            @Value("${config.start_broker_endpoint}") String startBrokerEndpoint,
                             @Value("${config.local}") boolean local,
                             @Value("${config.allow_playground}") boolean allowPlayground,
                             ServiceRegistry serviceRegistry) {
         this.clientUrl = clientUrl;
         this.serviceRegistry = serviceRegistry;
+        this.featureToggles.put("startBrokerEndpoint", startBrokerEndpoint);
         this.featureToggles.put("local", local);
         this.featureToggles.put("allowPlayground", allowPlayground);
     }
@@ -63,7 +65,7 @@ public class BrokerController {
      * Endpoint called by the GUI to get the feature toggles
      */
     @GetMapping(value = "/api/features")
-    public Map<String, Boolean> features() {
+    public Map<String, Object> features() {
         return featureToggles;
     }
 
@@ -93,7 +95,7 @@ public class BrokerController {
      */
     @PostMapping("/api/start")
     public Map<String, Object> start(HttpServletRequest request, @RequestBody Map<String, String> correlationMap) {
-        if (this.featureToggles.get("allowPlayground") && correlationMap.keySet().stream().anyMatch(s -> s.equals("code"))) {
+        if ((boolean) this.featureToggles.get("allowPlayground") && correlationMap.keySet().stream().anyMatch(s -> s.equals("code"))) {
             return new HashMap<>(correlationMap);
         }
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);

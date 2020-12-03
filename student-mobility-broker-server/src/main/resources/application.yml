@@ -12,6 +12,8 @@ spring:
     default-property-inclusion: non_null
 
 config:
+  # Endpoint called by catalog. For testing purposes the client can call it as well
+  start_broker_endpoint: http://localhost:8091/api/broker
   # Set to False in every non-local environment
   local: True
   # Do we allow to mock the different scenario's - only allow on test
