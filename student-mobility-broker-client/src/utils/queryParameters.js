@@ -43,7 +43,7 @@ export function replaceQueryParameter(name, value, windowLocationSearch = window
 export function getParameterByName(name, windowLocationSearch = window.location.search) {
   // eslint-disable-next-line
   const replacedName = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-  const regex = new RegExp("[\\?&]" + replacedName + "=([^&#]*)"),
-    results = regex.exec(windowLocationSearch);
+  const regex = new RegExp("[\\?&]" + replacedName + "=([^&#]*)")
+  const results = regex.exec(windowLocationSearch);
   return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
