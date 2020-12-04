@@ -1,5 +1,7 @@
 <script>
     import I18n from "i18n-js";
+    import {LottiePlayer} from '@lottiefiles/svelte-lottie-player';
+    import notFoundLottie from "../lotties/lf20_USCruP.json";
 
 </script>
 
@@ -8,22 +10,21 @@
         display: flex;
         flex-direction: column;
         padding: 25px;
-    }
-
-    h1 {
-        color:var(--color-primary-red);
-        font-size: 32px;
-        font-weight: bold;
-        margin: 40px 0;
-    }
-
-    p {
-        margin-bottom: 40px;
-        font-size: 18px;
+        align-content: center;
+        align-items: center;
     }
 
 </style>
 <div class="not-found">
-    <h1>{I18n.t("notFound.title")}</h1>
-    <p>{I18n.t("notFound.title2")}</p>
+        <LottiePlayer
+                src={notFoundLottie}
+                autoplay="{true}"
+                loop="{true}"
+                controls="{false}"
+                renderer="svg"
+                background="transparent"
+                height="{350}"
+                width="{350}"
+                controlsLayout={null}
+        />
 </div>
