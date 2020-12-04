@@ -4,6 +4,8 @@ import broker.ServiceRegistry;
 import broker.domain.BrokerRequest;
 import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -29,6 +31,8 @@ public class BrokerController {
 
     public static final String BROKER_REQUEST_SESSION_KEY = "BROKER_REQUEST_SESSION_KEY";
 
+    private static final Log LOG = LogFactory.getLog(BrokerController.class);
+
     private final String clientUrl;
 
     private final ServiceRegistry serviceRegistry;
@@ -36,7 +40,6 @@ public class BrokerController {
     private Map<String, Object> featureToggles = new HashMap<>();
     private final ParameterizedTypeReference<Map<String, Object>> mapRef = new ParameterizedTypeReference<Map<String, Object>>() {
     };
-
 
     public BrokerController(@Value("${config.broker_client_url}") String clientUrl,
                             @Value("${config.start_broker_endpoint}") String startBrokerEndpoint,
@@ -55,6 +58,8 @@ public class BrokerController {
      */
     @PostMapping(value = "/api/broker", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public View brokerRequest(HttpServletRequest request, @ModelAttribute BrokerRequest brokerRequest) {
+        LOG.debug("Starting session for brokerRequest: " + brokerRequest);
+
         brokerRequest.validate();
         //This establishes a session ID for the client
         request.getSession().setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
@@ -76,6 +81,9 @@ public class BrokerController {
     @GetMapping(value = "/api/offering")
     public Map<String, Object> offering(HttpServletRequest request) {
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
+
+        LOG.debug("Received request for offering for brokerRequest: " + brokerRequest);
+
         Institution guestInstitution = serviceRegistry.findInstitutionBySchacHome(brokerRequest.getGuestInstitutionSchacHome());
         Institution homeInstitution = serviceRegistry.findInstitutionBySchacHome(brokerRequest.getHomeInstitutionSchacHome());
         String offeringURI = String.format("%s/%s", homeInstitution.getCourseEndpoint(), brokerRequest.getOfferingID());
@@ -96,9 +104,13 @@ public class BrokerController {
     @PostMapping("/api/start")
     public Map<String, Object> start(HttpServletRequest request, @RequestBody Map<String, String> correlationMap) {
         if ((boolean) this.featureToggles.get("allowPlayground") && correlationMap.keySet().stream().anyMatch(s -> s.equals("code"))) {
+            LOG.debug("Returning playground request with parameters: " + correlationMap);
             return new HashMap<>(correlationMap);
         }
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
+
+        LOG.debug("Received start registration request for brokerRequest: " + brokerRequest);
+
         Institution homeInstitution = serviceRegistry.findInstitutionBySchacHome(brokerRequest.getHomeInstitutionSchacHome());
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
@@ -106,7 +118,11 @@ public class BrokerController {
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
         String url = homeInstitution.getRegistrationEndpoint().toString();
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, mapRef);
-        return responseEntity.getBody();
+        Map<String, Object> body = responseEntity.getBody();
+
+        LOG.debug("Returning start registration response " + body + " for brokerRequest: " + brokerRequest);
+
+        return body;
     }
 
     @SuppressWarnings("unchecked")
