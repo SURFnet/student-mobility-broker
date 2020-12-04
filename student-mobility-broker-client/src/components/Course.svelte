@@ -34,8 +34,8 @@
         width: 82px;
 
         img {
-          max-height: 56px;
-          max-width: 56px;
+          max-height: 100px;
+          max-width: 100px;
         }
 
       }

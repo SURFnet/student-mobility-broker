@@ -25,7 +25,7 @@
   import Explanations from "../components/Explanations.svelte";
   import Course from "../components/Course.svelte";
 
-  const timeoutStep = 1000;
+  const timeoutStep = 1500;
   const STEPS = {
     approve: "approve",
     enroll: "enroll",
@@ -294,7 +294,7 @@
           color: white;
           background: linear-gradient(to left, var(--color-primary-grey) 50%, var(--color-primary-blue) 50%) right;
           background-size: 200%;
-          transition: 4.0s linear;
+          transition: 6.0s linear;
 
           &.start {
             background-position: left;
@@ -457,4 +457,6 @@
         </div>
     </div>
 </div>
-<Explanations/>
+{#if pendingApproval(step)}
+    <Explanations/>
+{/if}

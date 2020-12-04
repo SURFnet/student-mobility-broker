@@ -6,6 +6,10 @@ logging:
 
 server:
   port: 8091
+  servlet:
+    session:
+      cookie:
+        secure: false
 
 spring:
   jackson:

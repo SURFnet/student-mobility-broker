@@ -22,7 +22,7 @@
   const start = () => {
     let code = response.value;
     playground.start(code, code === 200 ? redirect : null, code === 500 ? message : null);
-    navigate(`/?step=enroll&name=${encodeURIComponent("John Doe")}&correlationID=1`);
+    navigate(`/?step=enroll&name=${encodeURIComponent("Johanna")}&correlationID=1`);
   }
 
   const handleSelect = val => response = val.detail;
