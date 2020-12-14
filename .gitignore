@@ -13,3 +13,7 @@ bundle.*.js
 yarn-error.log
 inteken-app-client/public/*.png
 TODO.txt
+student-mobility-broker-server/.classpath
+student-mobility-broker-server/.project
+student-mobility-broker-server/.settings/
+student-mobility-broker-server/bin/
