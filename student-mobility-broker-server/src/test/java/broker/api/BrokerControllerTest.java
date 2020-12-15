@@ -54,6 +54,28 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         assertEquals(result.keySet(), body.keySet());
     }
 
+    @Test
+    public void exceptionHandlingServiceRegistry() throws IOException {
+        given().redirects().follow(false)
+                .when()
+                .param("homeInstitutionSchacHome", "nope")
+                .param("guestInstitutionSchacHome", "nope")
+                .param("offeringID", "1")
+                .post("/api/broker")
+                .then()
+                .header("Location", "http://localhost:3003?error=Institution+nope+unknown");
+    }
+
+    @Test
+    public void exceptionHandlingValidation() throws IOException {
+        given().redirects().follow(false)
+                .when()
+                .param("offeringID", "1")
+                .post("/api/broker")
+                .then()
+                .header("Location", "http://localhost:3003?error=invalid_request");
+    }
+
     private void featureToggles() {
         given()
                 .accept(ContentType.JSON)
