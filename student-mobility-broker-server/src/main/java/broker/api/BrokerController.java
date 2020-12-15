@@ -94,7 +94,7 @@ public class BrokerController {
         result.put("homeInstitution", homeInstitution.sanitize());
         result.put("authenticationActionUrl", homeInstitution.getAuthenticationEndpoint());
         result.put("enrollmentRequest", enrollmentRequest);
-        result.put("offering", fetchOffering(homeInstitution, brokerRequest));
+        result.put("offering", fetchOffering(guestInstitution, brokerRequest));
         return result;
     }
 
@@ -126,9 +126,9 @@ public class BrokerController {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> fetchOffering(Institution homeInstitution, BrokerRequest brokerRequest) {
+    private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
         return restTemplate.getForEntity(String.format("%s/%s",
-                homeInstitution.getCourseEndpoint(),
+                guestInstitution.getCourseEndpoint(),
                 brokerRequest.getOfferingID()), Map.class).getBody();
     }
 
