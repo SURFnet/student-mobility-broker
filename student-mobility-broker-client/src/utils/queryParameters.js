@@ -45,5 +45,5 @@ export function getParameterByName(name, windowLocationSearch = window.location.
   const replacedName = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   const regex = new RegExp("[\\?&]" + replacedName + "=([^&#]*)")
   const results = regex.exec(windowLocationSearch);
-  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
 }

@@ -75,44 +75,46 @@
   }
 
 </style>
-<div class="course">
-    <table>
-        <tr>
-            <th class="name">{$offering.offering.name}</th>
-            <th class="logo"><img src={$offering.guestInstitution.logoURI} alt=""/></th>
-        </tr>
-    </table>
-    <table class="values">
-        <tr>
-            <td class="icon">{@html ects}</td>
-            <td class="value">{I18n.t("offering.ects", {ects: $offering.offering.resultValueType})}</td>
-        </tr>
-        <tr>
-            <td class="icon">{@html pin}</td>
-            <td class="value">{$offering.guestInstitution.name}</td>
-        </tr>
-        <tr>
-            <td class="icon">{@html lang}</td>
-            <td class="value">{I18n.t(`offering.lang.${$offering.offering.mainLanguage}`)}</td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <th class="name">{I18n.t("offering.dateTime")}</th>
-        </tr>
-    </table>
-    <table class="values">
-        <tr>
-            <td class="icon">{@html calendar}</td>
-            <td class="value"><strong>{$offering.offering.academicSession.name}</strong></td>
-        </tr>
-        <tr>
-            <td class="icon">{@html launches}</td>
-            <td class="value">{new Date($offering.offering.academicSession.startDate).toLocaleString("default", formatOptions) }</td>
-        </tr>
-        <tr>
-            <td class="icon">{@html places}</td>
-            <td class="value">{I18n.t("offering.places", {nbr: $offering.offering.courseOffering.maxNumberStudents})}</td>
-        </tr>
-    </table>
-</div>
+{#if $offering.offering}
+    <div class="course">
+        <table>
+            <tr>
+                <th class="name">{$offering.offering.name}</th>
+                <th class="logo"><img src={$offering.guestInstitution.logoURI} alt=""/></th>
+            </tr>
+        </table>
+        <table class="values">
+            <tr>
+                <td class="icon">{@html ects}</td>
+                <td class="value">{I18n.t("offering.ects", {ects: $offering.offering.resultValueType})}</td>
+            </tr>
+            <tr>
+                <td class="icon">{@html pin}</td>
+                <td class="value">{$offering.guestInstitution.name}</td>
+            </tr>
+            <tr>
+                <td class="icon">{@html lang}</td>
+                <td class="value">{I18n.t(`offering.lang.${$offering.offering.mainLanguage}`)}</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th class="name">{I18n.t("offering.dateTime")}</th>
+            </tr>
+        </table>
+        <table class="values">
+            <tr>
+                <td class="icon">{@html calendar}</td>
+                <td class="value"><strong>{$offering.offering.academicSession.name}</strong></td>
+            </tr>
+            <tr>
+                <td class="icon">{@html launches}</td>
+                <td class="value">{new Date($offering.offering.academicSession.startDate).toLocaleString("default", formatOptions) }</td>
+            </tr>
+            <tr>
+                <td class="icon">{@html places}</td>
+                <td class="value">{I18n.t("offering.places", {nbr: $offering.offering.courseOffering.maxNumberStudents})}</td>
+            </tr>
+        </table>
+    </div>
+{/if}

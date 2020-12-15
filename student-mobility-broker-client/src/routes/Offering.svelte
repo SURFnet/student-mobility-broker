@@ -16,7 +16,9 @@
   import {config} from "../stores/config";
   import {playground} from "../stores/playground";
   import {LottiePlayer} from '@lottiefiles/svelte-lottie-player';
-  import scooter from "../lotties/lf20_Fyn2dD.json";
+  import scooter from "../lotties/scooter.json";
+  import student from "../lotties/student.json";
+  import errorAnimation from "../lotties/error.json";
   import {authentication, startRegistration} from "../api";
   import {onMount} from "svelte";
   import {getParameterByName} from "../utils/queryParameters";
@@ -24,6 +26,7 @@
   import {navigate} from "svelte-routing";
   import Explanations from "../components/Explanations.svelte";
   import Course from "../components/Course.svelte";
+  import Loading from "../components/Loading.svelte";
 
   const timeoutStep = 1500;
   const STEPS = {
@@ -38,9 +41,18 @@
   let result = null;
   let finished = false;
   let start = false;
+  let error;
+  let landing;
+  let loaded = false;
 
   onMount(() => {
     step = getParameterByName("step");
+    error = getParameterByName("error");
+    landing = getParameterByName("landing");
+    loaded = true;
+    if (error || landing) {
+      title = I18n.t("offering.landing");
+    }
     if (step === STEPS.enroll) {
       const name = getParameterByName("name");
       title = I18n.t("offering.wait", {name});
@@ -75,13 +87,14 @@
       } else if (result.code === 200) {
         title = I18n.t("offering.done");
       } else {
-        title = I18n.t("offering.error", {abbreviation: $offering.guestInstitution.abbreviation});
+        title = I18n.t("offering.error");
       }
     }
   }
 
   const changeActivity = count => {
-    activity = I18n.t(`offering.progress.${count}`, {abbreviation: $offering.homeInstitution.abbreviation});
+    activity = I18n.t(`offering.progress.${count}`, {abbreviation:
+      count < 3 ? $offering.homeInstitution.abbreviation : $offering.guestInstitution.abbreviation});
     if (count < 5) {
       setTimeout(() => changeActivity(++count), timeoutStep);
     } else {
@@ -217,6 +230,14 @@
 
     }
 
+  }
+
+  div.landing, div.error {
+    display: flex;
+    flex-direction: column;
+    p {
+      margin-bottom: 25px;
+    }
   }
 
   div.lines {
@@ -362,101 +383,149 @@
   }
 
 </style>
-<div class="container">
-    <div class="offering">
-        <h2>{I18n.t("offering.title", {abbreviation: $offering.homeInstitution.abbreviation})}</h2>
-        <div class="lines">
-            {#each statuses as status}
-                <div class={`line ${status}`}></div>
-            {/each}
-            <div class="icons">
-                {#each icons as {name, icon, className, action}}
-                    <div class={`icon-container ${className}`} on:click={() => action & action()}>
-                        <div class={`icon ${className}`}>
-                            <span>{@html icon}</span>
-                        </div>
-                        <p>{name}</p>
+{#if loaded }
+    <div class="container">
+        <div class="offering">
+            {#if !landing && !error }
+                <h2>{I18n.t("offering.title", {abbreviation: $offering.guestInstitution.abbreviation})}</h2>
+                <div class="lines">
+                    {#each statuses as status}
+                        <div class={`line ${status}`}></div>
+                    {/each}
+                    <div class="icons">
+                        {#each icons as {name, icon, className, action}}
+                            <div class={`icon-container ${className}`} on:click={() => action & action()}>
+                                <div class={`icon ${className}`}>
+                                    <span>{@html icon}</span>
+                                </div>
+                                <p>{name}</p>
+                            </div>
+                        {/each}
                     </div>
-                {/each}
-            </div>
-        </div>
-        <h2>{title}</h2>
-        <div class="details">
-            <Course/>
-            <div class="status">
-                {#if step === STEPS.enroll}
-                    <div class="result">
+                </div>
+            {/if}
+            <h2>{title}</h2>
+            <div class="details">
+                {#if landing}
+                    <div class="landing">
+                        <p>{I18n.t("landing.info")}</p>
+                        <p>
+                            <span>{I18n.t("landing.subInfo")}</span>
+                            <span>{@html I18n.t("landing.surfLink")}</span>
+                        </p>
                         <LottiePlayer
-                                src={scooter}
+                                src={student}
                                 autoplay="{true}"
                                 loop="{true}"
+                                speed={0.5}
                                 controls="{false}"
                                 renderer="svg"
                                 background="transparent"
-                                height="{250}"
-                                width="{250}"
+                                height="100%"
+                                width="100%"
                                 controlsLayout={null}
                         />
-                        <span class:start class="progress">{I18n.t("offering.enrolling")}</span>
-                        {#if activity}
-                            <span class="activity">{activity}</span>
-                        {/if}
                     </div>
-                {:else if pendingApproval(step)}
-                    <div class="no-results">
-                        <span class="label">{I18n.t("offering.homeInstitution")}</span>
-                        <span class="value last">{$offering.homeInstitution.name}</span>
+                {:else if error}
+                    <div class="error">
+                        <p>{I18n.t("error.info")}</p>
+                        <p>
+                            <span>{@html I18n.t("error.subInfo", {msg: error})}</span>
+                            <span>{@html I18n.t("error.surfLink")}</span>
+                        </p>
+                        <LottiePlayer
+                                src={errorAnimation}
+                                autoplay="{true}"
+                                loop="{true}"
+                                speed={0.8}
+                                controls="{false}"
+                                renderer="svg"
+                                background="transparent"
+                                height="100%"
+                                width="100%"
+                                controlsLayout={null}
+                        />
+                    </div>
+                {:else}
+                    <Course/>
+                    <div class="status">
+                        {#if step === STEPS.enroll}
+                            <div class="result">
+                                <LottiePlayer
+                                        src={scooter}
+                                        autoplay="{true}"
+                                        loop="{true}"
+                                        controls="{false}"
+                                        renderer="svg"
+                                        background="transparent"
+                                        height="{250}"
+                                        width="{250}"
+                                        controlsLayout={null}
+                                />
+                                <span class:start class="progress">{I18n.t("offering.enrolling")}</span>
+                                {#if activity}
+                                    <span class="activity">{activity}</span>
+                                {/if}
+                            </div>
+                        {:else if pendingApproval(step)}
+                            <div class="no-results">
+                                <span class="label">{I18n.t("offering.homeInstitution")}</span>
+                                <span class="value last">{$offering.homeInstitution.name}</span>
 
-                        <span class="label">{I18n.t("offering.personal")}</span>
-                        <span class="value personal">{I18n.t("offering.subPersonal", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
-                        <span class="value personal last">{I18n.t("offering.subPersonalGrant", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
-                        <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
-                                onClick={startAuthentication}/>
-                    </div>
-                {:else if result && result.code !== 200}
-                    <div class="result">
-                        <div class="hero">
-                            {@html moody}
-                        </div>
-                        <h3>{I18n.t("offering.errorTitle", {abbreviation: $offering.guestInstitution.abbreviation})}</h3>
-                        <div class="final-action">
-                            {#if result.message}
-                                <span class="error-message">{@html result.message}</span>
-                            {:else}
-                                <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
-                            {/if}
-                        </div>
-                    </div>
-                {:else if result && result.redirect}
-                    <div class="result">
-                        <div class="hero">
-                            {@html questions}
-                        </div>
-                        <h3>{I18n.t("offering.almost")}</h3>
-                        <div class="redirect">
-                            <p>{I18n.t("offering.questions")}</p>
-                            <span>{I18n.t("offering.questionsDetail")}</span>
-                            <span>{I18n.t("offering.questionsWhere", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
-                            <Button onClick={() => window.location.href = result.redirect}
-                                    label={I18n.t("offering.goToLMS")}/>
-                        </div>
-                    </div>
-                {:else if registrationSuccessful(result, finished)}
-                    <div class="result">
-                        <div class="hero">
-                            {@html highFive}
-                        </div>
-                        <h3>{I18n.t("offering.next")}</h3>
-                        <div class="final-action">
-                            {@html lightBulb}
-                            <span>{I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
-                        </div>
+                                <span class="label">{I18n.t("offering.personal")}</span>
+                                <span class="value personal">{I18n.t("offering.subPersonal", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                                <span class="value personal last">{I18n.t("offering.subPersonalGrant", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                                <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
+                                        onClick={startAuthentication}/>
+                            </div>
+                        {:else if result && result.code !== 200}
+                            <div class="result">
+                                <div class="hero">
+                                    {@html moody}
+                                </div>
+                                <h3>{I18n.t("offering.errorTitle", {abbreviation: $offering.guestInstitution.abbreviation})}</h3>
+                                <div class="final-action">
+                                    {#if result.message}
+                                        <span class="error-message">{@html result.message}</span>
+                                    {:else}
+                                        <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
+                                    {/if}
+                                </div>
+                            </div>
+                        {:else if result && result.redirect}
+                            <div class="result">
+                                <div class="hero">
+                                    {@html questions}
+                                </div>
+                                <h3>{I18n.t("offering.almost")}</h3>
+                                <div class="redirect">
+                                    <p>{I18n.t("offering.questions")}</p>
+                                    <span>{I18n.t("offering.questionsDetail")}</span>
+                                    <span>{I18n.t("offering.questionsWhere", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                                    <Button onClick={() => window.location.href = result.redirect}
+                                            label={I18n.t("offering.goToLMS")}/>
+                                </div>
+                            </div>
+                        {:else if registrationSuccessful(result, finished)}
+                            <div class="result">
+                                <div class="hero">
+                                    {@html highFive}
+                                </div>
+                                <h3>{I18n.t("offering.next")}</h3>
+                                <div class="final-action">
+                                    {@html lightBulb}
+                                    <span>{I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                                </div>
+                            </div>
+                        {/if}
                     </div>
                 {/if}
             </div>
         </div>
     </div>
-</div>
-{#if pendingApproval(step)}
+{:else}
+    <Loading/>
+{/if}
+{#if pendingApproval(step) || landing || error}
     <Explanations/>
 {/if}

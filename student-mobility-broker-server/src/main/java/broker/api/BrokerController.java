@@ -4,6 +4,7 @@ import broker.ServiceRegistry;
 import broker.domain.BrokerRequest;
 import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
+import broker.exception.NotFoundException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,8 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,10 +60,18 @@ public class BrokerController {
      * Endpoint called by the catalog form submit. Give browser-control back to the GUI
      */
     @PostMapping(value = "/api/broker", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public View brokerRequest(HttpServletRequest request, @ModelAttribute BrokerRequest brokerRequest) {
+    public View brokerRequest(HttpServletRequest request, @ModelAttribute BrokerRequest brokerRequest) throws UnsupportedEncodingException {
         LOG.debug("Starting session for brokerRequest: " + brokerRequest);
-
-        brokerRequest.validate();
+        try {
+            //we want to fail fast
+            brokerRequest.validate();
+            this.getInstitution(brokerRequest.getHomeInstitutionSchacHome());
+            this.getInstitution(brokerRequest.getGuestInstitutionSchacHome());
+        } catch (IllegalArgumentException e) {
+            return new RedirectView(clientUrl + "?error=invalid_request");
+        } catch (NotFoundException e) {
+            return new RedirectView(clientUrl + "?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
+        }
         //This establishes a session ID for the client
         request.getSession().setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
         return new RedirectView(clientUrl + "?step=approve");
@@ -84,8 +95,9 @@ public class BrokerController {
 
         LOG.debug("Received request for offering for brokerRequest: " + brokerRequest);
 
-        Institution guestInstitution = serviceRegistry.findInstitutionBySchacHome(brokerRequest.getGuestInstitutionSchacHome());
-        Institution homeInstitution = serviceRegistry.findInstitutionBySchacHome(brokerRequest.getHomeInstitutionSchacHome());
+        Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
+        Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
+
         String offeringURI = String.format("%s/%s", homeInstitution.getCourseEndpoint(), brokerRequest.getOfferingID());
         EnrollmentRequest enrollmentRequest = new EnrollmentRequest(offeringURI, homeInstitution.getPersonsEndpoint(), homeInstitution.getScopes());
 
@@ -94,8 +106,18 @@ public class BrokerController {
         result.put("homeInstitution", homeInstitution.sanitize());
         result.put("authenticationActionUrl", homeInstitution.getAuthenticationEndpoint());
         result.put("enrollmentRequest", enrollmentRequest);
-        result.put("offering", fetchOffering(homeInstitution, brokerRequest));
+        result.put("offering", fetchOffering(guestInstitution, brokerRequest));
         return result;
+    }
+
+    private Institution getInstitution(String institutionSchacHome) {
+        return serviceRegistry
+                .findInstitutionBySchacHome(institutionSchacHome)
+                .orElseThrow(() -> {
+                    String msg = String.format("Institution %s unknown", institutionSchacHome);
+                    LOG.error(msg);
+                    return new NotFoundException(msg);
+                });
     }
 
     /*
@@ -111,10 +133,13 @@ public class BrokerController {
 
         LOG.debug("Received start registration request for brokerRequest: " + brokerRequest);
 
-        Institution homeInstitution = serviceRegistry.findInstitutionBySchacHome(brokerRequest.getHomeInstitutionSchacHome());
+        String homeInstitutionSchacHome = brokerRequest.getHomeInstitutionSchacHome();
+        Institution homeInstitution = getInstitution(homeInstitutionSchacHome);
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
         headers.setBasicAuth(homeInstitution.getRegistrationUser(), homeInstitution.getRegistrationPassword());
+
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
         String url = homeInstitution.getRegistrationEndpoint().toString();
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, mapRef);
@@ -126,9 +151,9 @@ public class BrokerController {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> fetchOffering(Institution homeInstitution, BrokerRequest brokerRequest) {
+    private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
         return restTemplate.getForEntity(String.format("%s/%s",
-                homeInstitution.getCourseEndpoint(),
+                guestInstitution.getCourseEndpoint(),
                 brokerRequest.getOfferingID()), Map.class).getBody();
     }
 

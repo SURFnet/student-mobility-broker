@@ -14,11 +14,12 @@ I18n.translations.nl = {
     enrolling: "Enrolling', rolling', rolling... ",
     progress: {
       "1": "Requesting your personal information at {{abbreviation}}",
-      "2": "Processing personal information",
+      "2": "Processing personal information retrieved from {{abbreviation}}",
       "3": "Processing enrolment at {{abbreviation}}",
       "4": "Finishing your enrolment at {{abbreviation}}",
     },
     done: "Done for now, we'll be in touch",
+    landing: "Student Mobility Broker",
     error: "Something went wrong...",
     errorTitle: "Provided details from {{abbreviation}}",
     noResultErrorMessage: "No details were disclosed. Please contact <a href=\"mailto:student.mobiliteit@surf.nl\">student.mobiliteit@surf.nl</a>",
@@ -30,17 +31,28 @@ I18n.translations.nl = {
     next: "What will happen next?",
     receiveMail: "You will receive mail from {{abbreviation}} what the next steps will be.",
     homeInstitution: "Your home institution",
-    personal : "Your personal information",
+    personal: "Your personal information",
     subPersonal: "{{abbreviation}} will request all necessary information for your enrolment at your home institution.",
     subPersonalGrant: "For this you need to grant {{abbreviation}} permission to do so",
     approveButton: "Approve with eduID",
     ects: "{{ects}} ECTS",
     lang: {
-      "nl-NL" : "Dutch",
-      "en-EN" : "English",
+      "nl-NL": "Dutch",
+      "en-EN": "English",
     },
     dateTime: "Date & Time",
     places: "{{nbr}} places"
+  },
+  landing: {
+    info: "You have landed on the Student Mobility homepage, where you normally only would land after selecting a course in the education catalogue.",
+    subInfo: "We want to make you feel welcome, but unfortunately there is nothing more to show without a course selection. ",
+    surfLink: "For more information check out the <a href=\"https://www.surf.nl/en/eduid\" target=\"_blank\">SURF website</a>."
+  },
+  error: {
+    info: "This is embarrassing. An error has occurred.",
+    subInfo: "The only information we currently can share with you is <span style='font-style: italic'>{{msg}}</span>.",
+    surfLink: "Please contact the <a href=\"mailto:student.mobiliteit@surf.nl\">SURF helpdesk</a> for further support.",
+    offering: "The course information could not be retrieved"
   },
   explanation: {
     title: "How does enrolling work?",
