@@ -364,7 +364,7 @@
 </style>
 <div class="container">
     <div class="offering">
-        <h2>{I18n.t("offering.title", {abbreviation: $offering.homeInstitution.abbreviation})}</h2>
+        <h2>{I18n.t("offering.title", {abbreviation: $offering.guestInstitution.abbreviation})}</h2>
         <div class="lines">
             {#each statuses as status}
                 <div class={`line ${status}`}></div>
