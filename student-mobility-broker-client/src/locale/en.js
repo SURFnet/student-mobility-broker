@@ -19,6 +19,7 @@ I18n.translations.en = {
       "4": "Finishing your enrollment at {{abbreviation}}",
     },
     done: "Done for now, we'll be in touch",
+    landing: "Student Mobility Broker",
     error: "Something went wrong...",
     errorTitle: "Provided details from {{abbreviation}}",
     noResultErrorMessage: "No details were disclosed. Please contact <a href=\"mailto:student.mobiliteit@surf.nl\">student.mobiliteit@surf.nl</a>",
@@ -41,6 +42,17 @@ I18n.translations.en = {
     },
     dateTime: "Date & Time",
     places: "{{nbr}} places"
+  },
+  landing: {
+    info: "You have landed on the Student Mobility homepage, where you normally only would land after selecting a course in the education catalogue.",
+    subInfo: "We want to make you feel welcome, but unfortunately there is nothing more to show without a course selection. ",
+    surfLink: "For more information check out the <a href=\"https://www.surf.nl/en/eduid\" target=\"_blank\">SURF website</a>."
+  },
+  error: {
+    info: "This is embarrassing. An error has occurred.",
+    subInfo: "The only information we currently can share with you is <span style='font-style: italic'>{{msg}}</span>.",
+    surfLink: "Please contact the <a href=\"mailto:student.mobiliteit@surf.nl\">SURF helpdesk</a> for further support.",
+    offering: "The course information could not be retrieved"
   },
   explanation: {
     title: "How does enrolling work?",

@@ -11,6 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InMemoryServiceRegistry implements ServiceRegistry {
@@ -25,10 +26,9 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
     }
 
     @Override
-    public Institution findInstitutionBySchacHome(String schacHome) {
+    public Optional<Institution> findInstitutionBySchacHome(String schacHome) {
         return institutions.stream()
                 .filter(institution -> institution.getSchacHome().equals(schacHome))
-                .findAny()
-                .orElseThrow(NotFoundException::new);
+                .findAny();
     }
 }

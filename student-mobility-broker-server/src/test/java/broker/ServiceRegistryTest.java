@@ -19,6 +19,6 @@ class ServiceRegistryTest {
 
     @Test
     void findInstitutionBySchacHome() {
-        assertThrows(NotFoundException.class, () -> subject.findInstitutionBySchacHome("nope"));
+        assertFalse(subject.findInstitutionBySchacHome("nope").isPresent());
     }
 }

@@ -1,7 +1,7 @@
 <script>
     import I18n from "i18n-js";
     import {LottiePlayer} from '@lottiefiles/svelte-lottie-player';
-    import notFoundLottie from "../lotties/lf20_USCruP.json";
+    import notFoundLottie from "../lotties/not_found.json";
 
 </script>
 

@@ -2,6 +2,10 @@ package broker;
 
 import broker.domain.Institution;
 
+import java.util.Optional;
+
 public interface ServiceRegistry {
-    Institution findInstitutionBySchacHome(String schacHome);
+
+    Optional<Institution> findInstitutionBySchacHome(String schacHome);
+
 }

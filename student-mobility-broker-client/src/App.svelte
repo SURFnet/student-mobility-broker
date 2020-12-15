@@ -9,8 +9,9 @@
   import {offering} from "./stores/offering";
   import {config} from "./stores/config";
   import I18n from "i18n-js";
-  import {getParameterByName} from "./utils/queryParameters";
+  import {getParameterByName, replaceQueryParameter} from "./utils/queryParameters";
   import data from "./data/offering.json";
+  import Loading from "./components/Loading.svelte";
 
   export let url = "";
   let loaded = false;
@@ -37,18 +38,29 @@
       $config = json;
       const step = getParameterByName("step");
       const playGround = window.location.pathname.indexOf("play") > -1;
-      if (!step && !playGround && json.allowPlayground) {
+      const error = getParameterByName("error");
+      const landing = getParameterByName("landing");
+      if (error || landing) {
+        loaded = true;
+      } else if (!step && !playGround && json.allowPlayground) {
         //Mock the call from catalog to broker to ensure there is a selected offering
         broker("utrecht.nl", "eindhoven.nl", "1", $config.startBrokerEndpoint);
       } else if (!playGround) {
-        selectedOffering().then(json => {
-          $offering = json;
-          loaded = true;
-        });
+        selectedOffering()
+          .then(json => {
+            $offering = json;
+            loaded = true;
+          })
+          .catch(e => {
+            window.location.search = replaceQueryParameter("error", I18n.t("error.offering"));
+          });
       } else if (playGround && json.allowPlayground) {
         $offering = data;
         loaded = true;
+      } else if (!landing) {
+        window.location.search = replaceQueryParameter("landing", "true");
       } else {
+        navigate("/404");
         loaded = true;
       }
     });
@@ -103,7 +115,7 @@
     }
   }
 </style>
-{#if loaded}
+{#if loaded }
     <div class="broker">
         <Router url="{url}">
             <Route path="/" component={Offering}/>
@@ -114,5 +126,5 @@
         </Router>
     </div>
 {:else}
-    <div class="loader"></div>
+    <Loading/>
 {/if}
