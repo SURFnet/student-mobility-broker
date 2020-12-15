@@ -14,7 +14,7 @@ I18n.translations.en = {
     enrolling: "Enrolling', rolling', rolling... ",
     progress: {
       "1": "Requesting your personal information at {{abbreviation}}",
-      "2": "Processing personal information",
+      "2": "Processing personal information retrieved from {{abbreviation}}",
       "3": "Processing enrollment at {{abbreviation}}",
       "4": "Finishing your enrollment at {{abbreviation}}",
     },

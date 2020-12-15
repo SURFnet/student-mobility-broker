@@ -93,7 +93,8 @@
   }
 
   const changeActivity = count => {
-    activity = I18n.t(`offering.progress.${count}`, {abbreviation: $offering.homeInstitution.abbreviation});
+    activity = I18n.t(`offering.progress.${count}`, {abbreviation:
+      count < 3 ? $offering.homeInstitution.abbreviation : $offering.guestInstitution.abbreviation});
     if (count < 5) {
       setTimeout(() => changeActivity(++count), timeoutStep);
     } else {
