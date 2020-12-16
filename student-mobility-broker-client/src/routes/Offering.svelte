@@ -7,6 +7,7 @@
   import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg";
   import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg";
   import eduID from "../icons/logo_eduID.svg";
+  import DOMPurify from "dompurify";
   import relax from "../icons/icons-studmob/cocktail-glass.svg";
   import highFive from "../icons/icons-studmob/undraw_High_five.svg";
   import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg";
@@ -48,6 +49,9 @@
   onMount(() => {
     step = getParameterByName("step");
     error = getParameterByName("error");
+    if (error) {
+      error = DOMPurify.sanitize(error);
+    }
     landing = getParameterByName("landing");
     loaded = true;
     if (error || landing) {
@@ -348,6 +352,10 @@
         div.final-action {
           display: flex;
 
+          &.error-result {
+            flex-direction: column;
+          }
+
           :global(svg) {
             margin-right: 12px;
             width: 66px;
@@ -484,9 +492,10 @@
                                     {@html moody}
                                 </div>
                                 <h3>{I18n.t("offering.errorTitle", {abbreviation: $offering.guestInstitution.abbreviation})}</h3>
-                                <div class="final-action">
+                                <div class="final-action error-result">
                                     {#if result.message}
                                         <span class="error-message">{@html result.message}</span>
+                                        <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
                                     {:else}
                                         <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
                                     {/if}

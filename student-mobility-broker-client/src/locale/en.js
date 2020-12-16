@@ -23,6 +23,7 @@ I18n.translations.en = {
     error: "Something went wrong...",
     errorTitle: "Provided details from {{abbreviation}}",
     noResultErrorMessage: "No details were disclosed. Please contact <a href=\"mailto:student.mobiliteit@surf.nl\">student.mobiliteit@surf.nl</a>",
+    resultErrorMessage: "Please contact <a href=\"mailto:student.mobiliteit@surf.nl\">student.mobiliteit@surf.nl</a> for help.",
     almost: "Almost there, one more thing!",
     questions: "There are some extra questions",
     questionsDetail: "To finalise your enrolment for this specific course, some extra questions need to be answered",

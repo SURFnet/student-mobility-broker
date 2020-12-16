@@ -51,4 +51,27 @@ public class BrokerControllerUnitTest {
         assertEquals("ok",res.get("result"));
 
     }
+
+    @Test
+    public void start() {
+        stubFor(post(urlPathMatching("/api/start")).willReturn(aResponse()
+                .withHeader("Content-Type", "application/json")
+                .withStatus(500)));
+
+        Map<String, String> body = new HashMap<>();
+        body.put("code", "200");
+        body.put("result", "playground");
+
+        HttpServletRequest request = new MockHttpServletRequest();
+        BrokerRequest brokerRequest = new BrokerRequest();
+        brokerRequest.setHomeInstitutionSchacHome("utrecht.nl");
+        brokerRequest.setGuestInstitutionSchacHome("eindhoven.nl");
+
+        request.getSession(true).setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
+        Map<String, Object> res = brokerController.start(request, body);
+
+        assertEquals(500,res.get("code"));
+        assertEquals("Server error at Eindhoven University of Technology", res.get("message"));
+
+    }
 }

@@ -130,12 +130,30 @@ public class BrokerController {
             return new HashMap<>(correlationMap);
         }
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
+        Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
 
         LOG.debug("Received start registration request for brokerRequest: " + brokerRequest);
 
-        String homeInstitutionSchacHome = brokerRequest.getHomeInstitutionSchacHome();
-        Institution homeInstitution = getInstitution(homeInstitutionSchacHome);
+        try {
+            Map<String, Object> body = doStart(homeInstitution, correlationMap);
 
+            LOG.debug("Returning start registration response " + body + " for brokerRequest: " + brokerRequest);
+
+            return body;
+        } catch (Exception e) {
+            //Anti-pattern to catch all, but tolerable in this situation
+            LOG.error("Unexpected exception", e);
+
+            Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
+            Map<String, Object> res = new HashMap<>();
+            res.put("message", String.format("Server error at %s", guestInstitution.getName()));
+            res.put("code", 500);
+            return res;
+        }
+
+    }
+
+    private Map<String, Object> doStart(Institution homeInstitution, Map<String, String> correlationMap) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
         headers.setBasicAuth(homeInstitution.getRegistrationUser(), homeInstitution.getRegistrationPassword());
@@ -143,11 +161,7 @@ public class BrokerController {
         HttpEntity<?> requestEntity = new HttpEntity<>(headers);
         String url = homeInstitution.getRegistrationEndpoint().toString();
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, mapRef);
-        Map<String, Object> body = responseEntity.getBody();
-
-        LOG.debug("Returning start registration response " + body + " for brokerRequest: " + brokerRequest);
-
-        return body;
+        return responseEntity.getBody();
     }
 
     @SuppressWarnings("unchecked")
