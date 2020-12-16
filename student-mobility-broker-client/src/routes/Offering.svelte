@@ -7,7 +7,7 @@
   import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg";
   import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg";
   import eduID from "../icons/logo_eduID.svg";
-  import DOMPurify from "dompurify";
+
   import relax from "../icons/icons-studmob/cocktail-glass.svg";
   import highFive from "../icons/icons-studmob/undraw_High_five.svg";
   import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg";
@@ -49,9 +49,6 @@
   onMount(() => {
     step = getParameterByName("step");
     error = getParameterByName("error");
-    if (error) {
-      error = DOMPurify.sanitize(error);
-    }
     landing = getParameterByName("landing");
     loaded = true;
     if (error || landing) {

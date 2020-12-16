@@ -1,3 +1,5 @@
+import DOMPurify from "dompurify";
+
 const queryParameter = {
 
   //shameless refactor of https://gist.githubusercontent.com/pduey/2764606/raw/e8b9d6099f1e4161f7dd9f81d71c2c7a1fecbd5b/querystring.js
@@ -45,5 +47,5 @@ export function getParameterByName(name, windowLocationSearch = window.location.
   const replacedName = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
   const regex = new RegExp("[\\?&]" + replacedName + "=([^&#]*)")
   const results = regex.exec(windowLocationSearch);
-  return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
+  return results === null ? null : DOMPurify.sanitize(decodeURIComponent(results[1].replace(/\+/g, " ")));
 }
