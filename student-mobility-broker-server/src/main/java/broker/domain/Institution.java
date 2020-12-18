@@ -53,23 +53,12 @@ public class Institution implements Serializable {
     //Authentication password for basic authentication course endpoint
     private String courseAuthenticationPassword;
 
-    //Authentication clientID for OAuth2 client credentials authentication course endpoint
-    private String courseAuthenticationClientId;
-
-    //Authentication secret for OAuth2 client credentials authentication course endpoint
-    private String courseAuthenticationSecret;
-
     public void validate() {
         Assert.notNull(courseAuthentication, "courseAuthentication is required");
         if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
             Assert.notNull(courseAuthenticationUserName, "courseAuthenticationUserName is required for BASIC authentication");
             Assert.notNull(courseAuthenticationPassword, "courseAuthenticationPassword is required for BASIC authentication");
         }
-        if (courseAuthentication.equals(CourseAuthentication.OAUTH2)) {
-            Assert.notNull(courseAuthenticationClientId, "courseAuthenticationClientId is required for BASIC authentication");
-            Assert.notNull(courseAuthenticationSecret, "courseAuthenticationSecret is required for BASIC authentication");
-        }
-
     }
 
     public Institution sanitize() {

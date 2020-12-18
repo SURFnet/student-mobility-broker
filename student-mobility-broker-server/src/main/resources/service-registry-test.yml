@@ -29,8 +29,6 @@
   abbreviation: WUR
   courseEndpoint: http://localhost:8081/offerings
   courseAuthentication: OAUTH2
-  courseAuthenticationClientId: client
-  courseAuthenticationSecret: secret
   personsEndpoint: http://localhost:8081/persons/me
   authenticationEndpoint:  http://localhost:8081/api/enrollment
   registrationEndpoint: http://localhost:8081/api/start

@@ -26,9 +26,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
         institutions.stream().forEach(institution -> {
             assertNull(institution.getRegistrationPassword());
             assertNull(institution.getRegistrationUser());
-            assertNull(institution.getCourseAuthenticationClientId());
             assertNull(institution.getCourseAuthenticationPassword());
-            assertNull(institution.getCourseAuthenticationSecret());
             assertNull(institution.getCourseAuthenticationUserName());
         });
     }
