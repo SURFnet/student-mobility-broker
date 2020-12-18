@@ -145,7 +145,6 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         assertTrue(result.containsKey("authenticationActionUrl"));
 
         Map<String, String> enrollmentRequest = (Map<String, String>) result.get("enrollmentRequest");
-        assertEquals("http://localhost:8081/offerings/1", enrollmentRequest.get("offeringURI"));
         assertEquals("http://localhost:8081/persons/me", enrollmentRequest.get("personURI"));
         assertEquals("https://eindhoven/api inteken", enrollmentRequest.get("scope"));
     }

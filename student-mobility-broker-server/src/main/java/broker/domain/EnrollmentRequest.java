@@ -13,7 +13,6 @@ import java.net.URI;
 @Getter
 public class EnrollmentRequest implements Serializable {
 
-    private String offeringURI;
     private String personURI;
     private String scope;
 

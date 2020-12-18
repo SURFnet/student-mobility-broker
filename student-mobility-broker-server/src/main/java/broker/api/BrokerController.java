@@ -37,6 +37,7 @@ import java.util.Map;
 public class BrokerController {
 
     public static final String BROKER_REQUEST_SESSION_KEY = "BROKER_REQUEST_SESSION_KEY";
+    public static final String OFFERING_SESSION_KEY = "OFFERING_SESSION_KEY";
 
     private static final Log LOG = LogFactory.getLog(BrokerController.class);
 
@@ -112,15 +113,18 @@ public class BrokerController {
         Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
 
-        String offeringURI = String.format("%s/%s", homeInstitution.getCourseEndpoint(), brokerRequest.getOfferingID());
-        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(offeringURI, homeInstitution.getPersonsEndpoint(), homeInstitution.getScopes());
+        Map<String, Object> offering = fetchOffering(guestInstitution, brokerRequest);
+        //Save the offering as we need it when starting  the actual registration
+        request.getSession().setAttribute(OFFERING_SESSION_KEY, offering);
+
+        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(homeInstitution.getPersonsEndpoint(), homeInstitution.getScopes());
 
         Map<String, Object> result = new HashMap<>();
         result.put("guestInstitution", guestInstitution.sanitize());
         result.put("homeInstitution", homeInstitution.sanitize());
         result.put("authenticationActionUrl", homeInstitution.getAuthenticationEndpoint());
         result.put("enrollmentRequest", enrollmentRequest);
-        result.put("offering", fetchOffering(guestInstitution, brokerRequest));
+        result.put("offering", offering);
         return result;
     }
 
@@ -144,11 +148,12 @@ public class BrokerController {
             return new HashMap<>(correlationMap);
         }
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
+        Map<String, Object> offering = (Map<String, Object>) request.getSession().getAttribute(OFFERING_SESSION_KEY);
 
         LOG.debug("Received start registration request for brokerRequest: " + brokerRequest);
 
         try {
-            Map<String, Object> body = doStart(brokerRequest, correlationMap);
+            Map<String, Object> body = doStart(brokerRequest, offering, correlationMap);
 
             LOG.debug("Returning start registration response " + body + " for brokerRequest: " + brokerRequest);
 
@@ -166,14 +171,13 @@ public class BrokerController {
 
     }
 
-    private Map<String, Object> doStart(BrokerRequest brokerRequest, Map<String, String> correlationMap) {
+    private Map<String, Object> doStart(BrokerRequest brokerRequest, Map<String, Object> offering, Map<String, String> correlationMap) {
         Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
         Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
         headers.setBasicAuth(homeInstitution.getRegistrationUser(), homeInstitution.getRegistrationPassword());
-        Map<String, Object> offering = fetchOffering(guestInstitution, brokerRequest);
         HttpEntity<?> requestEntity = new HttpEntity<>(offering, headers);
         String url = homeInstitution.getRegistrationEndpoint().toString();
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, mapRef);
@@ -182,15 +186,15 @@ public class BrokerController {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
-        String offeringURI = String.format("%s/%s", guestInstitution.getCourseEndpoint(), brokerRequest.getOfferingID());
+        String uri = String.format("%s/%s", guestInstitution.getCourseEndpoint(), brokerRequest.getOfferingID());
         CourseAuthentication courseAuthentication = guestInstitution.getCourseAuthentication();
 
         if (courseAuthentication.equals(CourseAuthentication.NONE)) {
-            return restTemplate.getForEntity(offeringURI, Map.class).getBody();
+            return restTemplate.getForEntity(uri, Map.class).getBody();
         } else if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
-            return restTemplate.exchange(offeringURI, HttpMethod.GET, new HttpEntity<>(basicAuthHeaders(guestInstitution)), Map.class).getBody();
+            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(basicAuthHeaders(guestInstitution)), Map.class).getBody();
         } else {
-            return restTemplate.exchange(offeringURI, HttpMethod.GET, new HttpEntity<>(accessTokenHeaders()), Map.class).getBody();
+            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(accessTokenHeaders()), Map.class).getBody();
         }
     }
 
