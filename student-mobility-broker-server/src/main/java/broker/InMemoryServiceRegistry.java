@@ -23,6 +23,7 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
         this.institutions = objectMapper.readValue(serviceRegistryResource.getInputStream(), new TypeReference<List<Institution>>() {
         });
+        this.institutions.forEach(Institution::validate);
     }
 
     @Override
@@ -30,5 +31,10 @@ public class InMemoryServiceRegistry implements ServiceRegistry {
         return institutions.stream()
                 .filter(institution -> institution.getSchacHome().equals(schacHome))
                 .findAny();
+    }
+
+    @Override
+    public List<Institution> allInstitutions() {
+        return institutions;
     }
 }

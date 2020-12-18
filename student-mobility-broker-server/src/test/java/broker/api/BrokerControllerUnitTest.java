@@ -9,12 +9,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static broker.api.BrokerController.BROKER_REQUEST_SESSION_KEY;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
@@ -25,12 +26,18 @@ public class BrokerControllerUnitTest {
     private BrokerController brokerController = new BrokerController(
             "http://localhost",
             "http://localhost",
+            new URI("http://localhost"),
+            "client",
+            "secret",
             false,
             false,
             new InMemoryServiceRegistry(new ClassPathResource("service-registry-test.yml")));
 
     @RegisterExtension
     WireMockExtension mockServer = new WireMockExtension(8081);
+
+    public BrokerControllerUnitTest() throws URISyntaxException {
+    }
 
     @Test
     public void playground() {
@@ -48,7 +55,7 @@ public class BrokerControllerUnitTest {
 
         request.getSession(true).setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
         Map<String, Object> res = brokerController.start(request, body);
-        assertEquals("ok",res.get("result"));
+        assertEquals("ok", res.get("result"));
 
     }
 
@@ -70,7 +77,7 @@ public class BrokerControllerUnitTest {
         request.getSession(true).setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
         Map<String, Object> res = brokerController.start(request, body);
 
-        assertEquals(500,res.get("code"));
+        assertEquals(500, res.get("code"));
         assertEquals("Server error at Eindhoven University of Technology", res.get("message"));
 
     }

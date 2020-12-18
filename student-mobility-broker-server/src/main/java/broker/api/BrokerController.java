@@ -2,6 +2,7 @@ package broker.api;
 
 import broker.ServiceRegistry;
 import broker.domain.BrokerRequest;
+import broker.domain.CourseAuthentication;
 import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
 import broker.exception.NotFoundException;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +28,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,16 +44,26 @@ public class BrokerController {
 
     private final ServiceRegistry serviceRegistry;
     private final RestTemplate restTemplate = new RestTemplate();
-    private Map<String, Object> featureToggles = new HashMap<>();
+    private final Map<String, Object> featureToggles = new HashMap<>();
+    private final URI tokenEndpoint;
+    private final String clientId;
+    private final String secret;
+
     private final ParameterizedTypeReference<Map<String, Object>> mapRef = new ParameterizedTypeReference<Map<String, Object>>() {
     };
 
     public BrokerController(@Value("${config.broker_client_url}") String clientUrl,
                             @Value("${config.start_broker_endpoint}") String startBrokerEndpoint,
+                            @Value("${config.oauth2.token_endpoint}") URI tokenEndpoint,
+                            @Value("${config.oauth2.client_id}") String clientId,
+                            @Value("${config.oauth2.secret}") String secret,
                             @Value("${config.local}") boolean local,
                             @Value("${config.allow_playground}") boolean allowPlayground,
                             ServiceRegistry serviceRegistry) {
         this.clientUrl = clientUrl;
+        this.tokenEndpoint = tokenEndpoint;
+        this.clientId = clientId;
+        this.secret = secret;
         this.serviceRegistry = serviceRegistry;
         this.featureToggles.put("startBrokerEndpoint", startBrokerEndpoint);
         this.featureToggles.put("local", local);
@@ -166,9 +180,38 @@ public class BrokerController {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
-        return restTemplate.getForEntity(String.format("%s/%s",
-                guestInstitution.getCourseEndpoint(),
-                brokerRequest.getOfferingID()), Map.class).getBody();
+        String offeringURI = String.format("%s/%s", guestInstitution.getCourseEndpoint(), brokerRequest.getOfferingID());
+        CourseAuthentication courseAuthentication = guestInstitution.getCourseAuthentication();
+
+        if (courseAuthentication.equals(CourseAuthentication.NONE)) {
+            return restTemplate.getForEntity(offeringURI, Map.class).getBody();
+        } else if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
+            return restTemplate.exchange(offeringURI, HttpMethod.GET, new HttpEntity<>(basicAuthHeaders(guestInstitution)), Map.class).getBody();
+        } else {
+            return restTemplate.exchange(offeringURI, HttpMethod.GET, new HttpEntity<>(accessTokenHeaders()), Map.class).getBody();
+        }
+    }
+
+    private HttpHeaders basicAuthHeaders(Institution institution) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(institution.getCourseAuthenticationUserName(), institution.getCourseAuthenticationPassword());
+        return headers;
+    }
+
+    //we don't cache tokens, as the hit-ratio would be extremely low
+    private HttpHeaders accessTokenHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setBasicAuth(clientId, secret);
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("grant_type", "client_credentials");
+        Map result = restTemplate.exchange(this.tokenEndpoint, HttpMethod.POST, new HttpEntity<>(body, headers), Map.class).getBody();
+        String accessToken = (String) result.get("access_token");
+
+        headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "Bearer " + accessToken);
+        return headers;
     }
 
 }

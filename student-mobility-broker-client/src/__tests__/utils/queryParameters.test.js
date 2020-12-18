@@ -1,6 +1,5 @@
 import {getParameterByName, replaceQueryParameter} from "../../utils/queryParameters";
 
-
 test("getParameterByName", () => {
   const val = getParameterByName("param", "?param=value");
   expect(val).toBe("value");

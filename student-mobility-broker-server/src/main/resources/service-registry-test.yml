@@ -2,6 +2,7 @@
   name: Utrecht University
   abbreviation: UU
   courseEndpoint: http://localhost:8081/offerings
+  courseAuthentication: NONE
   personsEndpoint: http://localhost:8081/persons/me
   authenticationEndpoint:  http://localhost:8081/api/enrollment
   registrationEndpoint: http://localhost:8081/api/start
@@ -13,6 +14,9 @@
   name: Eindhoven University of Technology
   abbreviation: TU/e
   courseEndpoint: http://localhost:8081/offerings
+  courseAuthentication: BASIC
+  courseAuthenticationUserName: user
+  courseAuthenticationPassword: secret
   personsEndpoint: http://localhost:8081/persons/me
   authenticationEndpoint:  http://localhost:8081/api/enrollment
   registrationEndpoint: http://localhost:8081/api/start
@@ -24,6 +28,9 @@
   name: Wageningen University & Research (WUR)
   abbreviation: WUR
   courseEndpoint: http://localhost:8081/offerings
+  courseAuthentication: OAUTH2
+  courseAuthenticationClientId: client
+  courseAuthenticationSecret: secret
   personsEndpoint: http://localhost:8081/persons/me
   authenticationEndpoint:  http://localhost:8081/api/enrollment
   registrationEndpoint: http://localhost:8081/api/start

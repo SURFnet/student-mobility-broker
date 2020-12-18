@@ -2,6 +2,8 @@ package broker.api;
 
 import broker.AbstractIntegrationTest;
 import broker.WireMockExtension;
+import broker.domain.CourseAuthentication;
+import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.filter.session.SessionFilter;
@@ -23,6 +25,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 public class BrokerControllerTest extends AbstractIntegrationTest {
 
@@ -30,11 +33,25 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     WireMockExtension mockServer = new WireMockExtension(8081);
 
     @Test
-    public void broker() throws IOException {
+    public void brokerOfferingNoAuth() throws IOException {
+        happyFlow("utrecht.nl", CourseAuthentication.NONE);
+    }
+
+    @Test
+    public void brokerOfferingBasicAuth() throws IOException {
+        happyFlow("eindhoven.nl", CourseAuthentication.BASIC);
+    }
+
+    @Test
+    public void brokerOfferingAuthOAuth2() throws IOException {
+        happyFlow("wageningen.nl", CourseAuthentication.OAUTH2);
+    }
+
+    private void happyFlow(String guestInstitutionSchacHome, CourseAuthentication courseAuthentication) throws IOException {
         SessionFilter sessionFilter = new SessionFilter();
-        formSubmitByCatalog(sessionFilter);
+        formSubmitByCatalog(sessionFilter, guestInstitutionSchacHome);
         featureToggles();
-        guiGetOffering(sessionFilter);
+        guiGetOffering(sessionFilter, courseAuthentication);
         startRegistration(sessionFilter);
     }
 
@@ -87,22 +104,34 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
 
     }
 
-    private void formSubmitByCatalog(SessionFilter sessionFilter) {
+    private void formSubmitByCatalog(SessionFilter sessionFilter, String guestInstitutionSchacHome) {
         given().redirects().follow(false)
                 .filter(sessionFilter)
                 .when()
                 .param("homeInstitutionSchacHome", "eindhoven.nl")
-                .param("guestInstitutionSchacHome", "utrecht.nl")
+                .param("guestInstitutionSchacHome", guestInstitutionSchacHome)
                 .param("offeringID", "1")
                 .post("/api/broker")
                 .then()
                 .header("Location", "http://localhost:3003?step=approve");
     }
 
-    private void guiGetOffering(SessionFilter sessionFilter) throws IOException {
-        stubFor(get(urlPathMatching("/offerings/1")).willReturn(aResponse()
+    private void guiGetOffering(SessionFilter sessionFilter, CourseAuthentication courseAuthentication) throws IOException {
+        MappingBuilder mappingBuilder = get(urlPathMatching("/offerings/1"));
+
+        if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
+            mappingBuilder = mappingBuilder.withBasicAuth("user", "secret");
+        } else if (courseAuthentication.equals(CourseAuthentication.OAUTH2)) {
+            stubFor(post(urlPathMatching("/oidc/token")).willReturn(aResponse()
+                    .withHeader("Content-type", "application/json")
+                    .withBody("{\"access_token\":\"123456\"}")));
+            mappingBuilder = mappingBuilder.withHeader(AUTHORIZATION, new EqualToPattern("Bearer " + "123456"));
+        }
+
+        stubFor(mappingBuilder.willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
                 .withBody(readFile("data/offering.json"))));
+
         Map<String, Object> result = given()
                 .filter(sessionFilter)
                 .accept(ContentType.JSON)

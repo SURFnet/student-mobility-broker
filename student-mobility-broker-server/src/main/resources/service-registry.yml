@@ -1,7 +1,8 @@
 - schacHome: utrecht.nl
   name: Utrecht University
   abbreviation: UU
-  courseEndpoint: http://localhost:8076/offerings
+  courseEndpoint: http://localhost:8076/none/offerings
+  courseAuthentication: NONE
   personsEndpoint: http://localhost:8076/persons/me
   authenticationEndpoint:  http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
@@ -12,7 +13,10 @@
 - schacHome: eindhoven.nl
   name: Eindhoven University of Technology
   abbreviation: TU/e
-  courseEndpoint: http://localhost:8076/offerings
+  courseEndpoint: http://localhost:8076/basic/offerings
+  courseAuthentication: BASIC
+  courseAuthenticationUserName: user
+  courseAuthenticationPassword: secret
   personsEndpoint: http://localhost:8076/persons/me
   authenticationEndpoint:  http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
@@ -23,7 +27,10 @@
 - schacHome: wageningen.nl
   name: Wageningen University & Research
   abbreviation: WUR
-  courseEndpoint: http://localhost:8076/offerings
+  courseEndpoint: http://localhost:8076/oauth2/offerings
+  courseAuthentication: OAUTH2
+  courseAuthenticationClientId: user
+  courseAuthenticationSecret: secret
   personsEndpoint: http://localhost:8076/persons/me
   authenticationEndpoint:  http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start

@@ -23,6 +23,10 @@ config:
   # Do we allow to mock the different scenario's - only allow on test
   allow_playground: True
   broker_client_url: http://localhost:3003
+  oauth2:
+    token_endpoint: http://localhost:8081/oidc/token
+    client_id: student.mobility.broker.local
+    secret: secret
 
 service_registry:
   path: classpath:/service-registry.yml
