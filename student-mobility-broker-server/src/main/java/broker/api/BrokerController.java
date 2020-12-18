@@ -144,12 +144,11 @@ public class BrokerController {
             return new HashMap<>(correlationMap);
         }
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
-        Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
 
         LOG.debug("Received start registration request for brokerRequest: " + brokerRequest);
 
         try {
-            Map<String, Object> body = doStart(homeInstitution, correlationMap);
+            Map<String, Object> body = doStart(brokerRequest, correlationMap);
 
             LOG.debug("Returning start registration response " + body + " for brokerRequest: " + brokerRequest);
 
@@ -167,12 +166,15 @@ public class BrokerController {
 
     }
 
-    private Map<String, Object> doStart(Institution homeInstitution, Map<String, String> correlationMap) {
+    private Map<String, Object> doStart(BrokerRequest brokerRequest, Map<String, String> correlationMap) {
+        Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
+        Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
         headers.setBasicAuth(homeInstitution.getRegistrationUser(), homeInstitution.getRegistrationPassword());
-
-        HttpEntity<?> requestEntity = new HttpEntity<>(headers);
+        Map<String, Object> offering = fetchOffering(guestInstitution, brokerRequest);
+        HttpEntity<?> requestEntity = new HttpEntity<>(offering, headers);
         String url = homeInstitution.getRegistrationEndpoint().toString();
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, mapRef);
         return responseEntity.getBody();

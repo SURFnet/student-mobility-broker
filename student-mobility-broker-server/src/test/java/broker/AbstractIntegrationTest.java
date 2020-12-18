@@ -26,7 +26,7 @@ public abstract class AbstractIntegrationTest {
         RestAssured.port = port;
     }
 
-    protected String readFile(String path) throws IOException {
+    public static String readFile(String path) throws IOException {
         return IOUtils.toString(new ClassPathResource(path).getInputStream());
     }
 }
