@@ -154,6 +154,7 @@ public class BrokerController {
 
         try {
             Map<String, Object> body = doStart(brokerRequest, offering, correlationMap);
+            request.getSession().invalidate();
 
             LOG.debug("Returning start registration response " + body + " for brokerRequest: " + brokerRequest);
 
@@ -172,11 +173,9 @@ public class BrokerController {
     }
 
     private Map<String, Object> doStart(BrokerRequest brokerRequest, Map<String, Object> offering, Map<String, String> correlationMap) {
-        Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
-        Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
+        Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
         headers.setBasicAuth(homeInstitution.getRegistrationUser(), homeInstitution.getRegistrationPassword());
         HttpEntity<?> requestEntity = new HttpEntity<>(offering, headers);
         String url = homeInstitution.getRegistrationEndpoint().toString();
