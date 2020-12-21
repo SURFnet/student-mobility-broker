@@ -66,6 +66,10 @@ public class Institution implements Serializable {
         institution.name = this.name;
         institution.logoURI = this.logoURI;
         institution.abbreviation = this.abbreviation;
+        institution.courseEndpoint = this.courseEndpoint;
+        institution.personsEndpoint = this.personsEndpoint;
+        institution.registrationEndpoint = this.registrationEndpoint;
+        institution.scopes = this.scopes;
         return institution;
     }
 
