@@ -84,6 +84,19 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void playgroundBroker() throws IOException {
+        given().redirects().follow(false)
+                .when()
+                .param("homeInstitutionSchacHome", "eindhoven.nl")
+                .param("guestInstitutionSchacHome", "utrecht.nl")
+                .param("offeringID", "1")
+                .queryParam("play", true)
+                .post("/api/broker")
+                .then()
+                .header("Location", "http://localhost:3003?step=enroll&name=Johanna&correlationID=1");
+    }
+
+    @Test
     public void exceptionHandlingValidation() throws IOException {
         given().redirects().follow(false)
                 .when()
