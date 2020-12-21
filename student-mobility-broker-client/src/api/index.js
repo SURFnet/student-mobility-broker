@@ -41,6 +41,9 @@ export function startRegistration(body) {
   return fetchJson("/api/start", {method: "POST", body: JSON.stringify(body)});
 }
 
+export function serviceRegistry() {
+  return fetchJson("/api/service-registry");
+}
 
 const formPost = (fields, path) => {
   const form = document.createElement("form");

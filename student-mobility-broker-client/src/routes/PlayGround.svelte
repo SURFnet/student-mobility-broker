@@ -2,9 +2,10 @@
   import {offering} from "../stores/offering";
   import {playground} from "../stores/playground";
   import pressPlay from "../icons/icons-studmob/undraw_press_play_bx2d.svg";
-  import {navigate} from "svelte-routing";
   import Select from 'svelte-select';
   import {onMount} from "svelte";
+  import {broker, serviceRegistry} from "../api";
+  import {config} from "../stores/config";
 
   const responses = [
     {value: 200, label: "200 - All is good"},
@@ -14,18 +15,36 @@
   let redirect;
   let message;
   let response = responses[0];
+  let institutions = [];
 
   onMount(() => {
     playground.reset();
+    serviceRegistry().then(json => {
+      institutions = json.map(o => ({
+        ...o,
+        value: `${o.name} (${o.courseAuthentication.toLowerCase()} authentication)`,
+        label: `${o.name} (${o.courseAuthentication.toLowerCase()} authentication)`
+      }));
+      $offering.homeInstitution = institutions[0];
+      $offering.guestInstitution = institutions[1];
+    });
   });
 
   const start = () => {
     let code = response.value;
     playground.start(code, code === 200 ? redirect : null, code === 500 ? message : null);
-    navigate(`/?step=enroll&name=${encodeURIComponent("Johanna")}&correlationID=1`);
+    broker($offering.homeInstitution.schacHome, $offering.guestInstitution.schacHome, "1", $config.startBrokerEndpoint + "?play=true");
   }
 
   const handleSelect = val => response = val.detail;
+
+  const handleSelectGuestInstitution = val => {
+    $offering.guestInstitution = val.detail;
+  }
+
+  const handleSelectHomeInstitution = val => {
+    $offering.homeInstitution = val.detail;
+  }
 
 </script>
 
@@ -45,11 +64,6 @@
 
     h1 {
       margin-bottom: 40px;
-    }
-
-    h4 {
-      font-weight: bold;
-      font-size: 18px;
     }
 
     p {
@@ -74,12 +88,14 @@
 
     .institution {
       display: flex;
-      align-items: center;
-      align-content: center;
+
+      .institution-detail {
+        flex-grow: 2;
+      }
 
       img {
         width: 110px;
-        margin-left: auto;
+        margin: auto 0 0 25px;
       }
 
     }
@@ -102,16 +118,33 @@
 <div class="container">
     <h1>Mock an enrollment response</h1>
     <div class="institution">
-        <div>
-            <h4>Home institution</h4>
-            <span>{$offering.homeInstitution.name}</span>
+        <div class="institution-detail">
+            <p>Home institution</p>
+            <span class="info">Institution where the user has registered</span>
+            <Select items={institutions}
+                    isSearchable={false}
+                    showIndicator={true}
+                    isClearable={false}
+                    selectedValue={$offering.homeInstitution}
+                    on:select={handleSelectHomeInstitution}/>
+
+            <!--                <span>{$offering.homeInstitution.name}</span>-->
         </div>
         <img src={$offering.homeInstitution.logoURI} alt=""/>
     </div>
     <div class="institution">
-        <div>
-            <h4>Guest institution</h4>
-            <span>{$offering.guestInstitution.name}</span>
+        <div class="institution-detail">
+            <p>Guest institution</p>
+            <span class="info">Institution where the user want to enrol for a  course</span>
+            <Select items={institutions}
+                    isSearchable={false}
+                    showIndicator={true}
+                    isClearable={false}
+                    selectedValue={$offering.guestInstitution}
+                    on:select={handleSelectGuestInstitution}/>
+
+
+            <!--                <span>{$offering.guestInstitution.name}</span>-->
         </div>
         <img src={$offering.guestInstitution.logoURI} alt=""/>
     </div>

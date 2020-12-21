@@ -64,9 +64,12 @@
         {
           code: $playground.code,
           redirect: $playground.redirect,
-          message: $playground.message,
-          correlationID
+          message: $playground.message
         } : {correlationID}
+
+      if ($playground.active) {
+        playground.reset();
+      }
 
       startRegistration(body)
         .then(res => {
@@ -94,8 +97,10 @@
   }
 
   const changeActivity = count => {
-    activity = I18n.t(`offering.progress.${count}`, {abbreviation:
-      count < 3 ? $offering.homeInstitution.abbreviation : $offering.guestInstitution.abbreviation});
+    activity = I18n.t(`offering.progress.${count}`, {
+      abbreviation:
+        count < 3 ? $offering.homeInstitution.abbreviation : $offering.guestInstitution.abbreviation
+    });
     if (count < 5) {
       setTimeout(() => changeActivity(++count), timeoutStep);
     } else {
@@ -236,6 +241,7 @@
   div.landing, div.error {
     display: flex;
     flex-direction: column;
+
     p {
       margin-bottom: 25px;
     }

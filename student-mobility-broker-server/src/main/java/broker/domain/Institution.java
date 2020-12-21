@@ -63,9 +63,11 @@ public class Institution implements Serializable {
 
     public Institution sanitize() {
         Institution institution = new Institution();
+        institution.schacHome = this.schacHome;
         institution.name = this.name;
         institution.logoURI = this.logoURI;
         institution.abbreviation = this.abbreviation;
+        institution.courseAuthentication = this.courseAuthentication;
         return institution;
     }
 

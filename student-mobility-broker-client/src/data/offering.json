@@ -1,13 +1,17 @@
 {
   "homeInstitution": {
+    "schacHome": "utrecht.nl",
     "name": "Utrecht University",
     "abbreviation": "UU",
-    "logoURI": "https://static.surfconext.nl/logos/idp/uu.png"
+    "logoURI": "https://static.surfconext.nl/logos/idp/uu.png",
+    "courseAuthentication": "NONE"
   },
   "guestInstitution": {
+    "schacHome": "eindhoven.nl",
     "name": "Eindhoven University of Technology",
     "abbreviation": "TU/e",
-    "logoURI": "https://static.surfconext.nl/logos/idp/tue.png"
+    "logoURI": "https://static.surfconext.nl/logos/idp/tue.png",
+    "courseAuthentication": "BASIC"
   },
   "offering": {
     "academicSession": {

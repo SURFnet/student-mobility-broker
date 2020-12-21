@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.View;
@@ -75,7 +76,10 @@ public class BrokerController {
      * Endpoint called by the catalog form submit. Give browser-control back to the GUI
      */
     @PostMapping(value = "/api/broker", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public View brokerRequest(HttpServletRequest request, @ModelAttribute BrokerRequest brokerRequest) throws UnsupportedEncodingException {
+    public View brokerRequest(HttpServletRequest request,
+                              @ModelAttribute BrokerRequest brokerRequest,
+                              @RequestParam(value = "play", required = false, defaultValue = "false") boolean play
+    ) throws UnsupportedEncodingException {
         LOG.debug("Starting session for brokerRequest: " + brokerRequest);
         try {
             //we want to fail fast
@@ -89,7 +93,8 @@ public class BrokerController {
         }
         //This establishes a session ID for the client
         request.getSession().setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
-        return new RedirectView(clientUrl + "?step=approve");
+        String queryParams = play ? "?step=enroll&name=Johanna&correlationID=1" : "?step=approve";
+        return new RedirectView(clientUrl + queryParams);
     }
 
     /*
