@@ -113,7 +113,7 @@
             </tr>
             <tr>
                 <td class="icon">{@html places}</td>
-                <td class="value">{I18n.t("offering.places", {nbr: $offering.offering.courseOffering.maxNumberStudents})}</td>
+                <td class="value">{I18n.t("offering.places", {nbr: $offering.offering.maxNumberStudents})}</td>
             </tr>
         </table>
     </div>
