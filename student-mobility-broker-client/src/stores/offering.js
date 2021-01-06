@@ -4,5 +4,6 @@ export const offering = writable({
   homeInstitution: {},
   guestInstitution: {
     abbreviation: "Guest institution"
-  }
+  },
+  offering: {}
 });

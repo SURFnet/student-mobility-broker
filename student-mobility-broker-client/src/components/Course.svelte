@@ -79,23 +79,33 @@
     <div class="course">
         <table>
             <tr>
-                <th class="name">{$offering.offering.name}</th>
-                <th class="logo"><img src={$offering.guestInstitution.logoURI} alt=""/></th>
+                {#if $offering.offering.name}
+                    <th class="name">{$offering.offering.name}</th>
+                {/if}
+                {#if $offering.guestInstitution.logoURI}
+                    <th class="logo"><img src={$offering.guestInstitution.logoURI} alt=""/></th>
+                {/if}
             </tr>
         </table>
         <table class="values">
-            <tr>
-                <td class="icon">{@html ects}</td>
-                <td class="value">{I18n.t("offering.ects", {ects: $offering.offering.course.ects})}</td>
-            </tr>
-            <tr>
-                <td class="icon">{@html pin}</td>
-                <td class="value">{$offering.guestInstitution.name}</td>
-            </tr>
-            <tr>
-                <td class="icon">{@html lang}</td>
-                <td class="value">{I18n.t(`offering.lang.${$offering.offering.mainLanguage}`)}</td>
-            </tr>
+            {#if $offering.offering.course && $offering.offering.course.ects}
+                <tr>
+                    <td class="icon">{@html ects}</td>
+                    <td class="value">{I18n.t("offering.ects", {ects: $offering.offering.course.ects})}</td>
+                </tr>
+            {/if}
+            {#if $offering.guestInstitution.name}
+                <tr>
+                    <td class="icon">{@html pin}</td>
+                    <td class="value">{$offering.guestInstitution.name}</td>
+                </tr>
+            {/if}
+            {#if $offering.offering.mainLanguage}
+                <tr>
+                    <td class="icon">{@html lang}</td>
+                    <td class="value">{I18n.t(`offering.lang.${$offering.offering.mainLanguage}`)}</td>
+                </tr>
+            {/if}
         </table>
         <table>
             <tr>
@@ -103,18 +113,24 @@
             </tr>
         </table>
         <table class="values">
-            <tr>
-                <td class="icon">{@html calendar}</td>
-                <td class="value"><strong>{$offering.offering.academicSession.name}</strong></td>
-            </tr>
-            <tr>
-                <td class="icon">{@html launches}</td>
-                <td class="value">{new Date($offering.offering.academicSession.startDate).toLocaleString("default", formatOptions) }</td>
-            </tr>
-            <tr>
-                <td class="icon">{@html places}</td>
-                <td class="value">{I18n.t("offering.places", {nbr: $offering.offering.maxNumberStudents})}</td>
-            </tr>
+            {#if $offering.offering.academicSession && $offering.offering.academicSession.name}
+                <tr>
+                    <td class="icon">{@html calendar}</td>
+                    <td class="value"><strong>{$offering.offering.academicSession.name}</strong></td>
+                </tr>
+            {/if}
+            {#if $offering.offering.academicSession && $offering.offering.academicSession.startDate}
+                <tr>
+                    <td class="icon">{@html launches}</td>
+                    <td class="value">{new Date($offering.offering.academicSession.startDate).toLocaleString("default", formatOptions) }</td>
+                </tr>
+            {/if}
+            {#if $offering.offering.maxNumberStudents}
+                <tr>
+                    <td class="icon">{@html places}</td>
+                    <td class="value">{I18n.t("offering.places", {nbr: $offering.offering.maxNumberStudents})}</td>
+                </tr>
+            {/if}
         </table>
     </div>
 {/if}
