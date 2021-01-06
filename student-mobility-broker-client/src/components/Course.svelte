@@ -86,7 +86,7 @@
         <table class="values">
             <tr>
                 <td class="icon">{@html ects}</td>
-                <td class="value">{I18n.t("offering.ects", {ects: $offering.offering.resultValueType})}</td>
+                <td class="value">{I18n.t("offering.ects", {ects: $offering.offering.course.ects})}</td>
             </tr>
             <tr>
                 <td class="icon">{@html pin}</td>
