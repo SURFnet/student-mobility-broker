@@ -190,7 +190,7 @@ public class BrokerController {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
-        String uri = String.format("%s/%s?expand=academicSession,courseOffering", guestInstitution.getCourseEndpoint(), brokerRequest.getOfferingID());
+        String uri = String.format("%s/%s?expand=academicSession,course", guestInstitution.getCourseEndpoint(), brokerRequest.getOfferingID());
         CourseAuthentication courseAuthentication = guestInstitution.getCourseAuthentication();
 
         if (courseAuthentication.equals(CourseAuthentication.NONE)) {
