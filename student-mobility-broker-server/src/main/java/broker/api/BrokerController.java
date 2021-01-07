@@ -119,7 +119,7 @@ public class BrokerController {
         Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
 
         Map<String, Object> offering = fetchOffering(guestInstitution, brokerRequest);
-        //Save the offering as we need it when starting  the actual registration
+        //Save the offering as we need it when starting the actual registration
         request.getSession().setAttribute(OFFERING_SESSION_KEY, offering);
 
         EnrollmentRequest enrollmentRequest = new EnrollmentRequest(homeInstitution.getPersonsEndpoint(), homeInstitution.getScopes());
@@ -136,11 +136,7 @@ public class BrokerController {
     private Institution getInstitution(String institutionSchacHome) {
         return serviceRegistry
                 .findInstitutionBySchacHome(institutionSchacHome)
-                .orElseThrow(() -> {
-                    String msg = String.format("Institution %s unknown", institutionSchacHome);
-                    LOG.error(msg);
-                    return new NotFoundException(msg);
-                });
+                .orElseThrow(() -> new NotFoundException(String.format("Institution %s unknown", institutionSchacHome)));
     }
 
     /*
