@@ -20,7 +20,7 @@ public class ServiceRegistryController {
     }
 
     /*
-     * Endpoint called by the GUI to get the feature toggles
+     * Endpoint called by the playground GUI to get all institutions
      */
     @GetMapping(value = "/api/service-registry")
     public List<Institution> serviceRegistry() {

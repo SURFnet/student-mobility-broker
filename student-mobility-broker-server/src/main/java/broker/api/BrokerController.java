@@ -73,7 +73,7 @@ public class BrokerController {
     }
 
     /*
-     * Endpoint called by the catalog form submit. Give browser-control back to the GUI
+     * Endpoint called by the external catalog form submit. Give browser-control back to the GUI
      */
     @PostMapping(value = "/api/broker", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public View brokerRequest(HttpServletRequest request,
@@ -189,6 +189,8 @@ public class BrokerController {
         String uri = String.format("%s/%s?expand=academicSession,course", guestInstitution.getCourseEndpoint(), brokerRequest.getOfferingID());
         CourseAuthentication courseAuthentication = guestInstitution.getCourseAuthentication();
 
+        LOG.debug(String.format("Fetching offering from %s with security %s", uri, courseAuthentication.name()));
+
         if (courseAuthentication.equals(CourseAuthentication.NONE)) {
             return restTemplate.getForEntity(uri, Map.class).getBody();
         } else if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
@@ -211,6 +213,7 @@ public class BrokerController {
         headers.setBasicAuth(clientId, secret);
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "client_credentials");
+        body.add("scope", "openid");
         Map result = restTemplate.exchange(this.tokenEndpoint, HttpMethod.POST, new HttpEntity<>(body, headers), Map.class).getBody();
         String accessToken = (String) result.get("access_token");
 
