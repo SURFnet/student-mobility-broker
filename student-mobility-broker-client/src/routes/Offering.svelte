@@ -7,6 +7,7 @@
   import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg";
   import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg";
   import eduID from "../icons/logo_eduID.svg";
+  import balancer from "../icons/balancer.svg";
 
   import relax from "../icons/icons-studmob/cocktail-glass.svg";
   import highFive from "../icons/icons-studmob/undraw_High_five.svg";
@@ -45,6 +46,7 @@
   let error;
   let landing;
   let loaded = false;
+  let balancing = false;
 
   onMount(() => {
     step = getParameterByName("step");
@@ -112,8 +114,10 @@
   const startAuthentication = () => {
     authentication(
       $offering.enrollmentRequest.personURI,
+      $offering.enrollmentRequest.resultURI,
       $offering.enrollmentRequest.scope,
-      $offering.authenticationActionUrl);
+      $offering.authenticationActionUrl
+    );
   }
 
   const gotoPlay = () => {
@@ -130,7 +134,7 @@
       name: I18n.t("offering.wizard.course"),
       icon: check,
       className: "done",
-      action: gotoPlay
+      action: () => balancing = !balancing
     },
     {
       name: I18n.t("offering.wizard.transfer"),
@@ -237,6 +241,47 @@
     }
 
   }
+
+  div.header {
+    display: flex;
+
+    span.balancer {
+      margin-left: auto;
+      margin-bottom: auto;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    :global(svg) {
+      width: 128px;
+      height: auto;
+    }
+
+    :global(span.balancing svg #rotate-container-left ) {
+      transform-origin: 38% 66%;
+      animation: goup 3s ease infinite;
+    }
+
+    :global(span.balancing svg #rotate-container-right ) {
+      transform-origin: 46% 34%;
+      animation: goup 3s ease infinite;
+    }
+
+    @keyframes goup {
+      0% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(30deg);
+      }
+      100% {
+        transform: rotate(00deg);
+      }
+    }
+
+
+  }
+
 
   div.landing, div.error {
     display: flex;
@@ -398,7 +443,13 @@
     <div class="container">
         <div class="offering">
             {#if !landing && !error }
-                <h2>{I18n.t("offering.title", {abbreviation: $offering.guestInstitution.abbreviation})}</h2>
+                <div class="header">
+                    <h2>{I18n.t("offering.title", {abbreviation: $offering.guestInstitution.abbreviation})}</h2>
+                    {#if $config.allowPlayground}
+                        <span id="balancer" class="balancer" class:balancing={balancing}
+                              on:click={gotoPlay}>{@html balancer}</span>
+                    {/if}
+                </div>
                 <div class="lines">
                     {#each statuses as status}
                         <div class={`line ${status}`}></div>

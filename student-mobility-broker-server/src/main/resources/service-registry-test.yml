@@ -4,6 +4,7 @@
   courseEndpoint: http://localhost:8081/offerings
   courseAuthentication: NONE
   personsEndpoint: http://localhost:8081/persons/me
+  resultsEndpoint: http://localhost:8081/associations/me
   authenticationEndpoint:  http://localhost:8081/api/enrollment
   registrationEndpoint: http://localhost:8081/api/start
   registrationUser: user
@@ -18,6 +19,7 @@
   courseAuthenticationUserName: user
   courseAuthenticationPassword: secret
   personsEndpoint: http://localhost:8081/persons/me
+  resultsEndpoint: http://localhost:8081/associations/me
   authenticationEndpoint:  http://localhost:8081/api/enrollment
   registrationEndpoint: http://localhost:8081/api/start
   registrationUser: user
@@ -30,6 +32,7 @@
   courseEndpoint: http://localhost:8081/offerings
   courseAuthentication: OAUTH2
   personsEndpoint: http://localhost:8081/persons/me
+  resultsEndpoint: http://localhost:8081/associations/me
   authenticationEndpoint:  http://localhost:8081/api/enrollment
   registrationEndpoint: http://localhost:8081/api/start
   registrationUser: user
