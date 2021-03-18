@@ -14,7 +14,7 @@ import java.net.URI;
 public class EnrollmentRequest implements Serializable {
 
     private String personURI;
-    private String resultURI;
+    private String resultsURI;
     private String scope;
 
 }
