@@ -15,7 +15,7 @@ import java.io.IOException;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {
                 "service_registry.path=classpath:/service-registry-test.yml",
-                "sis_results_endpoint=http://localhost:8081/api/play-results"
+                "config.sis_results_endpoint=http://localhost:8081/api/play-results"
         })
 public abstract class AbstractIntegrationTest {
 
