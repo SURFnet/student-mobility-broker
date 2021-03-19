@@ -72,7 +72,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void exceptionHandlingServiceRegistry() throws IOException {
+    public void exceptionHandlingServiceRegistry() {
         given().redirects().follow(false)
                 .when()
                 .param("homeInstitutionSchacHome", "nope")
@@ -84,7 +84,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void playgroundBroker() throws IOException {
+    public void playgroundBroker() {
         given().redirects().follow(false)
                 .when()
                 .param("homeInstitutionSchacHome", "eindhoven.nl")
@@ -97,7 +97,26 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void exceptionHandlingValidation() throws IOException {
+    public void playResults() {
+        Map<String, String> body = new HashMap<>();
+        body.put("X-Correlation-ID", "some");
+        body.put("result", "some");
+        stubFor(post(urlPathMatching("/api/play-results")).willReturn(aResponse()
+                .withHeader("Content-type", "application/json")
+                .withStatus(200)));
+
+        given()
+                .when()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(body)
+                .post("/api/results")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    public void exceptionHandlingValidation() {
         given().redirects().follow(false)
                 .when()
                 .param("offeringID", "1")

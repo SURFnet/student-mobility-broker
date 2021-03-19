@@ -162,7 +162,7 @@ public class BrokerController {
         headers.setBasicAuth(sisUser, sisPassword);
         HttpEntity<?> requestEntity = new HttpEntity<>(Collections.singletonMap("result", correlationMap.get("result")), headers);
         restTemplate.exchange(sisResultsEndpoint, HttpMethod.POST, requestEntity, mapRef);
-        return Collections.singletonMap("result", "oke");
+        return Collections.singletonMap("result", "ok");
     }
 
     /*
