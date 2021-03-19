@@ -15,12 +15,12 @@
   let response = responses[0];
 
   const results = () => {
-    mimicResultsFromSIS($offering.correlationID, response.label).then(() => {
-      debugger;
-      finished = true;
-      $offering.correlationID = null;
-      setTimeout(() => finished = false, 7500);
-    });
+    mimicResultsFromSIS($offering.correlationID, response.label)
+      .then(() => {
+        finished = true;
+        $offering.correlationID = null;
+        setTimeout(() => finished = false, 7500);
+      });
   }
 
   const handleSelect = val => response = val.detail;
@@ -86,7 +86,7 @@
     {#if finished}
         <p>Check your mailbox for a result email.</p>
     {:else}
-        {#if !$offering.correlationID}
+        {#if !$offering.correlationID || $offering.correlationID === "1"}
             <p>In order to mimic the POST results back to the intake-ontvanger-generiek you need to first login and
                 successfully enroll.</p>
         {:else}
