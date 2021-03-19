@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,6 +51,9 @@ public class BrokerController {
     private final URI tokenEndpoint;
     private final String clientId;
     private final String secret;
+    private final String sisUser;
+    private final String sisPassword;
+    private final String sisResultsEndpoint;
 
     private final ParameterizedTypeReference<Map<String, Object>> mapRef = new ParameterizedTypeReference<Map<String, Object>>() {
     };
@@ -59,6 +63,9 @@ public class BrokerController {
                             @Value("${config.oauth2.token_endpoint}") URI tokenEndpoint,
                             @Value("${config.oauth2.client_id}") String clientId,
                             @Value("${config.oauth2.secret}") String secret,
+                            @Value("${config.sis_user}") String sisUser,
+                            @Value("${config.sis_password}") String sisPassword,
+                            @Value("${config.sis_results_endpoint}") String sisResultsEndpoint,
                             @Value("${config.local}") boolean local,
                             @Value("${config.allow_playground}") boolean allowPlayground,
                             ServiceRegistry serviceRegistry) {
@@ -66,6 +73,9 @@ public class BrokerController {
         this.tokenEndpoint = tokenEndpoint;
         this.clientId = clientId;
         this.secret = secret;
+        this.sisUser = sisUser;
+        this.sisPassword = sisPassword;
+        this.sisResultsEndpoint = sisResultsEndpoint;
         this.serviceRegistry = serviceRegistry;
         this.featureToggles.put("startBrokerEndpoint", startBrokerEndpoint);
         this.featureToggles.put("local", local);
@@ -137,6 +147,20 @@ public class BrokerController {
         return serviceRegistry
                 .findInstitutionBySchacHome(institutionSchacHome)
                 .orElseThrow(() -> new NotFoundException(String.format("Institution %s unknown", institutionSchacHome)));
+    }
+
+    /*
+     * Only allowed in playground modus. Proxy and mimic the call that normally the SIS issues to POST back results of
+     * the enrollments to the home institution
+     */
+    @PostMapping("api/results")
+    public Map<String, Object> results(@RequestBody Map<String, String> correlationMap) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
+        headers.setBasicAuth(sisUser, sisPassword);
+        HttpEntity<?> requestEntity = new HttpEntity<>(Collections.singletonMap("result", correlationMap.get("result")), headers);
+        restTemplate.exchange(sisResultsEndpoint, HttpMethod.POST, requestEntity, mapRef);
+        return Collections.singletonMap("result", "oke");
     }
 
     /*

@@ -62,6 +62,7 @@
       changeActivity(1);
       setTimeout(() => start = true, 75);
       const correlationID = getParameterByName("correlationID");
+      $offering.correlationID = correlationID;
       const body = $playground.active ?
         {
           code: $playground.code,
@@ -122,7 +123,7 @@
 
   const gotoPlay = () => {
     if ($config.allowPlayground) {
-      navigate("/play");
+      navigate("/intake");
     }
   }
 
@@ -253,7 +254,7 @@
     }
 
     :global(svg) {
-      width: 128px;
+      width: 98px;
       height: auto;
     }
 

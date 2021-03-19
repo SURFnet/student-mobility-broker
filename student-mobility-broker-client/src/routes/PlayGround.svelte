@@ -1,21 +1,27 @@
 <script>
   import {offering} from "../stores/offering";
   import {playground} from "../stores/playground";
-  import pressPlay from "../icons/icons-studmob/undraw_press_play_bx2d.svg";
-  import Select from 'svelte-select';
   import {onMount} from "svelte";
-  import {broker, serviceRegistry} from "../api";
-  import {config} from "../stores/config";
+  import I18n from "i18n-js";
+  import {serviceRegistry} from "../api";
+  import Intake from "./Intake.svelte";
+  import Results from "./Results.svelte";
+  import {navigate} from "svelte-routing";
 
   const responses = [
     {value: 200, label: "200 - All is good"},
     {value: 500, label: "500 - Not so good"}
   ];
 
-  let redirect;
-  let message;
-  let response = responses[0];
+  export let bookmark = "intake";
+  const tabs = [
+    {name: "intake", component: Intake},
+    {name: "results", component: Results}
+  ];
+  let currentTab = tabs[0];
+
   let institutions = [];
+  let loaded = false;
 
   onMount(() => {
     playground.reset();
@@ -27,24 +33,12 @@
       }));
       $offering.homeInstitution = institutions[0];
       $offering.guestInstitution = institutions[1];
+      currentTab = bookmark ? currentTab = tabs.find(tab => tab.name === bookmark) : tabs[0];
+      loaded = true;
     });
   });
 
-  const start = () => {
-    let code = response.value;
-    playground.start(code, code === 200 ? redirect : null, code === 500 ? message : null);
-    broker($offering.homeInstitution.schacHome, $offering.guestInstitution.schacHome, "1", $config.startBrokerEndpoint + "?play=true");
-  }
-
-  const handleSelect = val => response = val.detail;
-
-  const handleSelectGuestInstitution = val => {
-    $offering.guestInstitution = val.detail;
-  }
-
-  const handleSelectHomeInstitution = val => {
-    $offering.homeInstitution = val.detail;
-  }
+  const switchTab = name => () => navigate(`/${name}`);
 
 </script>
 
@@ -61,107 +55,74 @@
       padding: 0 20px;
     }
 
-
-    h1 {
-      margin-bottom: 40px;
-    }
-
-    p {
-      font-weight: bold;
-      margin-top: 25px;
-      margin-bottom: 2px;
-    }
-
-    span.info {
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-
-    input {
-      border: 1px solid #d8dbdf;
-      border-radius: 3px;
-      height: 42px;
-      padding: 0 16px;
-      font-size: 16px;
-      line-height: 22px;
-    }
-
-    .institution {
+    .tabs {
       display: flex;
 
-      .institution-detail {
-        flex-grow: 2;
+      ul {
+        list-style: none;
+
+        li {
+          display: inline-block;
+        }
       }
 
-      img {
-        width: 110px;
-        margin: auto 0 0 25px;
+      a.back {
+        margin-left: auto;
       }
 
-    }
-
-    .play {
-      display: flex;
-
-      :global(svg) {
-        max-width: 150px;
-        max-height: 150px;
-        margin: 25px 0 50px auto;
+      .tab {
+        flex: 1;
+        padding: 20px 40px;
+        border-top-width: 2px;
+        border-top-style: solid;
         cursor: pointer;
 
+        &:not(.active) {
+          background: #f5f5f5;
+          border-color: #f5f5f5;
+          border-right: 3px solid white;
+
+          h3 {
+            color: #565656;
+          }
+        }
+
+        &.active {
+          background: white;
+          border-color: var(--color-primary-blue);
+
+          h3 {
+            color: var(--color-primary-blue);
+            font-weight: bold;
+          }
+        }
+
+        &:last-child {
+          border-right: none;
+        }
       }
+
     }
+
+
   }
 
 
 </style>
 <div class="container">
-    <h1>Mock an enrollment response</h1>
-    <div class="institution">
-        <div class="institution-detail">
-            <p>Home institution</p>
-            <span class="info">Institution where the user has registered</span>
-            <Select items={institutions}
-                    isSearchable={false}
-                    showIndicator={true}
-                    isClearable={false}
-                    selectedValue={$offering.homeInstitution}
-                    on:select={handleSelectHomeInstitution}/>
-
-            <!--                <span>{$offering.homeInstitution.name}</span>-->
-        </div>
-        <img src={$offering.homeInstitution.logoURI} alt=""/>
+    <div class="tabs">
+        <ul>
+            {#each tabs as tab}
+                <li class="tab" class:active={tab.name === currentTab.name}
+                    on:click={switchTab(tab.name)}>
+                    <h3> {I18n.t(`tabs.${tab.name}`)} </h3>
+                </li>
+            {/each}
+        </ul>
+        <a class="back" href="/">Back to enrollment</a>
     </div>
-    <div class="institution">
-        <div class="institution-detail">
-            <p>Guest institution</p>
-            <span class="info">Institution where the user want to enrol for a  course</span>
-            <Select items={institutions}
-                    isSearchable={false}
-                    showIndicator={true}
-                    isClearable={false}
-                    selectedValue={$offering.guestInstitution}
-                    on:select={handleSelectGuestInstitution}/>
-
-
-            <!--                <span>{$offering.guestInstitution.name}</span>-->
-        </div>
-        <img src={$offering.guestInstitution.logoURI} alt=""/>
-    </div>
-    <p>Response code</p>
-    <span class="info">It's either good or bad</span>
-    <Select items={responses} isSearchable={false} showIndicator={true} isClearable={false}
-            selectedValue={response} on:select={handleSelect}/>
-
-    <p>Redirect</p>
-    <span class="info">Optional and only for a 200 response</span>
-    <input bind:value={redirect} disabled={response.value === 500} on:keyup={e=>e.key==="Enter" && start()}/>
-
-    <p>Message</p>
-    <span class="info">For a 500 response</span>
-    <input bind:value={message} disabled={response.value !== 500} on:keyup={e=>e.key==="Enter" && start()}/>
-    <div class="play" on:click={start}>
-        {@html pressPlay}
+    <div class="component-container">
+        <svelte:component this={currentTab.component} institutions={institutions}/>
     </div>
 </div>
 

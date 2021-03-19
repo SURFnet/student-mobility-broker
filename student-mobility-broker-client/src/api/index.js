@@ -41,6 +41,10 @@ export function startRegistration(body) {
   return fetchJson("/api/start", {method: "POST", body: JSON.stringify(body)});
 }
 
+export function mimicResultsFromSIS(correlationID, result) {
+  return fetchJson("/api/results", {method: "POST", body: JSON.stringify({correlationID, result})});
+}
+
 export function serviceRegistry() {
   return fetchJson("/api/service-registry");
 }

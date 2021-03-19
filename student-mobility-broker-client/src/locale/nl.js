@@ -1,6 +1,11 @@
 import I18n from "i18n-js";
 
 I18n.translations.nl = {
+  tabs: {
+    intake: "Intake",
+    results: "Results",
+  },
+
   offering: {
     title: "Enrol for an elective course at {{abbreviation}}",
     wizard: {

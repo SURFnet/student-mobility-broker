@@ -84,7 +84,12 @@
         <Router url="{url}">
             <Route path="/" component={Offering}/>
             {#if $config.allowPlayground}
-                <Route path="/play" component={PlayGround}/>
+                <Route path="/intake">
+                    <PlayGround bookmark="intake"/>
+                </Route>
+                <Route path="/results">
+                    <PlayGround bookmark="results"/>
+                </Route>
             {/if}
             <Route component={NotFound}/>
         </Router>

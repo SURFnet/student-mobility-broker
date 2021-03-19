@@ -31,7 +31,7 @@ public class BrokerControllerUnitTest {
             "http://localhost",
             new URI("http://localhost"),
             "client",
-            "secret",
+            "secret", "sisUser", "sisPassword", "sisResultsEndpoint",
             false,
             false,
             new InMemoryServiceRegistry(new ClassPathResource("service-registry-test.yml")));
