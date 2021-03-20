@@ -5,7 +5,7 @@
   courseAuthentication: NONE
   personsEndpoint: http://localhost:8081/persons/me
   resultsEndpoint: http://localhost:8081/associations/me
-  authenticationEndpoint:  http://localhost:8081/api/enrollment
+  authenticationEndpoint: http://localhost:8081/api/enrollment
   registrationEndpoint: http://localhost:8081/api/start
   registrationUser: user
   registrationPassword: secret
@@ -20,7 +20,7 @@
   courseAuthenticationPassword: secret
   personsEndpoint: http://localhost:8081/persons/me
   resultsEndpoint: http://localhost:8081/associations/me
-  authenticationEndpoint:  http://localhost:8081/api/enrollment
+  authenticationEndpoint: http://localhost:8081/api/enrollment
   registrationEndpoint: http://localhost:8081/api/start
   registrationUser: user
   registrationPassword: secret
@@ -33,7 +33,7 @@
   courseAuthentication: OAUTH2
   personsEndpoint: http://localhost:8081/persons/me
   resultsEndpoint: http://localhost:8081/associations/me
-  authenticationEndpoint:  http://localhost:8081/api/enrollment
+  authenticationEndpoint: http://localhost:8081/api/enrollment
   registrationEndpoint: http://localhost:8081/api/start
   registrationUser: user
   registrationPassword: secret

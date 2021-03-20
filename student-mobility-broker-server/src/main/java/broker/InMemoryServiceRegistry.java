@@ -1,7 +1,6 @@
 package broker;
 
 import broker.domain.Institution;
-import broker.exception.NotFoundException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;

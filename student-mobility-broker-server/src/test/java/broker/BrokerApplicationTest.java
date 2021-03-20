@@ -1,6 +1,5 @@
 package broker;
 
-import broker.BrokerApplication;
 import org.junit.jupiter.api.Test;
 
 public class BrokerApplicationTest {

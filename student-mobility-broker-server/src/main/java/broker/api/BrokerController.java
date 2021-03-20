@@ -112,7 +112,7 @@ public class BrokerController {
      */
     @GetMapping(value = "/api/features")
     public Map<String, Object> features() {
-    	LOG.debug("Received request for feature toggles.");
+        LOG.debug("Received request for feature toggles.");
         return featureToggles;
     }
 
@@ -145,7 +145,7 @@ public class BrokerController {
     }
 
     private Institution getInstitution(String institutionSchacHome) {
-    	LOG.debug("Lookup institution "+ institutionSchacHome +" in serviceregistry.");
+        LOG.debug("Lookup institution " + institutionSchacHome + " in serviceregistry.");
         return serviceRegistry
                 .findInstitutionBySchacHome(institutionSchacHome)
                 .orElseThrow(() -> new NotFoundException(String.format("Institution %s unknown", institutionSchacHome)));
@@ -221,10 +221,10 @@ public class BrokerController {
             LOG.debug("Fetching " + uri + " without authentication");
             return restTemplate.getForEntity(uri, Map.class).getBody();
         } else if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
-        	LOG.debug("Fetching " + uri + " with basic authentication");
+            LOG.debug("Fetching " + uri + " with basic authentication");
             return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(basicAuthHeaders(guestInstitution)), Map.class).getBody();
         } else {
-        	LOG.debug("Fetching " + uri + " with OAUTH authentication");
+            LOG.debug("Fetching " + uri + " with OAUTH authentication");
             return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(accessTokenHeaders()), Map.class).getBody();
         }
     }
