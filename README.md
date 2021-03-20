@@ -1,6 +1,6 @@
 # student-mobility-broker
-[![Build Status](https://travis-ci.org/SURFnet/student-mobility-broker.svg)](https://travis-ci.org/SURFnet/student-mobility-broker)
-[![codecov.io](https://codecov.io/github/SURFnet/student-mobility-broker/coverage.svg)](https://codecov.io/github/SURFnet/student-mobility-broker)
+[![Build Status](https://github.com/SURFnet/student-mobility-broker/actions/workflows/maven.yml/badge.svg)](https://github.com/SURFnet/student-mobility-broker/actions/workflows/maven.yml/badge.svg)
+[![codecov](https://codecov.io/gh/SURFnet/student-mobility-broker/branch/main/graph/badge.svg)](https://codecov.io/gh/SURFnet/student-mobility-broker)
 
 Broker for educational cross-institution registrations.
 
