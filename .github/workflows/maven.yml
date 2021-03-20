@@ -20,12 +20,12 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Switch to server
-      run: cd ./student-mobility-broker-server
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+      working-directory: ./student-mobility-broker-server
     - name: Codecov
       uses: codecov/codecov-action@v1.3.1
+      working-directory: ./student-mobility-broker-server
 
   client:
 
@@ -36,6 +36,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: cd ./student-mobility-broker-client
       - run: npm install
+        working-directory: ./student-mobility-broker-client
       - run: CI=true npm test
+        working-directory: ./student-mobility-broker-client
