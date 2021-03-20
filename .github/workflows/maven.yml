@@ -37,5 +37,7 @@ jobs:
           node-version: '14'
       - run: npm install
         working-directory: ./student-mobility-broker-client
+      - run: npm run build
+        working-directory: ./student-mobility-broker-client
       - run: CI=true npm test
         working-directory: ./student-mobility-broker-client
