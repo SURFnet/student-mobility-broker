@@ -7,6 +7,7 @@
   import Intake from "./Intake.svelte";
   import Results from "./Results.svelte";
   import {navigate} from "svelte-routing";
+  import Loading from "../components/Loading.svelte";
 
   const responses = [
     {value: 200, label: "200 - All is good"},
@@ -122,7 +123,11 @@
         <a class="back" href="/">Back to enrollment</a>
     </div>
     <div class="component-container">
-        <svelte:component this={currentTab.component} institutions={institutions}/>
+        {#if loaded}
+            <svelte:component this={currentTab.component} institutions={institutions}/>
+        {:else}
+            <Loading/>
+        {/if}
     </div>
 </div>
 
