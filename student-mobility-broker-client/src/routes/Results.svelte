@@ -19,7 +19,7 @@
       .then(() => {
         finished = true;
         $offering.correlationID = null;
-        setTimeout(() => finished = false, 7500);
+        setTimeout(() => finished = false, 7500 * 2);
       });
   }
 
@@ -39,9 +39,13 @@
   }
 
   p {
-    font-weight: bold;
     margin-top: 25px;
     margin-bottom: 2px;
+    font-weight: bold;
+
+    &.note {
+      font-weight: normal;
+    }
   }
 
   span.info {
@@ -87,7 +91,8 @@
         <p>Check your mailbox for a result email.</p>
     {:else}
         {#if !$offering.correlationID || $offering.correlationID === "1"}
-            <p>In order to mimic the POST results back to the intake-ontvanger-generiek you need to first login and
+            <p class="note">In order to mimic the POST results back to the intake-ontvanger-generiek you need to first
+                login and
                 successfully enroll.</p>
         {:else}
 
