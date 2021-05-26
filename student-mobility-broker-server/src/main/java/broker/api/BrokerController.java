@@ -90,7 +90,6 @@ public class BrokerController {
                               @ModelAttribute BrokerRequest brokerRequest,
                               @RequestParam(value = "play", required = false, defaultValue = "false") boolean play
     ) throws UnsupportedEncodingException {
-        LOG.debug("Starting session for brokerRequest: " + brokerRequest);
         try {
             //we want to fail fast
             brokerRequest.validate();
@@ -103,6 +102,9 @@ public class BrokerController {
         }
         //This establishes a session ID for the client
         request.getSession().setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
+
+        LOG.debug(String.format("Started session %s for brokerRequest: %s", request.getSession().getId(), brokerRequest));
+
         String queryParams = play ? "?step=enroll&name=Johanna&correlationID=1" : "?step=approve";
         return new RedirectView(clientUrl + queryParams);
     }
@@ -124,7 +126,8 @@ public class BrokerController {
     public Map<String, Object> offering(HttpServletRequest request) {
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
 
-        LOG.debug("Received request for offering for brokerRequest: " + brokerRequest);
+        LOG.debug(String.format("Received request for offering for brokerRequest %s and session %s",
+                brokerRequest, request.getSession().getId()));
 
         Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
@@ -177,13 +180,15 @@ public class BrokerController {
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
         Map<String, Object> offering = (Map<String, Object>) request.getSession().getAttribute(OFFERING_SESSION_KEY);
 
-        LOG.debug("Received start registration request for brokerRequest: " + brokerRequest);
+        LOG.debug(String.format("Received start registration request for brokerRequest: %s and session: %s",
+                brokerRequest, request.getSession().getId()));
 
         try {
             Map<String, Object> body = doStart(brokerRequest, offering, correlationMap);
             request.getSession().invalidate();
 
-            LOG.debug("Returning start registration response " + body + " for brokerRequest: " + brokerRequest);
+            LOG.debug(String.format("Returning start registration response %s for brokerRequest: %s and session: %s",
+                    body, brokerRequest, request.getSession().getId()));
 
             return body;
         } catch (Exception e) {
