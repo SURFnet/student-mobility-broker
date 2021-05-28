@@ -34,6 +34,8 @@ public class BrokerControllerUnitTest {
             "secret", "sisUser", "sisPassword", "sisResultsEndpoint",
             false,
             false,
+            "utrecht.nl",
+            "eindhoven.nl",
             new InMemoryServiceRegistry(new ClassPathResource("service-registry-test.yml")));
 
     @RegisterExtension

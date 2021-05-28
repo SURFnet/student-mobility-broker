@@ -68,6 +68,8 @@ public class BrokerController {
                             @Value("${config.sis_results_endpoint}") String sisResultsEndpoint,
                             @Value("${config.local}") boolean local,
                             @Value("${config.allow_playground}") boolean allowPlayground,
+                            @Value("${config.play_home_institution_schacHome}") String playHomeInstitutionSchacHome,
+                            @Value("${config.play_guest_institution_schacHome}") String playGuestInstitutionSchacHome,
                             ServiceRegistry serviceRegistry) {
         this.clientUrl = clientUrl;
         this.tokenEndpoint = tokenEndpoint;
@@ -80,6 +82,10 @@ public class BrokerController {
         this.featureToggles.put("startBrokerEndpoint", startBrokerEndpoint);
         this.featureToggles.put("local", local);
         this.featureToggles.put("allowPlayground", allowPlayground);
+        if (allowPlayground) {
+            this.featureToggles.put("playHomeInstitutionSchacHome", playHomeInstitutionSchacHome);
+            this.featureToggles.put("playGuestInstitutionSchacHome", playGuestInstitutionSchacHome);
+        }
     }
 
     /*

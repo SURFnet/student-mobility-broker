@@ -22,6 +22,10 @@ config:
   local: True
   # Do we allow to mock the different scenario's - only allow on test
   allow_playground: True
+  # Default home institution if playground is enabled
+  play_home_institution_schacHome: "utrecht.nl"
+  # Default guest institution if playground is enabled
+  play_guest_institution_schacHome: "eindhoven.nl"
   # The basic authn to mimic the SIS that reports back results - only configure with values on test
   sis_user: sis
   sis_password: secret

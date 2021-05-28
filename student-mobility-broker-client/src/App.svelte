@@ -44,7 +44,7 @@
         loaded = true;
       } else if (!step && !playGround && json.allowPlayground) {
         //Mock the call from catalog to broker to ensure there is a selected offering
-        broker("utrecht.nl", "eindhoven.nl", "1", $config.startBrokerEndpoint);
+        broker($config.playHomeInstitutionSchacHome, $config.playGuestInstitutionSchacHome, "1", $config.startBrokerEndpoint);
       } else if (!playGround && step) {
         selectedOffering()
           .then(json => {
