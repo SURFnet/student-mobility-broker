@@ -1,13 +1,18 @@
 package broker.api;
 
 import broker.ServiceRegistry;
+import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
@@ -29,6 +34,14 @@ public class ServiceRegistryController {
     public List<Institution> serviceRegistry() {
         LOG.debug("Received request for service registry.");
         return serviceRegistry.allInstitutions().stream().map(Institution::sanitize).collect(toList());
+    }
+
+    @PostMapping(value = "/api/validate-service-registry-endpoints")
+    public Map<String, Boolean> validate(@RequestBody EnrollmentRequest enrollmentRequest) {
+        List<Institution> institutions = serviceRegistry.allInstitutions();
+        boolean validResultURI = institutions.stream().anyMatch(institution -> institution.getResultsEndpoint().equals(enrollmentRequest.getResultsURI()));
+        boolean validPersonURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(enrollmentRequest.getPersonURI()));
+        return Collections.singletonMap("valid", validPersonURI && validResultURI);
     }
 
 }
