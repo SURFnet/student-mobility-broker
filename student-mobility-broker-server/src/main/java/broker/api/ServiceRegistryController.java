@@ -38,6 +38,8 @@ public class ServiceRegistryController {
 
     @PostMapping(value = "/api/validate-service-registry-endpoints")
     public Map<String, Boolean> validate(@RequestBody EnrollmentRequest enrollmentRequest) {
+        LOG.debug(String.format("Validating enrollmentRequest with %s", enrollmentRequest));
+
         List<Institution> institutions = serviceRegistry.allInstitutions();
         boolean validResultURI = institutions.stream().anyMatch(institution -> institution.getResultsEndpoint().equals(enrollmentRequest.getResultsURI()));
         boolean validPersonURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(enrollmentRequest.getPersonURI()));
