@@ -56,9 +56,10 @@ I18n.translations.nl = {
   },
   error: {
     info: "This is embarrassing. An error has occurred.",
-    subInfo: "The only information we currently can share with you is <span style='font-style: italic'>{{msg}}</span>.",
+    subInfo: "The only information we currently can share with you is: <span style='font-style: italic'>{{msg}}</span>.",
     surfLink: "Please contact the <a href=\"mailto:student.mobiliteit@surf.nl\">SURF helpdesk</a> for further support.",
-    offering: "The enrollment has been expired"
+    expired: "The enrollment has been expired",
+    offering: "The course information could not be retrieved from {{name}}"
   },
   explanation: {
     title: "How does enrolling work?",

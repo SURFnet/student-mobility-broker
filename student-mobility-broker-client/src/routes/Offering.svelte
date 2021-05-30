@@ -289,7 +289,7 @@
     flex-direction: column;
 
     p {
-      margin-bottom: 25px;
+      margin-bottom: 15px;
     }
   }
 
@@ -492,8 +492,10 @@
                 {:else if error}
                     <div class="error">
                         <p>{I18n.t("error.info")}</p>
+                        <div>
+                            <p>{@html I18n.t("error.subInfo", {msg: error})}</p>
+                        </div>
                         <p>
-                            <span>{@html I18n.t("error.subInfo", {msg: error})}</span>
                             <span>{@html I18n.t("error.surfLink")}</span>
                         </p>
                         <LottiePlayer

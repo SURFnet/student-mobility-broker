@@ -6,6 +6,8 @@ logging:
 
 server:
   port: 8091
+  error:
+    include-message: always
   servlet:
     session:
       cookie:

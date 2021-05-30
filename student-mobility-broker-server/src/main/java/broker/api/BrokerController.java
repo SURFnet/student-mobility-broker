@@ -6,6 +6,7 @@ import broker.domain.CourseAuthentication;
 import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
 import broker.exception.NotFoundException;
+import broker.exception.RemoteException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -131,14 +132,21 @@ public class BrokerController {
     @GetMapping(value = "/api/offering")
     public Map<String, Object> offering(HttpServletRequest request) {
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
-
+        if (brokerRequest == null) {
+            throw new NotFoundException("No broker request in the session");
+        }
         LOG.debug(String.format("Received request for offering for brokerRequest %s and session %s",
                 brokerRequest, request.getSession().getId()));
 
         Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
+        Map<String, Object> offering;
+        try {
+            offering = fetchOffering(guestInstitution, brokerRequest);
+        } catch (RuntimeException e) {
+            throw new RemoteException(homeInstitution.getName());
+        }
 
-        Map<String, Object> offering = fetchOffering(guestInstitution, brokerRequest);
         //Save the offering as we need it when starting the actual registration
         request.getSession().setAttribute(OFFERING_SESSION_KEY, offering);
 

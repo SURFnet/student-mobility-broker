@@ -52,7 +52,13 @@
             loaded = true;
           })
           .catch(e => {
-            window.location.search = replaceQueryParameter("error", I18n.t("error.offering"));
+            if (e.status === 400) {
+              e.json().then(res => {
+                window.location.search = replaceQueryParameter("error", I18n.t("error.offering", {"name": res.message}));
+              });
+            } else {
+              window.location.search = replaceQueryParameter("error", I18n.t("error.expired"));
+            }
           });
       } else if (playGround && json.allowPlayground) {
         $offering = data;
