@@ -7,11 +7,11 @@ I18n.translations.nl = {
   },
 
   offering: {
-    title: "Enrol for an elective course at {{abbreviation}}",
+    title: "Register for a course at {{abbreviation}}",
     wizard: {
       course: "Select course",
       transfer: "Approve transfer",
-      enroll: "Enrol",
+      enroll: "Register",
       relax: "Relax"
     },
     approve: "Approve transfer of personal information",

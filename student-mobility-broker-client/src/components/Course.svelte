@@ -1,7 +1,6 @@
 <script>
   import I18n from "i18n-js";
   import calendar from "../icons/icons-studmob/calendar-1.svg";
-  import places from "../icons/icons-studmob/human-resources-offer-employee.svg";
   import launches from "../icons/icons-studmob/startup-launch.svg";
   import pin from "../icons/icons-studmob/pin.svg";
   import ects from "../icons/icons-studmob/school-book-trophy.svg";
@@ -123,12 +122,6 @@
                 <tr>
                     <td class="icon">{@html launches}</td>
                     <td class="value">{new Date($offering.offering.academicSession.startDate).toLocaleString("default", formatOptions) }</td>
-                </tr>
-            {/if}
-            {#if $offering.offering.maxNumberStudents}
-                <tr>
-                    <td class="icon">{@html places}</td>
-                    <td class="value">{I18n.t("offering.places", {nbr: $offering.offering.maxNumberStudents})}</td>
                 </tr>
             {/if}
         </table>
