@@ -1,8 +1,8 @@
 logging:
   level:
     root: INFO
-    oidc: DEBUG
-    org.springframework.security: DEBUG
+    broker: DEBUG
+    org.springframework.security: INFO
 
 server:
   port: 8091
