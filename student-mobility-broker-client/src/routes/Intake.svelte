@@ -20,7 +20,10 @@
   const start = () => {
     let code = response.value;
     playground.start(code, code === 200 ? redirect : null, code === 500 ? message : null);
-    broker($offering.homeInstitution.schacHome, $offering.guestInstitution.schacHome, "1", $config.startBrokerEndpoint + "?play=true");
+    broker($offering.homeInstitution.schacHome,
+           $offering.guestInstitution.schacHome,
+           $config.offeringID,
+           $config.startBrokerEndpoint + "?play=true");
   }
 
   const handleSelect = val => response = val.detail;
@@ -31,6 +34,10 @@
 
   const handleSelectHomeInstitution = val => {
     $offering.homeInstitution = val.detail;
+  }
+
+  const offeringIDChanged = e => {
+    $config.offeringID = e.target.value;
   }
 
 </script>
@@ -128,6 +135,10 @@
         </div>
         <img src={$offering.guestInstitution.logoURI} alt=""/>
     </div>
+    <p>Offering ID</p>
+    <span class="info">The unique identifier of the cours / offering</span>
+    <input bind:value={$config.offeringID} on:change={offeringIDChanged}/>
+
     <p>Response code</p>
     <span class="info">It's either good or bad</span>
     <Select items={responses} isSearchable={false} showIndicator={true} isClearable={false}

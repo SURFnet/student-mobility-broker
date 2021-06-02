@@ -71,6 +71,7 @@ public class BrokerController {
                             @Value("${config.allow_playground}") boolean allowPlayground,
                             @Value("${config.play_home_institution_schacHome}") String playHomeInstitutionSchacHome,
                             @Value("${config.play_guest_institution_schacHome}") String playGuestInstitutionSchacHome,
+                            @Value("${config.play_offering_id}") String playOfferingID,
                             ServiceRegistry serviceRegistry) {
         this.clientUrl = clientUrl;
         this.tokenEndpoint = tokenEndpoint;
@@ -86,6 +87,7 @@ public class BrokerController {
         if (allowPlayground) {
             this.featureToggles.put("playHomeInstitutionSchacHome", playHomeInstitutionSchacHome);
             this.featureToggles.put("playGuestInstitutionSchacHome", playGuestInstitutionSchacHome);
+            this.featureToggles.put("offeringID", playOfferingID);
         }
     }
 

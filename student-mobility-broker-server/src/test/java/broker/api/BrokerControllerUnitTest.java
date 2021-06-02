@@ -36,6 +36,7 @@ public class BrokerControllerUnitTest {
             false,
             "utrecht.nl",
             "eindhoven.nl",
+            "1",
             new InMemoryServiceRegistry(new ClassPathResource("service-registry-test.yml")));
 
     @RegisterExtension
