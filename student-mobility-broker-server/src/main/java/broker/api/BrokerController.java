@@ -146,7 +146,7 @@ public class BrokerController {
         try {
             offering = fetchOffering(guestInstitution, brokerRequest);
         } catch (RuntimeException e) {
-            throw new RemoteException(homeInstitution.getName());
+            throw new RemoteException(guestInstitution.getName());
         }
 
         //Save the offering as we need it when starting the actual registration
