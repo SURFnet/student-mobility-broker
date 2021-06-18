@@ -38,7 +38,7 @@ I18n.translations.en = {
     homeInstitution: "Your home institution",
     personal : "Your personal information",
     subPersonal: "{{abbreviation}} will request all necessary information for your enrolment at your home institution.",
-    subPersonalGrant: "For this you need to grant {{abbreviation}} permission to do so",
+    subPersonalGrant: "For this you need to grant {{abbreviation}} permission to do so.",
     approveButton: "Approve with eduID",
     ects: "{{ects}} ECTS",
     lang: {
