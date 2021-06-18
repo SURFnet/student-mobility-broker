@@ -157,7 +157,7 @@ public class BrokerController {
         Map<String, Object> result = new HashMap<>();
         result.put("guestInstitution", guestInstitution.sanitize());
         result.put("homeInstitution", homeInstitution.sanitize());
-        result.put("authenticationActionUrl", homeInstitution.getAuthenticationEndpoint());
+        result.put("authenticationActionUrl", guestInstitution.getAuthenticationEndpoint());
         result.put("enrollmentRequest", enrollmentRequest);
         result.put("offering", offering);
         return result;
