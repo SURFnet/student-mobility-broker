@@ -223,10 +223,11 @@ public class BrokerController {
     private Map<String, Object> doStart(BrokerRequest brokerRequest, Map<String, Object> offering, Map<String, String> correlationMap) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
-        Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
-        headers.setBasicAuth(homeInstitution.getRegistrationUser(), homeInstitution.getRegistrationPassword());
+        Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
+        headers.setBasicAuth(guestInstitution.getRegistrationUser(), guestInstitution.getRegistrationPassword());
         HttpEntity<?> requestEntity = new HttpEntity<>(offering, headers);
-        String url = homeInstitution.getRegistrationEndpoint().toString();
+        String url = guestInstitution.getRegistrationEndpoint().toString();
+        LOG.debug(String.format("Start registration by POST-ing to %s", url));
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, mapRef);
         return responseEntity.getBody();
     }
