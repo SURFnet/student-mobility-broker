@@ -580,7 +580,11 @@
                                 <h3>{I18n.t("offering.next")}</h3>
                                 <div class="final-action">
                                     {@html lightBulb}
-                                    <span>{I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                                    {#if result.message}
+                                        <span>{@html result.message}</span>
+                                    {:else}
+                                        <span>{I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                                    {/if}
                                 </div>
                             </div>
                         {/if}
