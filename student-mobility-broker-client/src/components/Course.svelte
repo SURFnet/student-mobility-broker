@@ -78,8 +78,8 @@
     <div class="course">
         <table>
             <tr>
-                {#if $offering.offering.name}
-                    <th class="name">{$offering.offering.name}</th>
+                {#if $offering.offering.course.name}
+                    <th class="name">{$offering.offering.course.name}</th>
                 {/if}
                 {#if $offering.guestInstitution.logoURI}
                     <th class="logo"><img src={$offering.guestInstitution.logoURI} alt=""/></th>
