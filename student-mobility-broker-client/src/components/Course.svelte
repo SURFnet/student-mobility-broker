@@ -78,7 +78,7 @@
     <div class="course">
         <table>
             <tr>
-                {#if $offering.offering.course.name}
+                {#if $offering.offering.course && $offering.offering.course.name}
                     <th class="name">{$offering.offering.course.name}</th>
                 {/if}
                 {#if $offering.guestInstitution.logoURI}
