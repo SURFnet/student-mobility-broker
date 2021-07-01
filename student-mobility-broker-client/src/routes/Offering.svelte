@@ -543,7 +543,7 @@
                                 <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
                                         onClick={startAuthentication}/>
                             </div>
-                        {:else if result && result.code !== 200}
+                        {:else if result && result.code >= 400}
                             <div class="result">
                                 <div class="hero">
                                     {@html moody}
