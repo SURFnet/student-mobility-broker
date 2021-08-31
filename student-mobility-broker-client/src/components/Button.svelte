@@ -22,25 +22,15 @@
     font-weight: bold;
     width: 280px;
 
+    @media (max-width: 780px) {
+      width: 100%;
+    }
+
     &.icon {
       padding: 2px 16px 2px 16px;
       display: flex;
       align-content: center;
       align-items: center;
-    }
-
-    @media (max-width: 780px) {
-      padding: 0 20px;
-      width: 175px;
-
-      &.icon {
-        padding: 10px 20px;
-
-        span.html-icon {
-          display: none;
-        }
-      }
-
     }
 
     &:hover {

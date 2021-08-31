@@ -58,20 +58,3 @@ h3 {
   line-height: 28px;
   font-weight: bold;
 }
-
-@media (max-width: 780px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-
-  thead tr {
-    display: none;
-  }
-
-  td {
-    position: relative;
-    padding: 2px;
-    width: 100% !important;
-  }
-
-}

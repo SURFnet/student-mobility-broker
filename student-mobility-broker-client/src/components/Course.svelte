@@ -6,15 +6,21 @@
   import ects from "../icons/icons-studmob/school-book-trophy.svg";
   import lang from "../icons/icons-studmob/messages-bubble-square-text.svg";
   import {offering} from "../stores/offering";
-
+  export let className = "desktop";
   const formatOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
 
 </script>
 
 <style lang="scss">
 
+  @media (max-width: 780px) {
+    .course.desktop {
+      display: none;
+    }
+  }
 
   .course {
+
     min-width: 50%;
     max-width: 50%;
 
@@ -61,7 +67,7 @@
 
       @media (max-width: 780px) {
         td.value {
-          padding-left: 0;
+          padding-left: 10px;
         }
       }
 
@@ -81,7 +87,7 @@
 
 </style>
 {#if $offering.offering}
-    <div class="course">
+    <div class={`course ${className}`} >
         <table>
             <tr>
                 {#if $offering.offering.course && $offering.offering.course.name}

@@ -5,7 +5,6 @@ I18n.translations.nl = {
     intake: "Intake",
     results: "Results",
   },
-
   offering: {
     title: "Register for a course at {{abbreviation}}",
     wizard: {
@@ -15,6 +14,7 @@ I18n.translations.nl = {
       relax: "Relax"
     },
     approve: "Approve transfer of personal information",
+    enrolled: "You are enrolling for",
     wait: "Please wait while we enrol you {{name}}",
     enrolling: "Enrolling', rolling', rolling... ",
     progress: {
@@ -39,7 +39,12 @@ I18n.translations.nl = {
     next: "What will happen next?",
     receiveMail: "You will receive mail from {{abbreviation}} what the next steps will be.",
     homeInstitution: "Your home institution",
-    personal : "Your personal information",
+    personal : "<b>{{guest}}</b> needs to request all necessary information for your enrollment at <b>{{home}}</b>.",
+    personalBullet1: "Both institutions are controllers of this processing of personal data (read the <a href='{{privacyEndpoint}}' target='_blank'>full privacy statement</a>).",
+    personalBullet2sub1: "Learn exactly what ",
+    personalBullet2sub2: "personal information",
+    personalBullet2sub3: " is requested.",
+    permission: "<b>{{guest}}</b> needs your permission to continue",
     subPersonal: "{{abbreviation}} will request all necessary information for your enrolment at your home institution.",
     subPersonalGrant: "For this you need to grant {{abbreviation}} permission to do so.",
     approveButton: "Approve with eduID",
@@ -58,7 +63,7 @@ I18n.translations.nl = {
   },
   error: {
     info: "This is embarrassing. An error has occurred.",
-    subInfo: "The only information we currently can share with you is: <span style='font-style: italic'>{{msg}}</span>.",
+    subInfo: "The only information we currently can share with you is: <span style='font-style: italic'>{{msg}}</span>",
     surfLink: "Please contact the <a href=\"mailto:student.mobiliteit@surf.nl\">SURF helpdesk</a> for further support.",
     expired: "The enrollment has been expired",
     offering: "The course information could not be retrieved from {{name}}"

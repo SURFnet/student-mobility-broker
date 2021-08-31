@@ -26,6 +26,9 @@ public class Institution implements Serializable {
     //Not secured endpoint where course information can be retrieved
     private URI courseEndpoint;
 
+    //Public endpoint which describes the privacy policy
+    private URI privacyEndpoint;
+
     //Secured endpoint where person information can be retrieved about the authenticated user
     private String personsEndpoint;
 
@@ -69,6 +72,7 @@ public class Institution implements Serializable {
         institution.schacHome = this.schacHome;
         institution.name = this.name;
         institution.logoURI = this.logoURI;
+        institution.privacyEndpoint = this.privacyEndpoint;
         institution.abbreviation = this.abbreviation;
         institution.courseEndpoint = this.courseEndpoint;
         institution.courseAuthentication = this.courseAuthentication;

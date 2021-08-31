@@ -3,6 +3,7 @@
   abbreviation: UU
   courseEndpoint: http://localhost:8081/offerings
   courseAuthentication: NONE
+  privacyEndpoint: https://www.surf.nl/studentmobiliteit
   personsEndpoint: http://localhost:8081/persons/me
   resultsEndpoint: http://localhost:8081/associations/me
   authenticationEndpoint: http://localhost:8081/api/enrollment
@@ -18,6 +19,7 @@
   courseAuthentication: BASIC
   courseAuthenticationUserName: user
   courseAuthenticationPassword: secret
+  privacyEndpoint: https://www.surf.nl/studentmobiliteit
   personsEndpoint: http://localhost:8081/persons/me
   resultsEndpoint: http://localhost:8081/associations/me
   authenticationEndpoint: http://localhost:8081/api/enrollment
@@ -31,6 +33,7 @@
   abbreviation: WUR
   courseEndpoint: http://localhost:8081/offerings
   courseAuthentication: OAUTH2
+  privacyEndpoint: https://www.surf.nl/studentmobiliteit
   personsEndpoint: http://localhost:8081/persons/me
   resultsEndpoint: http://localhost:8081/associations/me
   authenticationEndpoint: http://localhost:8081/api/enrollment

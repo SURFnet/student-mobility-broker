@@ -38,6 +38,7 @@
   }
 
   let title = I18n.t("offering.approve");
+  let subTitle = I18n.t("offering.enrolled");
   let activity = null;
   let step = STEPS.approve;
   let result = null;
@@ -55,10 +56,11 @@
     loaded = true;
     if (error || landing) {
       title = I18n.t("offering.landing");
+      subTitle = I18n.t("offering.landing");
     }
     if (step === STEPS.enroll) {
       const name = getParameterByName("name");
-      title = I18n.t("offering.wait", {name});
+      title = subTitle = I18n.t("offering.wait", {name});
       changeActivity(1);
       setTimeout(() => start = true, 75);
       const correlationID = getParameterByName("correlationID");
@@ -90,13 +92,13 @@
     if (result && isFinished) {
       step = STEPS.finished;
       if (result.redirect) {
-        title = I18n.t("offering.almost");
+        title = subTitle = I18n.t("offering.almost");
       } else if (result.code === 200) {
-        title = I18n.t("offering.done");
+        title = subTitle = I18n.t("offering.done");
       } else if (result.code === 404) {
-        title = I18n.t("offering.error");
+        title = subTitle = I18n.t("offering.error");
       } else {
-        title = I18n.t("offering.error");
+        title = subTitle = I18n.t("offering.error");
       }
     }
   }
@@ -174,8 +176,34 @@
     display: flex;
     flex-direction: column;
 
+    .mobile {
+      display: none;
+    }
+
+
+    @media (max-width: 780px) {
+      :global(div.lottie-player) {
+        width: 100%;
+        margin: auto;
+        height: auto;
+      }
+      div.lottie-container {
+        display: flex;
+        width: 100%;
+      }
+      :global(div.lottie-container div) {
+        width: 100%;
+      }
+    }
+
     @media (max-width: 780px) {
       padding: 0 20px;
+      .desktop {
+        display: none;
+      }
+      .mobile {
+        display: block;
+      }
     }
   }
 
@@ -363,18 +391,6 @@
 
       span {
         margin-bottom: 10px;
-
-        &.label {
-          font-weight: bold;
-        }
-
-        &.last {
-          margin-bottom: 40px;
-        }
-
-        &.personal {
-          font-style: italic;
-        }
       }
 
       .result {
@@ -385,17 +401,10 @@
           margin-bottom: 20px;
         }
 
-        @media (max-width: 780px) {
-          :global(div.lottie-player) {
-            width: 175px;
-            height: auto;
-          }
-
-        }
-
         span.progress {
           padding: 1em 2em;
           text-align: center;
+          margin-top: 40px;
           color: white;
           background: linear-gradient(to left, var(--color-primary-grey) 50%, var(--color-primary-blue) 50%) right;
           background-size: 200%;
@@ -418,12 +427,18 @@
         div.hero {
           margin-bottom: 20px;
 
+          @media (max-width: 780px) {
+            display: flex;
+            width: 100%;
+          }
+
           :global(svg) {
             width: 275px;
             height: auto;
 
             @media (max-width: 780px) {
-              width: 175px;
+              width: 70%;
+              margin: auto;
             }
           }
 
@@ -431,6 +446,7 @@
 
         div.final-action {
           display: flex;
+          align-items: center;
 
           &.error-result {
             flex-direction: column;
@@ -465,8 +481,23 @@
         margin-top: 15px;
         display: flex;
         flex-direction: column;
+
+        @media (max-width: 780px) {
+          margin-top: 0;
+        }
+
+
+        span.last {
+          display: inline-block;
+          margin-bottom: 20px;
+        }
       }
 
+    }
+
+    ul.personals {
+      list-style-type: initial;
+      margin: 10px 0 20px 20px;
     }
   }
 
@@ -498,7 +529,8 @@
                     </div>
                 </div>
             {/if}
-            <h2>{title}</h2>
+            <h2 class="desktop">{title}</h2>
+            <h2 class="mobile">{subTitle}</h2>
             <div class="details">
                 {#if landing}
                     <div class="landing">
@@ -507,18 +539,20 @@
                             <span>{I18n.t("landing.subInfo")}</span>
                             <span>{@html I18n.t("landing.surfLink")}</span>
                         </p>
-                        <LottiePlayer
-                                src={student}
-                                autoplay="{true}"
-                                loop="{true}"
-                                speed={0.5}
-                                controls="{false}"
-                                renderer="svg"
-                                background="transparent"
-                                height="100%"
-                                width="100%"
-                                controlsLayout={null}
-                        />
+                        <div class="lottie-container">
+                            <LottiePlayer
+                                    src={student}
+                                    autoplay="{true}"
+                                    loop="{true}"
+                                    speed={0.5}
+                                    controls="{false}"
+                                    renderer="svg"
+                                    background="transparent"
+                                    height="100%"
+                                    width="100%"
+                                    controlsLayout={null}
+                            />
+                        </div>
                     </div>
                 {:else if error}
                     <div class="error">
@@ -529,48 +563,61 @@
                         <p>
                             <span>{@html I18n.t("error.surfLink")}</span>
                         </p>
-                        <LottiePlayer
-                                src={errorAnimation}
-                                autoplay="{true}"
-                                loop="{true}"
-                                speed={0.8}
-                                controls="{false}"
-                                renderer="svg"
-                                background="transparent"
-                                height="100%"
-                                width="100%"
-                                controlsLayout={null}
-                        />
+                        <div class="lottie-container">
+                            <LottiePlayer
+                                    src={errorAnimation}
+                                    autoplay="{true}"
+                                    loop="{true}"
+                                    speed={0.8}
+                                    controls="{false}"
+                                    renderer="svg"
+                                    background="transparent"
+                                    height="100%"
+                                    width="100%"
+                                    controlsLayout={null}
+                            />
+                        </div>
                     </div>
                 {:else}
-                    <Course/>
+                    <Course className={step === STEPS.approve ? "mobile" : "desktop"}/>
                     <div class="status">
                         {#if step === STEPS.enroll}
                             <div class="result">
-                                <LottiePlayer
-                                        src={scooter}
-                                        autoplay="{true}"
-                                        loop="{true}"
-                                        controls="{false}"
-                                        renderer="svg"
-                                        background="transparent"
-                                        height="{250}"
-                                        width="{250}"
-                                        controlsLayout={null}
-                                />
+                                <div class="lottie-container">
+                                    <LottiePlayer
+                                            src={scooter}
+                                            autoplay="{true}"
+                                            loop="{true}"
+                                            controls="{false}"
+                                            renderer="svg"
+                                            background="transparent"
+                                            height="100%"
+                                            width="100%"
+                                            controlsLayout={null}
+                                    />
+                                </div>
                                 <span class:start class="progress">{I18n.t("offering.enrolling")}</span>
                                 {#if activity}
                                     <span class="activity">{activity}</span>
                                 {/if}
                             </div>
                         {:else if pendingApproval(step)}
+                            <h2 class="mobile">{title}</h2>
                             <div class="no-results">
-                                <span class="label">{I18n.t("offering.homeInstitution")}</span>
-                                <span class="value last">{$offering.homeInstitution.name}</span>
-
-                                <span class="label">{I18n.t("offering.personal")}</span>
-                                <span class="value personal">{I18n.t("offering.subPersonal", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
-                                <span class="value personal last">{I18n.t("offering.subPersonalGrant", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                                <span>{@html I18n.t("offering.personal", {
+                                  guest: $offering.guestInstitution.abbreviation,
+                                  home: $offering.homeInstitution.name
+                                })}</span>
+                                <ul class="personals">
+                                    <li>{@html I18n.t("offering.personalBullet1", {privacyEndpoint: $offering.guestInstitution.privacyEndpoint})}</li>
+                                    <li>
+                                        {@html I18n.t("offering.personalBullet2sub1")}
+                                        <a href="/"
+                                           on:click|preventDefault|stopPropagation={() => true}>{I18n.t("offering.personalBullet2sub2")}</a>
+                                        {@html I18n.t("offering.personalBullet2sub3")}
+                                    </li>
+                                </ul>
+                                <span class="last">{@html I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation})}</span>
                                 <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
                                         onClick={startAuthentication}/>
                             </div>
