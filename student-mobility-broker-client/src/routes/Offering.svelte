@@ -188,12 +188,21 @@
     top: -39px;
     width: 100%;
 
+    @media (max-width: 780px) {
+      top: -30px;
+    }
+
     div.icon-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       z-index: 2;
       background-color: transparent;
+
+      @media (max-width: 780px) {
+        max-width: 80px;
+        text-align: center;
+      }
 
       p {
         font-weight: bold;
@@ -214,6 +223,11 @@
       display: flex;
       z-index: 2;
       position: relative;
+
+      @media (max-width: 780px) {
+        width: 75px;
+        height: 75px;
+      }
 
       span {
         margin: auto;
@@ -302,6 +316,11 @@
     background-color: transparent;
     margin: 70px 0 95px 0;
 
+    @media (max-width: 780px) {
+      padding: 0;
+      margin: 40px 0 120px 0;
+    }
+
     div.line {
       height: 12px;
       width: calc(100% / 3 - 2px);
@@ -322,6 +341,9 @@
 
   .details {
     display: flex;
+    @media (max-width: 780px) {
+      flex-direction: column;
+    }
 
     .status {
       margin-left: auto;
@@ -329,6 +351,13 @@
       flex-direction: column;
       min-width: 40%;
       max-width: 40%;
+
+      @media (max-width: 780px) {
+        margin-left: 0;
+        min-width: 100%;
+        max-width: 100%;
+      }
+
 
       span {
         margin-bottom: 10px;

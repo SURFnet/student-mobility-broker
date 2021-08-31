@@ -17,6 +17,12 @@
   .course {
     min-width: 50%;
     max-width: 50%;
+
+    @media (max-width: 780px) {
+      min-width: 100%;
+      max-width: 100%;
+    }
+
     padding: 25px;
     border: 2px solid var(--color-primary-grey);
 
