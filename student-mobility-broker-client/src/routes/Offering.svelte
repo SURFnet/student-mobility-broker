@@ -93,6 +93,8 @@
         title = I18n.t("offering.almost");
       } else if (result.code === 200) {
         title = I18n.t("offering.done");
+      } else if (result.code === 404) {
+        title = I18n.t("offering.error");
       } else {
         title = I18n.t("offering.error");
       }
@@ -579,8 +581,14 @@
                                 </div>
                                 <h3>{I18n.t("offering.errorTitle", {abbreviation: $offering.guestInstitution.abbreviation})}</h3>
                                 <div class="final-action error-result">
-                                    {#if result.message}
+                                    {#if result.message && result.code !== 404 && result.code !== 409}
                                         <span class="error-message">{@html result.message}</span>
+                                        <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
+                                    {:else if result.code === 404}
+                                        <span class="error-message">{@html I18n.t("offering.notFoundResultErrorMessage", {institution: $offering.homeInstitution.name})}</span>
+                                        <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
+                                    {:else if result.code === 409}
+                                        <span class="error-message">{@html I18n.t("offering.conflictResultErrorMessage", {institution: $offering.homeInstitution.name})}</span>
                                         <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
                                     {:else}
                                         <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>

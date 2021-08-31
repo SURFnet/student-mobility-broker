@@ -19,7 +19,7 @@ function validFetch(path, options) {
   options.headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
-    "Accept-Language": I18n.locale,
+    "Accept-Language": navigator.language //If there ever is a possibility to switch languageI18n.locale,
   };
   return fetch(path, options).then(res => validateResponse(res));
 }

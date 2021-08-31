@@ -1,5 +1,6 @@
 package broker.api;
 
+import broker.LanguageFilter;
 import broker.ServiceRegistry;
 import broker.domain.BrokerRequest;
 import broker.domain.CourseAuthentication;
@@ -14,8 +15,12 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,16 +29,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -89,6 +98,10 @@ public class BrokerController {
             this.featureToggles.put("playGuestInstitutionSchacHome", playGuestInstitutionSchacHome);
             this.featureToggles.put("offeringID", playOfferingID);
         }
+        this.restTemplate.setInterceptors(Collections.singletonList((request, body, execution) -> {
+            request.getHeaders().add("Accept-Language", LanguageFilter.language.get());
+            return execution.execute(request, body);
+        }));
     }
 
     /*
@@ -213,8 +226,14 @@ public class BrokerController {
 
             Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
             Map<String, Object> res = new HashMap<>();
-            res.put("message", String.format("Server error at %s", guestInstitution.getName()));
-            res.put("code", 500);
+            if (e instanceof HttpClientErrorException) {
+                HttpClientErrorException ex = (HttpClientErrorException) e;
+                res.put("message", String.format("Server error at %s", guestInstitution.getName()));
+                res.put("code", ex.getRawStatusCode());
+            } else {
+                res.put("message", String.format("Server error at %s", guestInstitution.getName()));
+                res.put("code", 500);
+            }
             return res;
         }
 
@@ -227,7 +246,9 @@ public class BrokerController {
         headers.setBasicAuth(guestInstitution.getRegistrationUser(), guestInstitution.getRegistrationPassword());
         HttpEntity<?> requestEntity = new HttpEntity<>(offering, headers);
         String url = guestInstitution.getRegistrationEndpoint().toString();
+
         LOG.debug(String.format("Start registration by POST-ing to %s", url));
+
         ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, mapRef);
         return responseEntity.getBody();
     }

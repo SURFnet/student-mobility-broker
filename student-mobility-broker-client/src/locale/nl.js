@@ -28,6 +28,8 @@ I18n.translations.nl = {
     error: "Something went wrong...",
     errorTitle: "Provided details from {{abbreviation}}",
     noResultErrorMessage: "No details were disclosed. Please contact <a href=\"mailto:student.mobiliteit@surf.nl\">student.mobiliteit@surf.nl</a>",
+    notFoundResultErrorMessage: "Your personal information could not be retrieved from {{institution}}",
+    conflictResultErrorMessage: "Your session was lost. Please try again.",
     resultErrorMessage: "Please contact <a href=\"mailto:student.mobiliteit@surf.nl\">student.mobiliteit@surf.nl</a> for help.",
     almost: "Almost there, one more thing!",
     questions: "There are some extra questions",
