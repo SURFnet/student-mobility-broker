@@ -29,6 +29,7 @@
   import Explanations from "../components/Explanations.svelte";
   import Course from "../components/Course.svelte";
   import Loading from "../components/Loading.svelte";
+  import Modal from "../components/Modal.svelte";
 
   const timeoutStep = 1500;
   const STEPS = {
@@ -48,6 +49,7 @@
   let landing;
   let loaded = false;
   let balancing = false;
+  let showModal = false;
 
   onMount(() => {
     step = getParameterByName("step");
@@ -209,6 +211,14 @@
 
   h2 {
     margin: 30px 0;
+  }
+
+  @media (max-width: 780px) {
+    h3 {
+      font-size: 32px;
+      line-height: 34px;
+      font-weight: bold;
+    }
   }
 
   div.icons {
@@ -422,6 +432,10 @@
           max-width: 240px;
           word-break: break-word;
           text-align: center;
+
+          @media (max-width: 780px) {
+            max-width: 100%;
+          }
         }
 
         div.hero {
@@ -456,6 +470,10 @@
             margin-right: 12px;
             width: 66px;
             height: auto;
+          }
+
+          span.final-action-msg {
+            margin: auto 0;
           }
 
           span.error-message {
@@ -494,11 +512,11 @@
       }
 
     }
+  }
 
-    ul.personals {
-      list-style-type: initial;
-      margin: 10px 0 20px 20px;
-    }
+  ul.personals, ul.attributes {
+    list-style-type: initial;
+    margin: 10px 0 20px 20px;
   }
 
 </style>
@@ -613,7 +631,7 @@
                                     <li>
                                         {@html I18n.t("offering.personalBullet2sub1")}
                                         <a href="/"
-                                           on:click|preventDefault|stopPropagation={() => true}>{I18n.t("offering.personalBullet2sub2")}</a>
+                                           on:click|preventDefault|stopPropagation={() => showModal=true}>{I18n.t("offering.personalBullet2sub2")}</a>
                                         {@html I18n.t("offering.personalBullet2sub3")}
                                     </li>
                                 </ul>
@@ -647,7 +665,7 @@
                                 <div class="hero">
                                     {@html questions}
                                 </div>
-                                <h3>{I18n.t("offering.almost")}</h3>
+                                <h3 class="desktop">{I18n.t("offering.almost")}</h3>
                                 <div class="redirect">
                                     <p>{I18n.t("offering.questions")}</p>
                                     <span>{I18n.t("offering.questionsDetail")}</span>
@@ -665,9 +683,9 @@
                                 <div class="final-action">
                                     {@html lightBulb}
                                     {#if result.message}
-                                        <span>{@html result.message}</span>
+                                        <span class="final-action-msg">{@html result.message}</span>
                                     {:else}
-                                        <span>{I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                                        <span class="final-action-msg">{I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
                                     {/if}
                                 </div>
                             </div>
@@ -682,4 +700,17 @@
 {/if}
 {#if pendingApproval(step) || landing || error}
     <Explanations/>
+{/if}
+{#if showModal}
+    <Modal cancel={() => showModal=false}
+           title={I18n.t("modal.title")}>
+        <div>
+            <p>{I18n.t("modal.info")}</p>
+            <ul class="attributes">
+                {#each Object.keys(I18n.translations[I18n.locale].modal.attributes) as key}
+                    <li>{I18n.translations[I18n.locale].modal.attributes[key]}</li>
+                {/each}
+            </ul>
+        </div>
+    </Modal>
 {/if}

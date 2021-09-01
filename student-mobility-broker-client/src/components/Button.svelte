@@ -6,6 +6,7 @@
   export let label;
   export let onClick;
   export let icon;
+  export let small = false;
 
   const handleLinkClick = e => e.key === " " && e.target.click();
 
@@ -26,6 +27,9 @@
       width: 100%;
     }
 
+    &.small {
+      width: 140px;
+    }
     &.icon {
       padding: 2px 16px 2px 16px;
       display: flex;
@@ -48,7 +52,7 @@
 
 </style>
 
-<a class={`button ${className} ${icon ? " icon" : ""}`}
+<a class={`button ${className} ${icon ? " icon" : ""}`} class:small
    class:active={active}
    href="{href}"
    class:disabled={disabled}

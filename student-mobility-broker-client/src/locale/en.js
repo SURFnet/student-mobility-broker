@@ -86,5 +86,27 @@ I18n.translations.en = {
       title: "Sit back and relax",
       subTitle: "All details are now at {{abbreviation}}. They will take it from here and inform you via email."
     }
+  },
+  modal: {
+    title: "Requested personal information",
+    ok: "Close",
+    info: "The following information will be requested to complete your enrollment:",
+    attributes: {
+      names: "First and lastname",
+      title: "Title",
+      dateOfBirth: "Date of birth",
+      placeOfBirth: "Place of birth",
+      countryOfBirth: "Country of birth",
+      nationality: "Nationality",
+      sex: "Sex",
+      proof: "Proof of student",
+      email: "Email address home institution",
+      emailPersonal: "Personal email address",
+      phone: "Phonenumbers",
+      address: "Address",
+      ice: "ICE details",
+      identifier: "Unique identifier"
+
+    }
   }
 };
