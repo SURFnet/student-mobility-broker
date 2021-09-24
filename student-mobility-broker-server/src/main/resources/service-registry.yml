@@ -5,7 +5,7 @@
   courseAuthentication: NONE
   privacyEndpoint: https://www.surf.nl/studentmobiliteit
   personsEndpoint: http://localhost:8076/persons/me
-  personAuthentication: POST
+  personAuthentication: FORM
   resultsEndpoint: http://localhost:8076/associations/me
   authenticationEndpoint: http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
