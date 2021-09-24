@@ -71,7 +71,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(new EnrollmentRequest(
                         "http://localhost:8081/nope",
-                        PersonAuthentication.HEADER,
+                        PersonAuthentication.FORM,
                         "http://localhost:8081/associations/me",
                         "scope"))
                 .when()
