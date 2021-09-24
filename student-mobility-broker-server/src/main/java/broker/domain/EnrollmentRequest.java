@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class EnrollmentRequest implements Serializable {
 
     private String personURI;
+    private PersonAuthentication personAuth;
     private String resultsURI;
     private String scope;
 

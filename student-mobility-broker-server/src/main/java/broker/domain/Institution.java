@@ -32,6 +32,9 @@ public class Institution implements Serializable {
     //Secured endpoint where person information can be retrieved about the authenticated user
     private String personsEndpoint;
 
+    //Authentication method for person endpoint
+    private PersonAuthentication personAuthentication;
+
     //Secured endpoint where the offerings result for a person can be posted to the home institution
     private String resultsEndpoint;
 

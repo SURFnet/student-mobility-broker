@@ -165,7 +165,11 @@ public class BrokerController {
         //Save the offering as we need it when starting the actual registration
         request.getSession().setAttribute(OFFERING_SESSION_KEY, offering);
 
-        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(homeInstitution.getPersonsEndpoint(), homeInstitution.getResultsEndpoint(), homeInstitution.getScopes());
+        EnrollmentRequest enrollmentRequest = new EnrollmentRequest(
+                homeInstitution.getPersonsEndpoint(),
+                homeInstitution.getPersonAuthentication(),
+                homeInstitution.getResultsEndpoint(),
+                homeInstitution.getScopes());
 
         Map<String, Object> result = new HashMap<>();
         result.put("guestInstitution", guestInstitution.sanitize());

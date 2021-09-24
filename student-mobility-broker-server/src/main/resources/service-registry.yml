@@ -5,6 +5,7 @@
   courseAuthentication: NONE
   privacyEndpoint: https://www.surf.nl/studentmobiliteit
   personsEndpoint: http://localhost:8076/persons/me
+  personAuthentication: POST
   resultsEndpoint: http://localhost:8076/associations/me
   authenticationEndpoint: http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
@@ -21,6 +22,7 @@
   courseAuthenticationUserName: user
   courseAuthenticationPassword: secret
   personsEndpoint: http://localhost:8076/persons/me
+  personAuthentication: HEADER
   resultsEndpoint: http://localhost:8076/associations/me
   authenticationEndpoint: http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
@@ -35,6 +37,7 @@
   courseAuthentication: OAUTH2
   privacyEndpoint: https://www.surf.nl/studentmobiliteit
   personsEndpoint: http://localhost:8076/persons/me
+  personAuthentication: HEADER
   resultsEndpoint: http://localhost:8076/associations/me
   authenticationEndpoint: http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start

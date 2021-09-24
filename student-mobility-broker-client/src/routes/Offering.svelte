@@ -121,6 +121,7 @@
   const startAuthentication = () => {
     authentication(
       $offering.enrollmentRequest.personURI,
+      $offering.enrollmentRequest.personAuth,
       $offering.enrollmentRequest.resultsURI,
       $offering.enrollmentRequest.scope,
       $offering.authenticationActionUrl

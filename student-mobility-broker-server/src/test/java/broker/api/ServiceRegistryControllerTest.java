@@ -3,6 +3,7 @@ package broker.api;
 import broker.AbstractIntegrationTest;
 import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
+import broker.domain.PersonAuthentication;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
@@ -54,6 +55,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
                 .accept(ContentType.JSON)
                 .body(new EnrollmentRequest(
                         "http://localhost:8081/persons/me",
+                        PersonAuthentication.HEADER,
                         "http://localhost:8081/associations/me",
                         "scope"))
                 .when()
@@ -69,6 +71,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
                 .contentType(ContentType.JSON)
                 .body(new EnrollmentRequest(
                         "http://localhost:8081/nope",
+                        PersonAuthentication.HEADER,
                         "http://localhost:8081/associations/me",
                         "scope"))
                 .when()
