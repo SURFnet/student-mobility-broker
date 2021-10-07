@@ -114,7 +114,9 @@
             {#if $offering.offering.mainLanguage}
                 <tr>
                     <td class="icon">{@html lang}</td>
-                    <td class="value">{I18n.t(`offering.lang.${$offering.offering.mainLanguage}`)}</td>
+                    <td class="value">{I18n.translations[I18n.locale].offering.lang[$offering.offering.mainLanguage] ?
+                      I18n.t(`offering.lang.${$offering.offering.mainLanguage}`) :
+                      $offering.offering.mainLanguage}</td>
                 </tr>
             {/if}
         </table>
