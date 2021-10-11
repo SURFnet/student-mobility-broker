@@ -52,7 +52,8 @@ I18n.translations.en = {
     lang: {
       "nl-NL" : "Dutch",
       "en-EN" : "English",
-      "en-GB" : "English"
+      "en-GB" : "English",
+      "en-gb" : "English"
     },
     dateTime: "Date & Time",
     places: "{{nbr}} places"
