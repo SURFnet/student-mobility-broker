@@ -671,7 +671,7 @@
                                     <p>{I18n.t("offering.questions")}</p>
                                     <span>{I18n.t("offering.questionsDetail")}</span>
                                     <span>{I18n.t("offering.questionsWhere", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
-                                    <Button onClick={() => window.location.href = result.redirect}
+                                    <Button onClick={() => window.open(result.redirect, "_blank")}
                                             label={I18n.t("offering.goToLMS")}/>
                                 </div>
                             </div>
