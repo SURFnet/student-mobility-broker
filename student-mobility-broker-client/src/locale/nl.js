@@ -22,6 +22,7 @@ I18n.translations.nl = {
       "2": "Processing personal information retrieved from {{abbreviation}}",
       "3": "Processing enrolment at {{abbreviation}}",
       "4": "Finishing your enrolment at {{abbreviation}}",
+      "5": "Finishing your enrolment at {{abbreviation}}",
     },
     done: "Done for now, we'll be in touch",
     landing: "Student Mobility Broker",
