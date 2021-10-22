@@ -11,7 +11,7 @@ Broker for educational cross-institution registrations.
 - Java 8
 - Maven 3
 - Yarn 1.x
-- NodeJS
+- NodeJS 12+
 
 ## [Building and running](#building-and-running)
 
@@ -39,4 +39,3 @@ yarn dev
 ```
 
 Browse to the [application homepage](http://localhost:3003/).
-
