@@ -30,7 +30,7 @@ To build and deploy (the latter requires credentials in your maven settings):
 
 ### [The student-mobility-broker-client](#student-mobility-broker-client)
 
-The client is build with Svetle and to get initially started:
+The client is build with Svelte and to get initially started:
 
 ```
 cd student-mobility-broker-client
