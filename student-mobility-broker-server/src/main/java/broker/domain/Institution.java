@@ -68,6 +68,19 @@ public class Institution implements Serializable {
             Assert.notNull(courseAuthenticationUserName, "courseAuthenticationUserName is required for BASIC authentication");
             Assert.notNull(courseAuthenticationPassword, "courseAuthenticationPassword is required for BASIC authentication");
         }
+        Assert.notNull(name, "name is required");
+        Assert.notNull(abbreviation, "abbreviation is required");
+        Assert.notNull(courseEndpoint, "courseEndpoint is required");
+        Assert.notNull(personsEndpoint, "personsEndpoint is required");
+        Assert.notNull(personAuthentication, "personAuthentication is required");
+        Assert.notNull(resultsEndpoint, "resultsEndpoint is required");
+        Assert.notNull(authenticationEndpoint, "authenticationEndpoint is required");
+        Assert.notNull(registrationEndpoint, "registrationEndpoint is required");
+        Assert.notNull(registrationUser, "registrationUser is required");
+        Assert.notNull(registrationPassword, "registrationPassword is required");
+        Assert.notNull(logoURI, "logoURI is required");
+        Assert.notNull(scopes, "scopes is required");
+        Assert.notNull(privacyEndpoint, "privacyEndpoint is required");
     }
 
     public Institution sanitize() {
