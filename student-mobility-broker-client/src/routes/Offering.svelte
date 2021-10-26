@@ -1,172 +1,172 @@
 <script>
-  import I18n from "i18n-js";
-  import check from "../icons/icons-studmob/Check-narrow.svg";
-  import transfer from "../icons/icons-studmob/data-transfer-check.svg";
-  import transferWhite from "../icons/icons-studmob/data-transfer-check-white.svg";
-  import enroll from "../icons/icons-studmob/official-building-3.svg";
-  import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg";
-  import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg";
-  import eduID from "../icons/logo_eduID.svg";
-  import balancer from "../icons/balancer.svg";
+    import I18n from "i18n-js";
+    import check from "../icons/icons-studmob/Check-narrow.svg";
+    import transfer from "../icons/icons-studmob/data-transfer-check.svg";
+    import transferWhite from "../icons/icons-studmob/data-transfer-check-white.svg";
+    import enroll from "../icons/icons-studmob/official-building-3.svg";
+    import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg";
+    import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg";
+    import eduID from "../icons/logo_eduID.svg";
+    import balancer from "../icons/balancer.svg";
 
-  import relax from "../icons/icons-studmob/cocktail-glass.svg";
-  import highFive from "../icons/icons-studmob/undraw_High_five.svg";
-  import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg";
-  import lightBulb from "../icons/icons-studmob/Lightbulb.svg";
-  import questions from "../icons/icons-studmob/undraw_faq_rjoy.svg";
-  import {offering} from "../stores/offering";
-  import {config} from "../stores/config";
-  import {playground} from "../stores/playground";
-  import {LottiePlayer} from '@lottiefiles/svelte-lottie-player';
-  import scooter from "../lotties/scooter.json";
-  import student from "../lotties/student.json";
-  import errorAnimation from "../lotties/error.json";
-  import {authentication, startRegistration} from "../api";
-  import {onMount} from "svelte";
-  import {getParameterByName} from "../utils/queryParameters";
-  import Button from "../components/Button.svelte";
-  import {navigate} from "svelte-routing";
-  import Explanations from "../components/Explanations.svelte";
-  import Course from "../components/Course.svelte";
-  import Loading from "../components/Loading.svelte";
-  import Modal from "../components/Modal.svelte";
+    import relax from "../icons/icons-studmob/cocktail-glass.svg";
+    import highFive from "../icons/icons-studmob/undraw_High_five.svg";
+    import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg";
+    import lightBulb from "../icons/icons-studmob/Lightbulb.svg";
+    import questions from "../icons/icons-studmob/undraw_faq_rjoy.svg";
+    import {offering} from "../stores/offering";
+    import {config} from "../stores/config";
+    import {playground} from "../stores/playground";
+    import {LottiePlayer} from '@lottiefiles/svelte-lottie-player';
+    import scooter from "../lotties/scooter.json";
+    import student from "../lotties/student.json";
+    import errorAnimation from "../lotties/error.json";
+    import {authentication, startRegistration} from "../api";
+    import {onMount} from "svelte";
+    import {getParameterByName} from "../utils/queryParameters";
+    import Button from "../components/Button.svelte";
+    import {navigate} from "svelte-routing";
+    import Explanations from "../components/Explanations.svelte";
+    import Course from "../components/Course.svelte";
+    import Loading from "../components/Loading.svelte";
+    import Modal from "../components/Modal.svelte";
 
-  const timeoutStep = 1500;
-  const STEPS = {
-    approve: "approve",
-    enroll: "enroll",
-    finished: "finished"
-  }
-
-  let title = I18n.t("offering.approve");
-  let subTitle = I18n.t("offering.enrolled");
-  let activity = null;
-  let step = STEPS.approve;
-  let result = null;
-  let finished = false;
-  let start = false;
-  let error;
-  let landing;
-  let loaded = false;
-  let balancing = false;
-  let showModal = false;
-
-  onMount(() => {
-    step = getParameterByName("step");
-    error = getParameterByName("error");
-    landing = getParameterByName("landing");
-    loaded = true;
-    if (error || landing) {
-      title = I18n.t("offering.landing");
-      subTitle = I18n.t("offering.landing");
+    const timeoutStep = 1500;
+    const STEPS = {
+        approve: "approve",
+        enroll: "enroll",
+        finished: "finished"
     }
-    if (step === STEPS.enroll) {
-      const name = getParameterByName("name");
-      title = subTitle = I18n.t("offering.wait", {name});
-      changeActivity(1);
-      setTimeout(() => start = true, 75);
-      const correlationID = getParameterByName("correlationID");
-      $offering.correlationID = correlationID;
-      const body = $playground.active ?
-        {
-          code: $playground.code,
-          redirect: $playground.redirect,
-          message: $playground.message
-        } : {correlationID}
 
-      if ($playground.active) {
-        playground.reset();
-      }
+    let title = I18n.t("offering.approve");
+    let subTitle = I18n.t("offering.enrolled");
+    let activity = null;
+    let step = STEPS.approve;
+    let result = null;
+    let finished = false;
+    let start = false;
+    let error;
+    let landing;
+    let loaded = false;
+    let balancing = false;
+    let showModal = false;
 
-      startRegistration(body)
-        .then(res => {
-          res.code = parseInt(res.code, 10);
-          invariantState(res, finished);
-        })
-        .catch(e => {
-          invariantState({code: 500, message: e.message}, finished);
-        });
-    }
-  });
+    onMount(() => {
+        step = getParameterByName("step");
+        error = getParameterByName("error");
+        landing = getParameterByName("landing");
+        loaded = true;
+        if (error || landing) {
+            title = I18n.t("offering.landing");
+            subTitle = I18n.t("offering.landing");
+        }
+        if (step === STEPS.enroll) {
+            const name = getParameterByName("name");
+            title = subTitle = I18n.t("offering.wait", {name});
+            changeActivity(1);
+            setTimeout(() => start = true, 75);
+            const correlationID = getParameterByName("correlationID");
+            $offering.correlationID = correlationID;
+            const body = $playground.active ?
+                {
+                    code: $playground.code,
+                    redirect: $playground.redirect,
+                    message: $playground.message
+                } : {correlationID}
 
-  const invariantState = (aResult, isFinished) => {
-    result = aResult || result;
-    if (result && isFinished) {
-      step = STEPS.finished;
-      if (result.redirect) {
-        title = subTitle = I18n.t("offering.almost");
-      } else if (result.code === 200) {
-        title = subTitle = I18n.t("offering.done");
-      } else if (result.code === 404) {
-        title = subTitle = I18n.t("offering.error");
-      } else {
-        title = subTitle = I18n.t("offering.error");
-      }
-    }
-  }
+            if ($playground.active) {
+                playground.reset();
+            }
 
-  const changeActivity = count => {
-    activity = I18n.t(`offering.progress.${count}`, {
-      abbreviation:
-        count < 3 ? $offering.homeInstitution.abbreviation : $offering.guestInstitution.abbreviation
+            startRegistration(body)
+                .then(res => {
+                    res.code = parseInt(res.code, 10);
+                    invariantState(res, finished);
+                })
+                .catch(e => {
+                    invariantState({code: 500, message: e.message}, finished);
+                });
+        }
     });
-    if (count < 5) {
-      setTimeout(() => changeActivity(++count), timeoutStep);
-    } else {
-      finished = true;
-      invariantState(result, true);
+
+    const invariantState = (aResult, isFinished) => {
+        result = aResult || result;
+        if (result && isFinished) {
+            step = STEPS.finished;
+            if (result.redirect) {
+                title = subTitle = I18n.t("offering.almost");
+            } else if (result.code === 200) {
+                title = subTitle = I18n.t("offering.done");
+            } else if (result.code === 404) {
+                title = subTitle = I18n.t("offering.error");
+            } else {
+                title = subTitle = I18n.t("offering.error");
+            }
+        }
     }
-  }
 
-  const startAuthentication = () => {
-    authentication(
-      $offering.enrollmentRequest.personURI,
-      $offering.enrollmentRequest.personAuth,
-      $offering.enrollmentRequest.resultsURI,
-      $offering.enrollmentRequest.scope,
-      $offering.authenticationActionUrl
-    );
-  }
-
-  const gotoPlay = () => {
-    if ($config.allowPlayground) {
-      navigate("/intake");
+    const changeActivity = count => {
+        activity = I18n.t(`offering.progress.${count}`, {
+            abbreviation:
+                count < 3 ? $offering.homeInstitution.abbreviation : $offering.guestInstitution.abbreviation
+        });
+        if (count < 5) {
+            setTimeout(() => changeActivity(++count), timeoutStep);
+        } else {
+            finished = true;
+            invariantState(result, true);
+        }
     }
-  }
 
-  const registrationSuccessful = (currentResult, isFinished) => currentResult && currentResult.code === 200 && !result.redirect && isFinished;
-  const pendingApproval = currentStep => currentStep === STEPS.approve;
-
-  $: icons = [
-    {
-      name: I18n.t("offering.wizard.course"),
-      icon: check,
-      className: "done",
-      action: () => balancing = !balancing
-    },
-    {
-      name: I18n.t("offering.wizard.transfer"),
-      icon: pendingApproval(step) ? transfer : transferWhite,
-      className: pendingApproval(step) ? "current" : "done"
-    },
-    {
-      name: I18n.t("offering.wizard.enroll"),
-      icon: pendingApproval(step) ? enroll : registrationSuccessful(result, finished) ? enrollWhite : enrollBlue,
-      className: pendingApproval(step) ? "todo" : registrationSuccessful(result, finished) ? "done" : "current",
-    },
-    {
-      name: I18n.t("offering.wizard.relax"),
-      icon: relax,
-      className: registrationSuccessful(result, finished) ? "current" : "todo"
+    const startAuthentication = () => {
+        authentication(
+            $offering.enrollmentRequest.personURI,
+            $offering.enrollmentRequest.personAuth,
+            $offering.enrollmentRequest.resultsURI,
+            $offering.enrollmentRequest.scope,
+            $offering.authenticationActionUrl
+        );
     }
-  ];
 
-  $: statuses = [
-    "transparent",
-    "done",
-    pendingApproval(step) ? "todo" : "done",
-    registrationSuccessful(result, finished) ? "done" : "todo"
-  ];
+    const gotoPlay = () => {
+        if ($config.allowPlayground) {
+            navigate("/intake");
+        }
+    }
+
+    const registrationSuccessful = (currentResult, isFinished) => currentResult && currentResult.code === 200 && !result.redirect && isFinished;
+    const pendingApproval = currentStep => currentStep === STEPS.approve;
+
+    $: icons = [
+        {
+            name: I18n.t("offering.wizard.course"),
+            icon: check,
+            className: "done",
+            action: () => balancing = !balancing
+        },
+        {
+            name: I18n.t("offering.wizard.transfer"),
+            icon: pendingApproval(step) ? transfer : transferWhite,
+            className: pendingApproval(step) ? "current" : "done"
+        },
+        {
+            name: I18n.t("offering.wizard.enroll"),
+            icon: pendingApproval(step) ? enroll : registrationSuccessful(result, finished) ? enrollWhite : enrollBlue,
+            className: pendingApproval(step) ? "todo" : registrationSuccessful(result, finished) ? "done" : "current",
+        },
+        {
+            name: I18n.t("offering.wizard.relax"),
+            icon: relax,
+            className: registrationSuccessful(result, finished) ? "current" : "todo"
+        }
+    ];
+
+    $: statuses = [
+        "transparent",
+        "done",
+        pendingApproval(step) ? "todo" : "done",
+        registrationSuccessful(result, finished) ? "done" : "todo"
+    ];
 
 </script>
 
@@ -300,6 +300,10 @@
 
   div.header {
     display: flex;
+
+    a.catalogue {
+      margin-left: auto;
+    }
 
     span.balancer {
       margin-left: auto;
@@ -527,6 +531,7 @@
             {#if !landing && !error }
                 <div class="header">
                     <h2>{I18n.t("offering.title", {abbreviation: $offering.guestInstitution.abbreviation})}</h2>
+                    <a class="catalogue" href={`${$config.catalogUrl}`}>{I18n.t("offering.backToCatalog")}</a>
                     {#if $config.allowPlayground}
                         <span id="balancer" class="balancer" class:balancing={balancing}
                               on:click={gotoPlay}>{@html balancer}</span>
@@ -624,8 +629,8 @@
                             <h2 class="mobile">{title}</h2>
                             <div class="no-results">
                                 <span>{@html I18n.t("offering.personal", {
-                                  guest: $offering.guestInstitution.abbreviation,
-                                  home: $offering.homeInstitution.name
+                                    guest: $offering.guestInstitution.abbreviation,
+                                    home: $offering.homeInstitution.name
                                 })}</span>
                                 <ul class="personals">
                                     <li>{@html I18n.t("offering.personalBullet1", {privacyEndpoint: $offering.guestInstitution.privacyEndpoint})}</li>
