@@ -81,6 +81,7 @@ public class BrokerController {
                             @Value("${config.play_home_institution_schacHome}") String playHomeInstitutionSchacHome,
                             @Value("${config.play_guest_institution_schacHome}") String playGuestInstitutionSchacHome,
                             @Value("${config.play_offering_id}") String playOfferingID,
+                            @Value("${config.catalog_url}") String catalogUrl,
                             ServiceRegistry serviceRegistry) {
         this.clientUrl = clientUrl;
         this.tokenEndpoint = tokenEndpoint;
@@ -93,11 +94,14 @@ public class BrokerController {
         this.featureToggles.put("startBrokerEndpoint", startBrokerEndpoint);
         this.featureToggles.put("local", local);
         this.featureToggles.put("allowPlayground", allowPlayground);
+        this.featureToggles.put("catalogUrl", catalogUrl);
+
         if (allowPlayground) {
             this.featureToggles.put("playHomeInstitutionSchacHome", playHomeInstitutionSchacHome);
             this.featureToggles.put("playGuestInstitutionSchacHome", playGuestInstitutionSchacHome);
             this.featureToggles.put("offeringID", playOfferingID);
         }
+
         this.restTemplate.setInterceptors(Collections.singletonList((request, body, execution) -> {
             request.getHeaders().add("Accept-Language", LanguageFilter.language.get());
             return execution.execute(request, body);

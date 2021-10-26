@@ -57,7 +57,8 @@ I18n.translations.en = {
       "en-gb" : "English"
     },
     dateTime: "Date & Time",
-    places: "{{nbr}} places"
+    places: "{{nbr}} places",
+    backToCatalog: "Back to the education catalogue"
   },
   landing: {
     info: "You have landed on the Student Mobility homepage, where you normally only would land after selecting a course in the education catalogue.",
