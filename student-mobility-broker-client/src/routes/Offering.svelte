@@ -25,6 +25,7 @@
     import {onMount} from "svelte";
     import {getParameterByName} from "../utils/queryParameters";
     import Button from "../components/Button.svelte";
+    import Backarrow from "../icons/backarrow.svg";
     import {navigate} from "svelte-routing";
     import Explanations from "../components/Explanations.svelte";
     import Course from "../components/Course.svelte";
@@ -300,21 +301,28 @@
 
   div.header {
     display: flex;
+    @media (max-width: 780px) {
+      display: block;
+    }
 
-    a.catalogue {
+    :global(.button) {
       margin-left: auto;
+      fill: white;
+      margin-top: 30px;
+      height: 40px;
+      font-size: small;
     }
 
     span.balancer {
       margin-left: auto;
       margin-bottom: auto;
-      margin-top: 10px;
+      margin-top: 30px;
       cursor: pointer;
     }
 
     :global(svg) {
-      width: 98px;
-      height: auto;
+      width: auto;
+      height: 30px;
     }
 
     :global(span.balancing svg #rotate-container-left ) {
@@ -531,7 +539,8 @@
             {#if !landing && !error }
                 <div class="header">
                     <h2>{I18n.t("offering.title", {abbreviation: $offering.guestInstitution.abbreviation})}</h2>
-                    <a class="catalogue" href={`${$config.catalogUrl}`}>{I18n.t("offering.backToCatalog")}</a>
+                    <Button class="catalogue" href={`${$config.catalogUrl}`} label={I18n.t("offering.backToCatalog")} icon={Backarrow}
+                      onClick={() => window.location.href = $config.catalogUrl }/>
                     {#if $config.allowPlayground}
                         <span id="balancer" class="balancer" class:balancing={balancing}
                               on:click={gotoPlay}>{@html balancer}</span>
