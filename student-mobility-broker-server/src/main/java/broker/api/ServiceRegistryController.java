@@ -5,6 +5,7 @@ import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,13 +38,30 @@ public class ServiceRegistryController {
     }
 
     @PostMapping(value = "/api/validate-service-registry-endpoints")
-    public Map<String, Boolean> validate(@RequestBody EnrollmentRequest enrollmentRequest) {
+    public Map<String, Boolean> validate(@RequestBody Map<String, String> enrollmentRequest) {
         LOG.debug(String.format("Validating enrollmentRequest with %s", enrollmentRequest));
 
         List<Institution> institutions = serviceRegistry.allInstitutions();
-        boolean validResultURI = institutions.stream().anyMatch(institution -> institution.getResultsEndpoint().equals(enrollmentRequest.getResultsURI()));
-        boolean validPersonURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(enrollmentRequest.getPersonURI()));
-        return Collections.singletonMap("valid", validPersonURI && validResultURI);
+        boolean validSchacHome = institutions.stream().anyMatch(institution -> institution.getSchacHome().equals(enrollmentRequest.get("homeInstitution")));
+        boolean validPersonURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(enrollmentRequest.get("personURI")));
+
+        boolean validResultURI = true;
+        String resultsURI = enrollmentRequest.get("resultsURI");
+        if (StringUtils.hasText(resultsURI)) {
+            validResultURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(resultsURI));
+        }
+        return Collections.singletonMap("valid", validPersonURI && validSchacHome && validResultURI);
     }
 
+    @PostMapping(value = "/api/results-uri")
+    public Map<String, String> resultsURI(@RequestBody Map<String, String> enrollmentRequest) {
+        LOG.debug(String.format("Returning resultsURI for %s", enrollmentRequest));
+
+        String homeInstitution = enrollmentRequest.get("homeInstitution");
+        Institution institution = serviceRegistry.allInstitutions().stream()
+                .filter(ins -> ins.getSchacHome().equals(homeInstitution))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("No institution found with schacHome:" + homeInstitution));
+        return Collections.singletonMap("resultsURI", institution.getResultsEndpoint());
+    }
 }

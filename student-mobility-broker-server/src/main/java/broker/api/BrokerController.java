@@ -172,7 +172,7 @@ public class BrokerController {
         EnrollmentRequest enrollmentRequest = new EnrollmentRequest(
                 homeInstitution.getPersonsEndpoint(),
                 homeInstitution.getPersonAuthentication(),
-                homeInstitution.getResultsEndpoint(),
+                homeInstitution.getSchacHome(),
                 homeInstitution.getScopes());
 
         Map<String, Object> result = new HashMap<>();
