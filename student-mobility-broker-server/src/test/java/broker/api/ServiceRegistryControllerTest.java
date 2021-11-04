@@ -57,6 +57,25 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
                         "http://localhost:8081/persons/me",
                         PersonAuthentication.HEADER,
                         "http://localhost:8081/associations/me",
+                        "utrecht.nl",
+                        "scope"))
+                .when()
+                .post("/api/validate-service-registry-endpoints")
+                .as(new TypeRef<Map<String, Boolean>>() {
+                });
+        assertTrue(validate.get("valid"));
+    }
+
+    @Test
+    void validateWithoutResultsURI() {
+        Map<String, Boolean> validate = given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(new EnrollmentRequest(
+                        "http://localhost:8081/persons/me",
+                        PersonAuthentication.HEADER,
+                        null,
+                        "utrecht.nl",
                         "scope"))
                 .when()
                 .post("/api/validate-service-registry-endpoints")
@@ -70,14 +89,49 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
         Map<String, Boolean> validate = given()
                 .contentType(ContentType.JSON)
                 .body(new EnrollmentRequest(
-                        "http://localhost:8081/nope",
+                        "http://localhost:8081/persons/me",
                         PersonAuthentication.FORM,
                         "http://localhost:8081/associations/me",
+                        "nope",
                         "scope"))
                 .when()
                 .post("/api/validate-service-registry-endpoints")
                 .as(new TypeRef<Map<String, Boolean>>() {
                 });
         assertFalse(validate.get("valid"));
+    }
+
+    @Test
+    void resultsUri() {
+        Map<String, String> result = given()
+                .contentType(ContentType.JSON)
+                .body(new EnrollmentRequest(
+                        "http://localhost:8081/persons/me",
+                        PersonAuthentication.FORM,
+                        null,
+                        "utrecht.nl",
+                        "scope"))
+                .when()
+                .post("/api/results-uri")
+                .as(new TypeRef<Map<String, String>>() {
+                });
+        assertEquals("http://localhost:8081/associations/me", result.get("resultsURI"));
+    }
+
+    @Test
+    void resultsUriInvalid() {
+        Map<String, String> result = given()
+                .contentType(ContentType.JSON)
+                .body(new EnrollmentRequest(
+                        "http://localhost:8081/persons/me",
+                        PersonAuthentication.FORM,
+                        "http://localhost:8081/associations/me",
+                        "nope",
+                        "scope"))
+                .when()
+                .post("/api/results-uri")
+                .as(new TypeRef<Map<String, String>>() {
+                });
+        assertEquals("500", result.get("status"));
     }
 }

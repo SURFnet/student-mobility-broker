@@ -48,7 +48,7 @@ public class ServiceRegistryController {
         boolean validResultURI = true;
         String resultsURI = enrollmentRequest.get("resultsURI");
         if (StringUtils.hasText(resultsURI)) {
-            validResultURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(resultsURI));
+            validResultURI = institutions.stream().anyMatch(institution -> institution.getResultsEndpoint().equals(resultsURI));
         }
         return Collections.singletonMap("valid", validPersonURI && validSchacHome && validResultURI);
     }

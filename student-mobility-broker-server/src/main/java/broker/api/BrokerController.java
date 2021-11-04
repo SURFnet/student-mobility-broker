@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
@@ -172,6 +173,7 @@ public class BrokerController {
         EnrollmentRequest enrollmentRequest = new EnrollmentRequest(
                 homeInstitution.getPersonsEndpoint(),
                 homeInstitution.getPersonAuthentication(),
+                homeInstitution.getResultsEndpoint(),
                 homeInstitution.getSchacHome(),
                 homeInstitution.getScopes());
 
@@ -228,20 +230,14 @@ public class BrokerController {
                     body, brokerRequest, request.getSession().getId()));
 
             return body;
-        } catch (Exception e) {
+        } catch (HttpStatusCodeException e) {
             //Anti-pattern to catch all, but tolerable in this situation
             LOG.error("Unexpected exception", e);
 
             Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
             Map<String, Object> res = new HashMap<>();
-            if (e instanceof HttpClientErrorException) {
-                HttpClientErrorException ex = (HttpClientErrorException) e;
-                res.put("message", String.format("Server error at %s", guestInstitution.getName()));
-                res.put("code", ex.getRawStatusCode());
-            } else {
-                res.put("message", String.format("Server error at %s", guestInstitution.getName()));
-                res.put("code", 500);
-            }
+            res.put("message", String.format("Server error at %s", guestInstitution.getName()));
+            res.put("code", e.getRawStatusCode());
             return res;
         }
 

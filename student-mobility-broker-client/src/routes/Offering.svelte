@@ -123,6 +123,7 @@
         authentication(
             $offering.enrollmentRequest.personURI,
             $offering.enrollmentRequest.personAuth,
+            $offering.enrollmentRequest.resultsURI,
             $offering.enrollmentRequest.homeInstitution,
             $offering.enrollmentRequest.scope,
             $offering.authenticationActionUrl

@@ -16,11 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,6 +41,37 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     @Test
     public void brokerOfferingAuthOAuth2() throws IOException {
         happyFlow("wageningen.nl", CourseAuthentication.OAUTH2);
+    }
+
+    @Test
+    public void brokerOfferingInvalid() {
+        SessionFilter sessionFilter = new SessionFilter();
+        formSubmitByCatalog(sessionFilter, "utrecht.nl");
+        featureToggles();
+        Map<String, Object> result = guiGetOfferingInvalid(sessionFilter);
+        assertEquals(400, result.get("status"));
+    }
+
+    @Test
+    public void noSession() {
+        Map<String, Object> results = given()
+                .accept(ContentType.JSON)
+                .when()
+                .get("/api/offering")
+                .as(new TypeRef<Map<String, Object>>() {
+                });
+        assertEquals(404, results.get("status"));
+    }
+
+    @Test
+    public void invalidStartRegistration() throws IOException {
+        SessionFilter sessionFilter = new SessionFilter();
+        formSubmitByCatalog(sessionFilter, "utrecht.nl");
+        featureToggles();
+        guiGetOffering(sessionFilter, CourseAuthentication.NONE);
+        Map<String, Object> results = startRegistrationInvalid(sessionFilter);
+        assertEquals(500, results.get("code"));
+
     }
 
     private void happyFlow(String guestInstitutionSchacHome, CourseAuthentication courseAuthentication) throws IOException {
@@ -181,6 +208,19 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         assertEquals("https://eindhoven/api inteken", enrollmentRequest.get("scope"));
     }
 
+    private Map<String, Object> guiGetOfferingInvalid(SessionFilter sessionFilter) {
+        stubFor(get(urlPathMatching("/offerings/1")).willReturn(aResponse()
+                .withStatus(400)));
+
+        return given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/api/offering")
+                .as(new TypeRef<Map<String, Object>>() {
+                });
+    }
+
     private void startRegistration(SessionFilter sessionFilter) throws IOException {
         String correlationID = "123456";
         stubFor(post(urlPathMatching("/api/start"))
@@ -201,5 +241,23 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         assertEquals("ok", result.get("result"));
     }
 
+    private Map<String, Object> startRegistrationInvalid(SessionFilter sessionFilter) throws IOException {
+        String correlationID = "123456";
+        stubFor(post(urlPathMatching("/api/start"))
+                .withHeader("X-Correlation-ID", new EqualToPattern(correlationID))
+                .withBasicAuth("user", "secret")
+                .willReturn(aResponse()
+                        .withStatus(500)));
+
+        return given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .body(Collections.singletonMap("correlationID", correlationID))
+                .when()
+                .post("/api/start")
+                .as(new TypeRef<Map<String, Object>>() {
+                });
+    }
 
 }
