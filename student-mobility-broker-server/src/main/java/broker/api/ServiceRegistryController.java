@@ -42,9 +42,12 @@ public class ServiceRegistryController {
         LOG.debug(String.format("Validating enrollmentRequest with %s", enrollmentRequest));
 
         List<Institution> institutions = serviceRegistry.allInstitutions();
-        boolean validSchacHome = institutions.stream().anyMatch(institution -> institution.getSchacHome().equals(enrollmentRequest.get("homeInstitution")));
         boolean validPersonURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(enrollmentRequest.get("personURI")));
-
+        boolean validSchacHome = true;
+        String homeInstitution = enrollmentRequest.get("homeInstitution");
+        if (StringUtils.hasText(homeInstitution)) {
+            validSchacHome = institutions.stream().anyMatch(institution -> institution.getSchacHome().equals(homeInstitution));
+        }
         boolean validResultURI = true;
         String resultsURI = enrollmentRequest.get("resultsURI");
         if (StringUtils.hasText(resultsURI)) {

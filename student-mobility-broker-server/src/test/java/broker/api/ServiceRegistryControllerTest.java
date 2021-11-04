@@ -67,6 +67,24 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void validateWithoutHomeInstitution() {
+        Map<String, Boolean> validate = given()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(new EnrollmentRequest(
+                        "http://localhost:8081/persons/me",
+                        PersonAuthentication.HEADER,
+                        "http://localhost:8081/associations/me",
+                        null,
+                        "scope"))
+                .when()
+                .post("/api/validate-service-registry-endpoints")
+                .as(new TypeRef<Map<String, Boolean>>() {
+                });
+        assertTrue(validate.get("valid"));
+    }
+
+    @Test
     void validateWithoutResultsURI() {
         Map<String, Boolean> validate = given()
                 .contentType(ContentType.JSON)

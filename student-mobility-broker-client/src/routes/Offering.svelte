@@ -315,7 +315,7 @@
     }
 
     span.balancer {
-      margin-left: auto;
+      margin-left: 15px;
       margin-bottom: auto;
       margin-top: 30px;
       cursor: pointer;
