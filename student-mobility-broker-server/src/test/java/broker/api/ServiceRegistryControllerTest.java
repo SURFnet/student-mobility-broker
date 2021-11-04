@@ -8,15 +8,12 @@ import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
 
@@ -138,18 +135,12 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
 
     @Test
     void resultsUriInvalid() {
-        Map<String, String> result = given()
+        given()
                 .contentType(ContentType.JSON)
-                .body(new EnrollmentRequest(
-                        "http://localhost:8081/persons/me",
-                        PersonAuthentication.FORM,
-                        "http://localhost:8081/associations/me",
-                        "nope",
-                        "scope"))
+                .body(Collections.singletonMap("homeInstitution", "nope"))
                 .when()
                 .post("/api/results-uri")
-                .as(new TypeRef<Map<String, String>>() {
-                });
-        assertEquals("500", result.get("status"));
+                .then()
+                .statusCode(404);
     }
 }

@@ -5,6 +5,8 @@ import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,14 +59,14 @@ public class ServiceRegistryController {
     }
 
     @PostMapping(value = "/api/results-uri")
-    public Map<String, String> resultsURI(@RequestBody Map<String, String> enrollmentRequest) {
+    public ResponseEntity<Map<String, String>> resultsURI(@RequestBody Map<String, String> enrollmentRequest) {
         LOG.debug(String.format("Returning resultsURI for %s", enrollmentRequest));
 
         String homeInstitution = enrollmentRequest.get("homeInstitution");
-        Institution institution = serviceRegistry.allInstitutions().stream()
+        return serviceRegistry.allInstitutions().stream()
                 .filter(ins -> ins.getSchacHome().equals(homeInstitution))
                 .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("No institution found with schacHome:" + homeInstitution));
-        return Collections.singletonMap("resultsURI", institution.getResultsEndpoint());
+                .map(institution -> ResponseEntity.ok(Collections.singletonMap("resultsURI", institution.getResultsEndpoint())))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }
