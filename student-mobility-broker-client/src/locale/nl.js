@@ -28,10 +28,10 @@ I18n.translations.nl = {
     landing: "Student Mobility Broker",
     error: "Something went wrong...",
     errorTitle: "Provided details from {{abbreviation}}",
-    noResultErrorMessage: "No details were disclosed. Please contact <a href=\"mailto:student.mobiliteit@surf.nl\">student.mobiliteit@surf.nl</a>",
+    noResultErrorMessage: "No details were disclosed. See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
     notFoundResultErrorMessage: "Your personal information could not be retrieved from {{institution}}",
     conflictResultErrorMessage: "Your session was lost. Please try again.",
-    resultErrorMessage: "Please contact <a href=\"mailto:student.mobiliteit@surf.nl\">student.mobiliteit@surf.nl</a> for help.",
+    resultErrorMessage: "See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
     almost: "Almost there, one more thing!",
     questions: "There are some extra questions",
     questionsDetail: "To finalise your enrolment for this specific course, some extra questions need to be answered",
@@ -63,12 +63,12 @@ I18n.translations.nl = {
   landing: {
     info: "You have landed on the Student Mobility homepage, where you normally only would land after selecting a course in the education catalogue.",
     subInfo: "We want to make you feel welcome, but unfortunately there is nothing more to show without a course selection. ",
-    surfLink: "For more information check out the <a href=\"https://www.surf.nl/en/eduid\" target=\"_blank\">SURF website</a>."
+    surfLink: "For more information check out the <a href=\"https://eduxchange.nl/\" target=\"_blank\">eduXchange website</a>."
   },
   error: {
     info: "This is embarrassing. An error has occurred.",
     subInfo: "The only information we currently can share with you is: <span style='font-style: italic'>{{msg}}</span>",
-    surfLink: "Please contact the <a href=\"mailto:student.mobiliteit@surf.nl\">SURF helpdesk</a> for further support.",
+    surfLink: "See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
     expired: "The enrollment has been expired",
     offering: "The course information could not be retrieved from {{name}}"
   },
