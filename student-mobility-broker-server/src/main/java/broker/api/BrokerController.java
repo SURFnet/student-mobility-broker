@@ -23,12 +23,8 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
@@ -107,6 +103,12 @@ public class BrokerController {
             request.getHeaders().add("Accept-Language", LanguageFilter.language.get());
             return execution.execute(request, body);
         }));
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        String[] denylist = new String[]{"class.*", "Class.*", "*.class.*", "*.Class.*"};
+        dataBinder.setDisallowedFields(denylist);
     }
 
     /*
