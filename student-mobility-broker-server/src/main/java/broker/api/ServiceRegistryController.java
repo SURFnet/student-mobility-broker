@@ -69,4 +69,16 @@ public class ServiceRegistryController {
                 .map(institution -> ResponseEntity.ok(Collections.singletonMap("resultsURI", institution.getResultsEndpoint())))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
+    @PostMapping(value = "/api/associations-uri")
+    public ResponseEntity<Map<String, String>> associationsURI(@RequestBody Map<String, String> enrollmentRequest) {
+        LOG.debug(String.format("Returning associationsURI for %s", enrollmentRequest));
+
+        String homeInstitution = enrollmentRequest.get("homeInstitution");
+        return serviceRegistry.allInstitutions().stream()
+                .filter(ins -> ins.getSchacHome().equals(homeInstitution))
+                .findAny()
+                .map(institution -> ResponseEntity.ok(Collections.singletonMap("associationsURI", institution.getResultsEndpoint())))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
 }

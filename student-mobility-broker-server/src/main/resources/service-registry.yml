@@ -7,6 +7,7 @@
   personsEndpoint: http://localhost:8076/persons/me
   personAuthentication: FORM
   resultsEndpoint: http://localhost:8076/associations/me
+  associationsEndpoint: http://localhost:8076/associations/external/me
   authenticationEndpoint: http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
@@ -24,6 +25,7 @@
   personsEndpoint: http://localhost:8076/persons/me
   personAuthentication: HEADER
   resultsEndpoint: http://localhost:8076/associations/me
+  associationsEndpoint: http://localhost:8076/associations/external/me
   authenticationEndpoint: http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
@@ -39,6 +41,7 @@
   personsEndpoint: http://localhost:8076/persons/me
   personAuthentication: HEADER
   resultsEndpoint: http://localhost:8076/associations/me
+  associationsEndpoint: http://localhost:8076/associations/external/me
   authenticationEndpoint: http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
