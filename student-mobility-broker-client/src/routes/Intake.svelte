@@ -23,6 +23,7 @@
     broker($offering.homeInstitution.schacHome,
            $offering.guestInstitution.schacHome,
            $config.offeringID,
+           "course",
            $config.startBrokerEndpoint + "?play=true");
   }
 

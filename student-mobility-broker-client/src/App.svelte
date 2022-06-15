@@ -47,6 +47,7 @@
         broker($config.playHomeInstitutionSchacHome,
                $config.playGuestInstitutionSchacHome,
                $config.offeringID,
+               "course",
                $config.startBrokerEndpoint);
       } else if (!playGround && step) {
         selectedOffering()

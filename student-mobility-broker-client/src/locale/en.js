@@ -6,7 +6,11 @@ I18n.translations.en = {
     results: "Results",
   },
   offering: {
-    title: "Register for a course at {{abbreviation}}",
+    title: "Register for a {{type}} at {{abbreviation}}",
+    types: {
+      course: "course",
+      program: "program"
+    },
     wizard: {
       course: "Select course",
       transfer: "Approve transfer",
@@ -49,9 +53,11 @@ I18n.translations.en = {
     subPersonal: "{{abbreviation}} will request all necessary information for your enrolment at your home institution.",
     subPersonalGrant: "For this you need to grant {{abbreviation}} permission to do so.",
     approveButton: "Approve with eduID",
-    ects: "{{ects}} ECTS",
+    studyLoad: "{{value}} {{studyLoadUnit}}",
     lang: {
       "nl-NL" : "Dutch",
+      "nld": "Dutch",
+      "eng": "English",
       "en-EN" : "English",
       "en-GB" : "English",
       "en-gb" : "English"

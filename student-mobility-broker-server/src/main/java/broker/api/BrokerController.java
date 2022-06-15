@@ -117,8 +117,8 @@ public class BrokerController {
     @PostMapping(value = "/api/broker", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public View brokerRequest(HttpServletRequest request,
                               @ModelAttribute BrokerRequest brokerRequest,
-                              @RequestParam(value = "play", required = false, defaultValue = "false") boolean play
-    ) throws UnsupportedEncodingException {
+                              @RequestParam(value = "play", required = false, defaultValue = "false") boolean play)
+            throws UnsupportedEncodingException {
         try {
             //we want to fail fast
             brokerRequest.validate();
@@ -261,7 +261,10 @@ public class BrokerController {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
-        String uri = String.format("%s/%s?expand=academicSession,course", guestInstitution.getCourseEndpoint(), brokerRequest.getOfferingID());
+        String uri = String.format("%s/%s?expand=academicSession,%s",
+                guestInstitution.getCourseEndpoint(),
+                brokerRequest.getOfferingID(),
+                brokerRequest.getType());
         CourseAuthentication courseAuthentication = guestInstitution.getCourseAuthentication();
 
         LOG.debug(String.format("Fetching offering from %s with security %s", uri, courseAuthentication.name()));

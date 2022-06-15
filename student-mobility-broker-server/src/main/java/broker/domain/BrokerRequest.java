@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 
@@ -18,10 +19,14 @@ public class BrokerRequest implements Serializable {
     private String homeInstitutionSchacHome;
     private String guestInstitutionSchacHome;
     private String offeringID;
+    private String type;
 
     public void validate() {
         Assert.notNull(homeInstitutionSchacHome, "homeInstitutionSchacHome is required");
         Assert.notNull(guestInstitutionSchacHome, "guestInstitutionSchacHome is required");
         Assert.notNull(offeringID, "offeringID is required");
+        if (!StringUtils.hasText(type)) {
+            type = "course";
+        }
     }
 }

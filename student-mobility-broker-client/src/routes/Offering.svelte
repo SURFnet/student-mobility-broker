@@ -539,9 +539,15 @@
         <div class="offering">
             {#if !landing && !error }
                 <div class="header">
-                    <h2>{I18n.t("offering.title", {abbreviation: $offering.guestInstitution.abbreviation})}</h2>
-                    <Button class="catalogue" href={`${$config.catalogUrl}`} label={I18n.t("offering.backToCatalog")} icon={Backarrow}
-                      onClick={() => window.location.href = $config.catalogUrl }/>
+                    <h2>{I18n.t("offering.title", {
+                        type: I18n.t(`offering.types.${$offering.offering.offeringType}`),
+                        abbreviation: $offering.guestInstitution.abbreviation
+                    })}</h2>
+                    <Button class="catalogue"
+                            href={`${$config.catalogUrl}`}
+                            label={I18n.t("offering.backToCatalog")}
+                            icon={Backarrow}
+                            onClick={() => window.location.href = $config.catalogUrl }/>
                     {#if $config.allowPlayground}
                         <span id="balancer" class="balancer" class:balancing={balancing}
                               on:click={gotoPlay}>{@html balancer}</span>

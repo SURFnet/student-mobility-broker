@@ -105,6 +105,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("homeInstitutionSchacHome", "nope")
                 .param("guestInstitutionSchacHome", "nope")
                 .param("offeringID", "1")
+                .param("type", "course")
                 .post("/api/broker")
                 .then()
                 .header("Location", "http://localhost:3003?error=Institution+nope+unknown");
@@ -117,6 +118,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("homeInstitutionSchacHome", "eindhoven.nl")
                 .param("guestInstitutionSchacHome", "utrecht.nl")
                 .param("offeringID", "1")
+                .param("type", "course")
                 .queryParam("play", true)
                 .post("/api/broker")
                 .then()
@@ -170,6 +172,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("homeInstitutionSchacHome", "eindhoven.nl")
                 .param("guestInstitutionSchacHome", guestInstitutionSchacHome)
                 .param("offeringID", "1")
+                .param("type", "course")
                 .post("/api/broker")
                 .then()
                 .header("Location", "http://localhost:3003?step=approve");
