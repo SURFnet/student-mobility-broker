@@ -6,5 +6,6 @@ export const offering = writable({
     abbreviation: "Guest institution"
   },
   offering: {},
-  correlationID: ""
+  correlationID: "",
+  associationId: null
 });

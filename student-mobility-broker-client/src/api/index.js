@@ -41,8 +41,12 @@ export function startRegistration(body) {
   return fetchJson("/api/start", {method: "POST", body: JSON.stringify(body)});
 }
 
-export function mimicResultsFromSIS(correlationID, result) {
+export function newAssociationPlayground(correlationID, result) {
   return fetchJson("/api/results", {method: "POST", body: JSON.stringify({correlationID, result})});
+}
+
+export function updateAssociationPlayground(correlationID, result, associationId) {
+  return fetchJson("/api/results", {method: "POST", body: JSON.stringify({correlationID, result, associationId})});
 }
 
 export function serviceRegistry() {

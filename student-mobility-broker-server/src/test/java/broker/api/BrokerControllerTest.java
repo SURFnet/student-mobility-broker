@@ -131,6 +131,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         body.put("X-Correlation-ID", "some");
         body.put("result", "some");
         stubFor(post(urlPathMatching("/api/play-results")).willReturn(aResponse()
+                .withBody("{\"result\":\"ok\"}")
                 .withHeader("Content-type", "application/json")
                 .withStatus(200)));
 
@@ -141,7 +142,8 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .body(body)
                 .post("/api/results")
                 .then()
-                .statusCode(200);
+                .statusCode(200)
+                .body("result", equalTo("ok"));
     }
 
     @Test

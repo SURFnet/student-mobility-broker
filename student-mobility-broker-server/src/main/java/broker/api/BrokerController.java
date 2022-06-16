@@ -12,34 +12,22 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestExecution;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -199,14 +187,13 @@ public class BrokerController {
      * Only allowed in playground modus. Proxy and mimic the call that normally the SIS issues to POST back results of
      * the enrollments to the home institution
      */
-    @PostMapping("api/results")
-    public Map<String, Object> results(@RequestBody Map<String, String> correlationMap) {
+    @PostMapping("/api/results")
+    public ResponseEntity<Map<String, Object>> results(@RequestBody Map<String, String> correlationMap) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
         headers.setBasicAuth(sisUser, sisPassword);
-        HttpEntity<?> requestEntity = new HttpEntity<>(Collections.singletonMap("result", correlationMap.get("result")), headers);
-        restTemplate.exchange(sisResultsEndpoint, HttpMethod.POST, requestEntity, mapRef);
-        return Collections.singletonMap("result", "ok");
+        HttpEntity<?> requestEntity = new HttpEntity<>(correlationMap, headers);
+        return restTemplate.exchange(sisResultsEndpoint, HttpMethod.POST, requestEntity, mapRef);
     }
 
     /*
