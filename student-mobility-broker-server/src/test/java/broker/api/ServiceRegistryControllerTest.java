@@ -120,12 +120,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
     void associationsURI() {
         Map<String, String> result = given()
                 .contentType(ContentType.JSON)
-                .body(new EnrollmentRequest(
-                        "http://localhost:8081/persons/me",
-                        PersonAuthentication.FORM,
-                        null,
-                        "utrecht.nl",
-                        "scope"))
+                .body(Collections.singletonMap("homeInstitution","utrecht.nl"))
                 .when()
                 .post("/api/associations-uri")
                 .as(new TypeRef<Map<String, String>>() {
@@ -137,9 +132,32 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
     void associationsURIInvalid() {
         given()
                 .contentType(ContentType.JSON)
-                .body(Collections.singletonMap("homeInstitution", "nope"))
+                .body(Collections.singletonMap("homeInstitution","nope"))
                 .when()
                 .post("/api/associations-uri")
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    void personsURI() {
+        Map<String, String> result = given()
+                .contentType(ContentType.JSON)
+                .body(Collections.singletonMap("homeInstitution","utrecht.nl"))
+                .when()
+                .post("/api/persons-uri")
+                .as(new TypeRef<Map<String, String>>() {
+                });
+        assertEquals("http://localhost:8081/person/me", result.get("personsURI"));
+    }
+
+    @Test
+    void personsURIInvalid() {
+        given()
+                .contentType(ContentType.JSON)
+                .body(Collections.singletonMap("homeInstitution", "nope"))
+                .when()
+                .post("/api/persons-uri")
                 .then()
                 .statusCode(404);
     }
