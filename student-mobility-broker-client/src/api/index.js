@@ -64,8 +64,8 @@ const formPost = (fields, path) => {
   form.submit();
 }
 
-export function authentication(personURI, personAuth, resultsURI, homeInstitution, scope, path) {
-  formPost({ personURI, personAuth, resultsURI, homeInstitution, scope}, path)
+export function authentication(personURI, personAuth, associationsURI, homeInstitution, scope, path) {
+  formPost({ personURI, personAuth, associationsURI, homeInstitution, scope}, path)
 }
 
 // This is normally called by the Catalog, but for testing purposes we call it

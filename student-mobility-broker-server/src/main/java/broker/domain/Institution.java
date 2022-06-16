@@ -35,9 +35,6 @@ public class Institution implements Serializable {
     //Authentication method for person endpoint
     private PersonAuthentication personAuthentication;
 
-    //Secured endpoint where the offerings result for a person can be posted to the home institution
-    private String resultsEndpoint;
-
     //Secured endpoint where the association for a person can be posted to the home institution
     private String associationsEndpoint;
 
@@ -76,7 +73,6 @@ public class Institution implements Serializable {
         Assert.notNull(courseEndpoint, "courseEndpoint is required");
         Assert.notNull(personsEndpoint, "personsEndpoint is required");
         Assert.notNull(personAuthentication, "personAuthentication is required");
-        Assert.notNull(resultsEndpoint, "resultsEndpoint is required");
         Assert.notNull(associationsEndpoint, "associationsEndpoint is required");
         Assert.notNull(authenticationEndpoint, "authenticationEndpoint is required");
         Assert.notNull(registrationEndpoint, "registrationEndpoint is required");

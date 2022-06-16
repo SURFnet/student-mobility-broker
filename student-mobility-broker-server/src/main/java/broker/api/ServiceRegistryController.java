@@ -1,7 +1,6 @@
 package broker.api;
 
 import broker.ServiceRegistry;
-import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -50,35 +50,36 @@ public class ServiceRegistryController {
         if (StringUtils.hasText(homeInstitution)) {
             validSchacHome = institutions.stream().anyMatch(institution -> institution.getSchacHome().equals(homeInstitution));
         }
-        boolean validResultURI = true;
-        String resultsURI = enrollmentRequest.get("resultsURI");
-        if (StringUtils.hasText(resultsURI)) {
-            validResultURI = institutions.stream().anyMatch(institution -> institution.getResultsEndpoint().equals(resultsURI));
+        boolean validAssociationURI = true;
+        String associationURI = enrollmentRequest.get("associationURI");
+        if (StringUtils.hasText(associationURI)) {
+            validAssociationURI = institutions.stream().anyMatch(institution -> institution.getAssociationsEndpoint().equals(associationURI));
         }
-        return Collections.singletonMap("valid", validPersonURI && validSchacHome && validResultURI);
-    }
-
-    @PostMapping(value = "/api/results-uri")
-    public ResponseEntity<Map<String, String>> resultsURI(@RequestBody Map<String, String> enrollmentRequest) {
-        LOG.debug(String.format("Returning resultsURI for %s", enrollmentRequest));
-
-        String homeInstitution = enrollmentRequest.get("homeInstitution");
-        return serviceRegistry.allInstitutions().stream()
-                .filter(ins -> ins.getSchacHome().equals(homeInstitution))
-                .findAny()
-                .map(institution -> ResponseEntity.ok(Collections.singletonMap("resultsURI", institution.getResultsEndpoint())))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return Collections.singletonMap("valid", validPersonURI && validSchacHome && validAssociationURI);
     }
 
     @PostMapping(value = "/api/associations-uri")
     public ResponseEntity<Map<String, String>> associationsURI(@RequestBody Map<String, String> enrollmentRequest) {
         LOG.debug(String.format("Returning associationsURI for %s", enrollmentRequest));
 
+        return findInstitution(enrollmentRequest)
+                .map(institution -> ResponseEntity.ok(Collections.singletonMap("associationsURI", institution.getAssociationsEndpoint())))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @PostMapping(value = "/api/persons-uri")
+    public ResponseEntity<Map<String, String>> personsURI(@RequestBody Map<String, String> enrollmentRequest) {
+        LOG.debug(String.format("Returning personsURI for %s", enrollmentRequest));
+
+        return findInstitution(enrollmentRequest)
+                .map(ins -> ResponseEntity.ok(Collections.singletonMap("associationsURI", ins.getPersonsEndpoint())))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    private Optional<Institution> findInstitution(Map<String, String> enrollmentRequest) {
         String homeInstitution = enrollmentRequest.get("homeInstitution");
         return serviceRegistry.allInstitutions().stream()
                 .filter(ins -> ins.getSchacHome().equals(homeInstitution))
-                .findAny()
-                .map(institution -> ResponseEntity.ok(Collections.singletonMap("associationsURI", institution.getResultsEndpoint())))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                .findAny();
     }
 }

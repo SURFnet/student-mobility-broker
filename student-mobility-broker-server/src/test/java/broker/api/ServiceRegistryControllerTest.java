@@ -30,7 +30,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
             assertNull(institution.getRegistrationPassword());
             assertNull(institution.getRegistrationUser());
             assertNull(institution.getAuthenticationEndpoint());
-            assertNull(institution.getResultsEndpoint());
+            assertNull(institution.getAssociationsEndpoint());
             assertNull(institution.getPersonsEndpoint());
             assertNull(institution.getCourseAuthenticationPassword());
             assertNull(institution.getCourseAuthenticationUserName());
@@ -53,7 +53,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
                 .body(new EnrollmentRequest(
                         "http://localhost:8081/persons/me",
                         PersonAuthentication.HEADER,
-                        "http://localhost:8081/associations/me",
+                        "http://localhost:8081/associations",
                         "utrecht.nl",
                         "scope"))
                 .when()
@@ -71,7 +71,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
                 .body(new EnrollmentRequest(
                         "http://localhost:8081/persons/me",
                         PersonAuthentication.HEADER,
-                        "http://localhost:8081/associations/me",
+                        "http://localhost:8081/associations",
                         null,
                         "scope"))
                 .when()
@@ -82,7 +82,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void validateWithoutResultsURI() {
+    void validateWithoutAssociationURI() {
         Map<String, Boolean> validate = given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
@@ -117,7 +117,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void resultsUri() {
+    void associationsURI() {
         Map<String, String> result = given()
                 .contentType(ContentType.JSON)
                 .body(new EnrollmentRequest(
@@ -127,19 +127,19 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
                         "utrecht.nl",
                         "scope"))
                 .when()
-                .post("/api/results-uri")
+                .post("/api/associations-uri")
                 .as(new TypeRef<Map<String, String>>() {
                 });
-        assertEquals("http://localhost:8081/associations/me", result.get("resultsURI"));
+        assertEquals("http://localhost:8081/associations", result.get("associationsURI"));
     }
 
     @Test
-    void resultsUriInvalid() {
+    void associationsURIInvalid() {
         given()
                 .contentType(ContentType.JSON)
                 .body(Collections.singletonMap("homeInstitution", "nope"))
                 .when()
-                .post("/api/results-uri")
+                .post("/api/associations-uri")
                 .then()
                 .statusCode(404);
     }

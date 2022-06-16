@@ -6,8 +6,7 @@
   privacyEndpoint: https://www.surf.nl/studentmobiliteit
   personsEndpoint: http://localhost:8076/persons/me
   personAuthentication: FORM
-  resultsEndpoint: http://localhost:8076/associations/me
-  associationsEndpoint: http://localhost:8076/associations/external/me
+  associationsEndpoint: http://localhost:8076/associations
   authenticationEndpoint: http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
@@ -24,8 +23,7 @@
   courseAuthenticationPassword: secret
   personsEndpoint: http://localhost:8076/persons/me
   personAuthentication: HEADER
-  resultsEndpoint: http://localhost:8076/associations/me
-  associationsEndpoint: http://localhost:8076/associations/external/me
+  associationsEndpoint: http://localhost:8076/associations
   authenticationEndpoint: http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
@@ -40,8 +38,7 @@
   privacyEndpoint: https://www.surf.nl/studentmobiliteit
   personsEndpoint: http://localhost:8076/persons/me
   personAuthentication: HEADER
-  resultsEndpoint: http://localhost:8076/associations/me
-  associationsEndpoint: http://localhost:8076/associations/external/me
+  associationsEndpoint: http://localhost:8076/associations
   authenticationEndpoint: http://localhost:8092/api/enrollment
   registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user

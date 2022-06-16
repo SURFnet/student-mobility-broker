@@ -175,7 +175,7 @@ public class BrokerController {
         EnrollmentRequest enrollmentRequest = new EnrollmentRequest(
                 homeInstitution.getPersonsEndpoint(),
                 homeInstitution.getPersonAuthentication(),
-                homeInstitution.getResultsEndpoint(),
+                homeInstitution.getAssociationsEndpoint(),
                 homeInstitution.getSchacHome(),
                 homeInstitution.getScopes());
 
