@@ -72,7 +72,7 @@ public class ServiceRegistryController {
         LOG.debug(String.format("Returning personsURI for %s", enrollmentRequest));
 
         return findInstitution(enrollmentRequest)
-                .map(ins -> ResponseEntity.ok(Collections.singletonMap("associationsURI", ins.getPersonsEndpoint())))
+                .map(ins -> ResponseEntity.ok(Collections.singletonMap("personsURI", ins.getPersonsEndpoint())))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 

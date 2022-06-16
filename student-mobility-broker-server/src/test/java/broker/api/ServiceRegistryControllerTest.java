@@ -148,7 +148,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
                 .post("/api/persons-uri")
                 .as(new TypeRef<Map<String, String>>() {
                 });
-        assertEquals("http://localhost:8081/person/me", result.get("personsURI"));
+        assertEquals("http://localhost:8081/persons/me", result.get("personsURI"));
     }
 
     @Test
