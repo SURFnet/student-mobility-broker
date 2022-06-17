@@ -42,11 +42,17 @@ export function startRegistration(body) {
 }
 
 export function newAssociationPlayground(correlationID, result) {
-  return fetchJson("/api/results", {method: "POST", body: JSON.stringify({correlationID, result})});
+  const body = {...result, correlationID};
+  return fetchJson("/api/results", {method: "POST", body: JSON.stringify(body)});
 }
 
 export function updateAssociationPlayground(correlationID, result, associationId) {
-  return fetchJson("/api/results", {method: "POST", body: JSON.stringify({correlationID, result, associationId})});
+  const body = {...result, correlationID, associationId};
+  return fetchJson("/api/results", {method: "POST", body: JSON.stringify(body)});
+}
+
+export function me(correlationID) {
+  return fetchJson("/api/me", {method: "POST", body: JSON.stringify({correlationID})});
 }
 
 export function serviceRegistry() {

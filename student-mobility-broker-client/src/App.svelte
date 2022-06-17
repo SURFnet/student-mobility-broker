@@ -100,6 +100,9 @@
                 <Route path="/results">
                     <PlayGround bookmark="results"/>
                 </Route>
+                <Route path="/person">
+                    <PlayGround bookmark="person"/>
+                </Route>
             {/if}
             <Route component={NotFound}/>
         </Router>

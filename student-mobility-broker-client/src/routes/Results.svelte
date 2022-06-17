@@ -1,8 +1,8 @@
 <script>
     import {offering} from "../stores/offering";
-    import pressPlay from "../icons/icons-studmob/undraw_press_play_bx2d.svg";
     import Select from 'svelte-select';
     import {newAssociationPlayground, updateAssociationPlayground} from "../api";
+    import Button from "../components/Button.svelte";
 
     export let institutions = [];
 
@@ -10,21 +10,44 @@
         {value: 200, label: "ECTS 6 - Top notch"},
         {value: 500, label: "ECTS 1 - Damn"}
     ];
-
-    let finished = false;
     let response = responses[0];
 
-    const results = () => {
-        const promise = $offering.associationId ? updateAssociationPlayground($offering.correlationID, response.label, $offering.associationId)
-            : newAssociationPlayground($offering.correlationID, response.label);
-        promise.then(res => {
+    const remoteStates = ["pending", "canceled", "denied", "associated", "queued"].map(state => ({
+        value: state,
+        label: state
+    }));
+    let remoteState = remoteStates[0];
+
+    let finished = false;
+
+    const newAssociation = () => {
+        const results = {
+            role: "student",
+            remoteState: remoteState.label
+        };
+        newAssociationPlayground($offering.correlationID, results).then(res => {
             finished = true;
             $offering.associationId = res.associationId;
             setTimeout(() => finished = false, 7500 * 2);
         });
     }
 
-    const handleSelect = val => response = val.detail;
+    const updateAssociation = () => {
+        const results = {
+            remoteState: "associated",
+            result: {
+                "state": "completed",
+                "score": response.label
+            }
+        };
+        updateAssociationPlayground($offering.correlationID, results, $offering.associationId).then(() => {
+            finished = true;
+            setTimeout(() => finished = false, 7500 * 2);
+        });
+    }
+
+    const handleSelectRemoteState = val => remoteState = val.detail;
+    const handleSelectResult = val => response = val.detail;
 
 </script>
 
@@ -68,15 +91,20 @@
 
     }
 
-    .play {
+    div.actions {
         display: flex;
+        margin-top: 35px;
 
-        :global(svg) {
-            max-width: 150px;
-            max-height: 150px;
-            margin: 25px 0 50px auto;
-            cursor: pointer;
+        :global(.button) {
+            max-width: 200px;
+        }
 
+        :global(.button:first-child) {
+            margin-left: auto;
+        }
+
+        :global(.button:last-child) {
+            margin-left: 20px;
         }
     }
 
@@ -122,21 +150,39 @@
             </div>
             <img src={$offering.guestInstitution.logoURI} alt=""/>
         </div>
-        <p>Results</p>
-        <span class="info">It's either very good or very bad</span>
-        <Select items={responses}
-                isSearchable={false}
-                showIndicator={true}
-                isClearable={false}
-                selectedValue={response}
-                on:select={handleSelect}/>
-
-        <p>Correlation ID used to mimic the POST results back to intake-ontvanger-generiek and subsequently the home
-            institution</p>
-        <span>{$offering.correlationID}</span>
-
-        <div class="play" on:click={results}>
-            {@html pressPlay}
+        {#if !$offering.associationId}
+            <p>Association</p>
+            <span class="info">The state of this association for the institution performing the request.</span>
+            <Select items={remoteStates}
+                    isSearchable={false}
+                    showIndicator={true}
+                    isClearable={false}
+                    selectedValue={remoteState}
+                    on:select={handleSelectRemoteState}/>
+        {/if}
+        {#if $offering.associationId}
+            <p>Results</p>
+            <span class="info">It's either very good or very bad</span>
+            <Select items={responses}
+                    isSearchable={false}
+                    showIndicator={true}
+                    isClearable={false}
+                    selectedValue={response}
+                    on:select={handleSelectResult}/>
+        {/if}
+        {#if $offering.correlationID}
+            <p>Correlation ID used to mimic the POST results back to intake-ontvanger-generiek and subsequently the home
+                institution:</p>
+            <span>{$offering.correlationID}</span>
+        {/if}
+        {#if $offering.associationId}
+            <p>AssociationId ID returned from the home institution:</p>
+            <span>{$offering.associationId}</span>
+        {/if}
+        <div class="actions">
+            <Button onClick={updateAssociation} active={true} disabled={!$offering.associationId}
+                    label="Update association"/>
+            <Button onClick={newAssociation} active={true} disabled={$offering.associationId} label="New association"/>
         </div>
     {/if}
 

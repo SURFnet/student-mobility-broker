@@ -147,6 +147,26 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void playMe() {
+        Map<String, String> body = new HashMap<>();
+        body.put("X-Correlation-ID", "some");
+        stubFor(get(urlPathMatching("/api/me")).willReturn(aResponse()
+                .withBody("{\"result\":\"ok\"}")
+                .withHeader("Content-type", "application/json")
+                .withStatus(200)));
+
+        given()
+                .when()
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .body(body)
+                .post("/api/me")
+                .then()
+                .statusCode(200)
+                .body("result", equalTo("ok"));
+    }
+
+    @Test
     public void exceptionHandlingValidation() {
         given().redirects().follow(false)
                 .when()

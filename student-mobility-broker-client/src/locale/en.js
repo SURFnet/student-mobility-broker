@@ -4,6 +4,7 @@ I18n.translations.en = {
   tabs: {
     intake: "Intake",
     results: "Results",
+    person: "Person"
   },
   offering: {
     title: "Register for a {{type}} at {{abbreviation}}",

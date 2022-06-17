@@ -1,53 +1,65 @@
 <script>
-  export let className = "";
-  export let active = false;
-  export let href = "/";
-  export let disabled = false;
-  export let label;
-  export let onClick;
-  export let icon;
-  export let small = false;
+    export let className = "";
+    export let active = false;
+    export let href = "/";
+    export let disabled = false;
+    export let label;
+    export let onClick;
+    export let icon;
+    export let small = false;
 
-  const handleLinkClick = e => e.key === " " && e.target.click();
+    const handleLinkClick = e => e.key === " " && e.target.click();
 
 </script>
 <style lang="scss">
-  .button {
-    padding: 10px 20px;
-    background-color: var(--color-button-blue);
-    border-radius: 8px;
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
-    text-align: center;
-    font-weight: bold;
-    width: 280px;
+    .button {
+        padding: 10px 20px;
+        background-color: var(--color-button-blue);
+        border-radius: 8px;
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+        text-align: center;
+        font-weight: bold;
+        width: 280px;
 
-    @media (max-width: 780px) {
-      width: 100%;
-    }
+        @media (max-width: 780px) {
+            width: 100%;
+        }
 
-    &.small {
-      width: 140px;
-    }
-    &.icon {
-      padding: 2px 16px 2px 16px;
-      display: flex;
-      align-content: center;
-      align-items: center;
-    }
+        &.small {
+            width: 140px;
+        }
 
-    &:hover {
-      background-color: var(--color-primary-blue);
-      color: whitesmoke;
-    }
+        &.icon {
+            padding: 2px 16px 2px 16px;
+            display: flex;
+            align-content: center;
+            align-items: center;
+        }
 
-    :global(svg) {
-      width: 62px;
-      margin-right: 12px;
-    }
+        &:hover {
+            background-color: var(--color-primary-blue);
+            color: whitesmoke;
+        }
 
-  }
+        &.disabled {
+            cursor: not-allowed;
+            color: #ababab;
+            background-color: #efefef;
+        }
+
+        &.disabled:hover {
+            color: #ababab;
+            background-color: #efefef;
+        }
+
+        :global(svg) {
+            width: 62px;
+            margin-right: 12px;
+        }
+
+    }
 
 
 </style>

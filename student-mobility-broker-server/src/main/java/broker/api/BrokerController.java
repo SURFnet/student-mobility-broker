@@ -188,12 +188,23 @@ public class BrokerController {
      * the enrollments to the home institution
      */
     @PostMapping("/api/results")
-    public ResponseEntity<Map<String, Object>> results(@RequestBody Map<String, String> correlationMap) {
+    public ResponseEntity<Map<String, Object>> results(@RequestBody Map<String, Object> message) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
+        headers.add("X-Correlation-ID", (String) message.get("correlationID"));
         headers.setBasicAuth(sisUser, sisPassword);
-        HttpEntity<?> requestEntity = new HttpEntity<>(correlationMap, headers);
-        return restTemplate.exchange(sisResultsEndpoint, HttpMethod.POST, requestEntity, mapRef);
+        return restTemplate.exchange(sisResultsEndpoint, HttpMethod.POST, new HttpEntity<>(message, headers), mapRef);
+    }
+
+    /*
+     * Only allowed in playground modus. Proxy and mimic the call that normally the SIS issues to get person information.
+     */
+    @PostMapping("/api/me")
+    public ResponseEntity<Map<String, Object>> me(@RequestBody Map<String, Object> message) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Correlation-ID", (String) message.get("correlationID"));
+        headers.setBasicAuth(sisUser, sisPassword);
+        //playground hacky
+        return restTemplate.exchange(sisResultsEndpoint.replace("play-results", "me"), HttpMethod.GET, new HttpEntity<>(headers), mapRef);
     }
 
     /*
