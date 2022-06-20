@@ -41,6 +41,11 @@ export function startRegistration(body) {
   return fetchJson("/api/start", {method: "POST", body: JSON.stringify(body)});
 }
 
+export function postResultsPlayground(correlationID, result) {
+  const body = {...result, correlationID, v4: true};
+  return fetchJson("/api/results", {method: "POST", body: JSON.stringify(body)});
+}
+
 export function newAssociationPlayground(correlationID, result) {
   const body = {...result, correlationID};
   return fetchJson("/api/results", {method: "POST", body: JSON.stringify(body)});

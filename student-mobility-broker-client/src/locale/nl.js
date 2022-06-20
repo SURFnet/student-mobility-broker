@@ -4,6 +4,7 @@ I18n.translations.nl = {
   tabs: {
     intake: "Intake",
     results: "Results",
+    resultsV4: "Results (old)",
     person: "Person"
   },
   offering: {

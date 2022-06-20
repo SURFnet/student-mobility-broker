@@ -9,6 +9,7 @@
     import Person from "./Person.svelte";
     import {navigate} from "svelte-routing";
     import Loading from "../components/Loading.svelte";
+    import ResultsV4 from "./ResultsV4.svelte";
 
     const responses = [
         {value: 200, label: "200 - All is good"},
@@ -19,6 +20,7 @@
     const tabs = [
         {name: "intake", component: Intake},
         {name: "results", component: Results},
+        {name: "resultsV4", component: ResultsV4},
         {name: "person", component: Person},
     ];
     let currentTab = tabs[0];
@@ -48,7 +50,7 @@
 <style lang="scss">
 
     .container {
-        max-width: 720px;
+        max-width: 820px;
         margin: 40px auto;
         width: 100%;
         display: flex;

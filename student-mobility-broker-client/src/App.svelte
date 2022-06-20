@@ -100,6 +100,9 @@
                 <Route path="/results">
                     <PlayGround bookmark="results"/>
                 </Route>
+                <Route path="/resultsV4">
+                    <PlayGround bookmark="resultsV4"/>
+                </Route>
                 <Route path="/person">
                     <PlayGround bookmark="person"/>
                 </Route>

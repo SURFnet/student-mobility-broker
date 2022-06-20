@@ -175,7 +175,7 @@
 <style lang="scss">
 
   .container {
-    max-width: 720px;
+    max-width: 820px;
     margin: 0 auto 40px auto;
     width: 100%;
     display: flex;
