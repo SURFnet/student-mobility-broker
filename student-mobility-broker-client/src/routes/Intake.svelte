@@ -73,6 +73,10 @@
     padding: 0 16px;
     font-size: 16px;
     line-height: 22px;
+
+      &:disabled {
+          cursor: not-allowed;
+      }
   }
 
   .institution {

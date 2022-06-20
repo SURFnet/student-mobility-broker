@@ -4,6 +4,7 @@
     import {onMount} from "svelte";
     import Loading from "../components/Loading.svelte";
     import {prettyPrintJson} from "pretty-print-json";
+    import "pretty-print-json/dist/pretty-print-json.css";
 
     let loading = true;
     let personHtml = {};
