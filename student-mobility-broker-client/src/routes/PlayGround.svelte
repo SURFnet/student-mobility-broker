@@ -11,11 +11,6 @@
     import Loading from "../components/Loading.svelte";
     import ResultsV4 from "./ResultsV4.svelte";
 
-    const responses = [
-        {value: 200, label: "200 - All is good"},
-        {value: 500, label: "500 - Not so good"}
-    ];
-
     export let bookmark = "intake";
     const tabs = [
         {name: "intake", component: Intake},
