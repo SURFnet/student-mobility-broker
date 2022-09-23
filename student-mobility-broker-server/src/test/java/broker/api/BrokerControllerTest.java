@@ -173,7 +173,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("offeringID", "1")
                 .post("/api/broker")
                 .then()
-                .header("Location", "http://localhost:3003?error=invalid_request");
+                .header("Location", "http://localhost:3003?error=invalid_request&details=homeInstitutionSchacHome+is+required");
     }
 
     private void featureToggles() {
