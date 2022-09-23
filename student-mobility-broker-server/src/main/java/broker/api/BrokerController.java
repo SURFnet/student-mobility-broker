@@ -113,7 +113,7 @@ public class BrokerController {
             this.getInstitution(brokerRequest.getHomeInstitutionSchacHome());
             this.getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         } catch (IllegalArgumentException e) {
-            return new RedirectView(clientUrl + "?error=invalid_request");
+            return new RedirectView(clientUrl + "?error=invalid_request&details=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
         } catch (NotFoundException e) {
             return new RedirectView(clientUrl + "?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
         }
