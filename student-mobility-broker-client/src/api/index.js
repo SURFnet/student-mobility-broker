@@ -84,7 +84,7 @@ export function authentication(personURI, personAuth, associationsURI, homeInsti
 }
 
 // This is normally called by the Catalog, but for testing purposes we call it
-export function broker(homeInstitutionSchacHome, guestInstitutionSchacHome, offeringID, type, startBrokerEndpoint) {
-  formPost({ homeInstitutionSchacHome, guestInstitutionSchacHome, offeringID, type}, startBrokerEndpoint)
+export function broker(homeInstitutionSchacHome, guestInstitutionSchacHome, offeringId, type, startBrokerEndpoint) {
+  formPost({ homeInstitutionSchacHome, guestInstitutionSchacHome, offeringId, type}, startBrokerEndpoint)
 }
 

@@ -22,7 +22,7 @@
     playground.start(code, code === 200 ? redirect : null, code === 500 ? message : null);
     broker($offering.homeInstitution.schacHome,
            $offering.guestInstitution.schacHome,
-           $config.offeringID,
+           $config.offeringId,
            "course",
            $config.startBrokerEndpoint + "?play=true");
   }
@@ -37,8 +37,8 @@
     $offering.homeInstitution = val.detail;
   }
 
-  const offeringIDChanged = e => {
-    $config.offeringID = e.target.value;
+  const offeringIdChanged = e => {
+    $config.offeringId = e.target.value;
   }
 
 </script>
@@ -142,7 +142,7 @@
     </div>
     <p>Offering ID</p>
     <span class="info">The unique identifier of the cours / offering</span>
-    <input bind:value={$config.offeringID} on:change={offeringIDChanged}/>
+    <input bind:value={$config.offeringId} on:change={offeringIdChanged}/>
 
     <p>Response code</p>
     <span class="info">It's either good or bad</span>

@@ -84,7 +84,7 @@ public class BrokerController {
         if (allowPlayground) {
             this.featureToggles.put("playHomeInstitutionSchacHome", playHomeInstitutionSchacHome);
             this.featureToggles.put("playGuestInstitutionSchacHome", playGuestInstitutionSchacHome);
-            this.featureToggles.put("offeringID", playOfferingID);
+            this.featureToggles.put("offeringId", playOfferingID);
         }
 
         this.restTemplate.setInterceptors(Collections.singletonList((request, body, execution) -> {

@@ -46,7 +46,7 @@
         //Mock the call from catalog to broker to ensure there is a selected offering
         broker($config.playHomeInstitutionSchacHome,
                $config.playGuestInstitutionSchacHome,
-               $config.offeringID,
+               $config.offeringId,
                "course",
                $config.startBrokerEndpoint);
       } else if (!playGround && step) {
