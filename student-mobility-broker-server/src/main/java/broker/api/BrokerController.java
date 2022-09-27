@@ -262,7 +262,7 @@ public class BrokerController {
     private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
         String uri = String.format("%s/%s?expand=academicSession,%s",
                 guestInstitution.getCourseEndpoint(),
-                brokerRequest.getOfferingID(),
+                brokerRequest.getOfferingId(),
                 brokerRequest.getType());
         CourseAuthentication courseAuthentication = guestInstitution.getCourseAuthentication();
 

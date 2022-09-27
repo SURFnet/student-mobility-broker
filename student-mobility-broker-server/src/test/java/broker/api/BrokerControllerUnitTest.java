@@ -63,7 +63,7 @@ public class BrokerControllerUnitTest {
         BrokerRequest brokerRequest = new BrokerRequest();
         brokerRequest.setHomeInstitutionSchacHome("eindhoven.nl");
         brokerRequest.setGuestInstitutionSchacHome("utrecht.nl");
-        brokerRequest.setOfferingID("1");
+        brokerRequest.setOfferingId("1");
 
         request.getSession(true).setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
         Map<String, Object> res = brokerController.start(request, body);
@@ -88,7 +88,7 @@ public class BrokerControllerUnitTest {
         BrokerRequest brokerRequest = new BrokerRequest();
         brokerRequest.setHomeInstitutionSchacHome("eindhoven.nl");
         brokerRequest.setGuestInstitutionSchacHome("utrecht.nl");
-        brokerRequest.setOfferingID("1");
+        brokerRequest.setOfferingId("1");
 
         request.getSession(true).setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
         Map<String, Object> res = brokerController.start(request, body);

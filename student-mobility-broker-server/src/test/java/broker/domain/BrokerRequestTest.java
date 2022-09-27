@@ -10,7 +10,7 @@ class BrokerRequestTest {
     void validate() {
         BrokerRequest brokerRequest = new BrokerRequest();
         brokerRequest.setGuestInstitutionSchacHome("guest");
-        brokerRequest.setOfferingID("offering");
+        brokerRequest.setOfferingId("offering");
         brokerRequest.setHomeInstitutionSchacHome("home");
         brokerRequest.validate();
         assertEquals("course", brokerRequest.getType());
