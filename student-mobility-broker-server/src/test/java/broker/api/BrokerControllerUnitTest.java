@@ -97,4 +97,23 @@ public class BrokerControllerUnitTest {
         assertEquals("Server error at Utrecht University", res.get("message"));
 
     }
+
+    @Test
+    public void translateOfferingType() {
+        BrokerRequest brokerRequest = new BrokerRequest();
+        brokerRequest.setType("MINOR");
+        assertEquals("program", brokerController.translateOfferingType(brokerRequest));
+
+        brokerRequest.setType("program");
+        assertEquals("program", brokerController.translateOfferingType(brokerRequest));
+
+        brokerRequest.setType("COMPONENT");
+        assertEquals("component", brokerController.translateOfferingType(brokerRequest));
+
+        brokerRequest.setType("COURSE");
+        assertEquals("course", brokerController.translateOfferingType(brokerRequest));
+
+        brokerRequest.setType(null);
+        assertEquals("course", brokerController.translateOfferingType(brokerRequest));
+    }
 }

@@ -7,11 +7,15 @@
     import lang from "../icons/icons-studmob/messages-bubble-square-text.svg";
     import {offering} from "../stores/offering";
     import {getValue} from "../utils/multiLanguageAttributes";
+    import {onMount} from "svelte";
 
     export let className = "desktop";
     const formatOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
 
-
+    let offeringType = null;
+    onMount(() => {
+        offeringType = $offering.offering.offeringType
+    })
 </script>
 
 <style lang="scss">
@@ -93,8 +97,8 @@
     <div class={`course ${className}`}>
         <table>
             <tr>
-                {#if $offering.offering.course && $offering.offering.course.name}
-                    <th class="name">{getValue($offering.offering.course.name)}</th>
+                {#if $offering.offering[offeringType] && $offering.offering[offeringType].name}
+                    <th class="name">{getValue($offering.offering[offeringType].name)}</th>
                 {/if}
                 {#if $offering.guestInstitution.logoURI}
                     <th class="logo"><img src={$offering.guestInstitution.logoURI} alt=""/></th>
@@ -102,12 +106,12 @@
             </tr>
         </table>
         <table class="values">
-            {#if $offering.offering.course && $offering.offering.course.studyLoad}
+            {#if $offering.offering[offeringType] && $offering.offering[offeringType].studyLoad}
                 <tr>
                     <td class="icon">{@html ects}</td>
                     <td class="value">{I18n.t("offering.studyLoad", {
-                        value: $offering.offering.course.studyLoad.value,
-                        studyLoadUnit: $offering.offering.course.studyLoad.studyLoadUnit.toUpperCase()
+                        value: $offering.offering[offeringType].studyLoad.value,
+                        studyLoadUnit: $offering.offering[offeringType].studyLoad.studyLoadUnit.toUpperCase()
                     })}</td>
                 </tr>
             {/if}

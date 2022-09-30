@@ -15,6 +15,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -258,12 +259,21 @@ public class BrokerController {
         return responseEntity.getBody();
     }
 
+    protected String translateOfferingType(BrokerRequest brokerRequest) {
+        String type = brokerRequest.getType();
+        String expandable = StringUtils.hasText(type) ? type.toLowerCase() : "course";
+        if (expandable.equals("minor")) {
+            expandable = "program";
+        }
+        return expandable;
+    }
+
     @SuppressWarnings("unchecked")
     private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
         String uri = String.format("%s/%s?expand=academicSession,%s",
                 guestInstitution.getCourseEndpoint(),
                 brokerRequest.getOfferingId(),
-                brokerRequest.getType());
+                this.translateOfferingType(brokerRequest));
         CourseAuthentication courseAuthentication = guestInstitution.getCourseAuthentication();
 
         LOG.debug(String.format("Fetching offering from %s with security %s", uri, courseAuthentication.name()));
