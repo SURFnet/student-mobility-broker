@@ -13,10 +13,10 @@ class BrokerRequestTest {
         brokerRequest.setOfferingId("offering");
         brokerRequest.setHomeInstitutionSchacHome("home");
         brokerRequest.validate();
-        assertEquals("course", brokerRequest.getType());
+        assertEquals("course", brokerRequest.getOfferingType());
 
-        brokerRequest.setType("program");
+        brokerRequest.setOfferingType("program");
         brokerRequest.validate();
-        assertEquals("program", brokerRequest.getType());
+        assertEquals("program", brokerRequest.getOfferingType());
     }
 }

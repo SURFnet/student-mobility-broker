@@ -260,7 +260,7 @@ public class BrokerController {
     }
 
     protected String translateOfferingType(BrokerRequest brokerRequest) {
-        String type = brokerRequest.getType();
+        String type = brokerRequest.getOfferingType();
         String expandable = StringUtils.hasText(type) ? type.toLowerCase() : "course";
         if (expandable.equals("minor")) {
             expandable = "program";

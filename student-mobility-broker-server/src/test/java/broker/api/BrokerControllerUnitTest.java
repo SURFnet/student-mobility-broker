@@ -101,19 +101,19 @@ public class BrokerControllerUnitTest {
     @Test
     public void translateOfferingType() {
         BrokerRequest brokerRequest = new BrokerRequest();
-        brokerRequest.setType("MINOR");
+        brokerRequest.setOfferingType("MINOR");
         assertEquals("program", brokerController.translateOfferingType(brokerRequest));
 
-        brokerRequest.setType("program");
+        brokerRequest.setOfferingType("program");
         assertEquals("program", brokerController.translateOfferingType(brokerRequest));
 
-        brokerRequest.setType("COMPONENT");
+        brokerRequest.setOfferingType("COMPONENT");
         assertEquals("component", brokerController.translateOfferingType(brokerRequest));
 
-        brokerRequest.setType("COURSE");
+        brokerRequest.setOfferingType("COURSE");
         assertEquals("course", brokerController.translateOfferingType(brokerRequest));
 
-        brokerRequest.setType(null);
+        brokerRequest.setOfferingType(null);
         assertEquals("course", brokerController.translateOfferingType(brokerRequest));
     }
 }

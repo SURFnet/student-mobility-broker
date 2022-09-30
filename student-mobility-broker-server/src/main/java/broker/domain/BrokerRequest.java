@@ -19,14 +19,14 @@ public class BrokerRequest implements Serializable {
     private String homeInstitutionSchacHome;
     private String guestInstitutionSchacHome;
     private String offeringId;
-    private String type;
+    private String offeringType;
 
     public void validate() {
         Assert.notNull(homeInstitutionSchacHome, "homeInstitutionSchacHome is required");
         Assert.notNull(guestInstitutionSchacHome, "guestInstitutionSchacHome is required");
         Assert.notNull(offeringId, "offeringId is required");
-        if (!StringUtils.hasText(type)) {
-            type = "course";
+        if (!StringUtils.hasText(offeringType)) {
+            offeringType = "course";
         }
     }
 }
