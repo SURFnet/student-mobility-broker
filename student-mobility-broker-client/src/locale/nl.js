@@ -11,7 +11,8 @@ I18n.translations.nl = {
     title: "Register for a {{type}} at {{abbreviation}}",
     types: {
       course: "course",
-      program: "program"
+      program: "program",
+      component: "component"
     },
     wizard: {
       course: "Select course",
