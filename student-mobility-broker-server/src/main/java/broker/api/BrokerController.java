@@ -224,6 +224,10 @@ public class BrokerController {
         LOG.debug(String.format("Received start registration request for brokerRequest: %s and session: %s",
                 brokerRequest, request.getSession().getId()));
 
+        if (brokerRequest == null) {
+            throw new IllegalArgumentException("BrokerRequest is null");
+        }
+
         try {
             Map<String, Object> body = doStart(brokerRequest, offering, correlationMap);
             request.getSession().invalidate();
