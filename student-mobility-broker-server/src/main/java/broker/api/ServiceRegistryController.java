@@ -44,16 +44,26 @@ public class ServiceRegistryController {
         LOG.debug(String.format("Validating enrollmentRequest with %s", enrollmentRequest));
 
         List<Institution> institutions = serviceRegistry.allInstitutions();
-        boolean validPersonURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(enrollmentRequest.get("personURI")));
+        String personURI = enrollmentRequest.get("personURI");
+        boolean validPersonURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(personURI));
+        if (!validPersonURI) {
+            LOG.info(String.format("Invalid person URI '%s'. No institution with this personsEndpoint", personURI));
+        }
         boolean validSchacHome = true;
         String homeInstitution = enrollmentRequest.get("homeInstitution");
         if (StringUtils.hasText(homeInstitution)) {
             validSchacHome = institutions.stream().anyMatch(institution -> institution.getSchacHome().equals(homeInstitution));
+            if (!validSchacHome) {
+                LOG.info(String.format("Invalid homeInstitution '%s'. No institution with this schacHome", homeInstitution));
+            }
         }
         boolean validAssociationURI = true;
         String associationURI = enrollmentRequest.get("associationURI");
         if (StringUtils.hasText(associationURI)) {
             validAssociationURI = institutions.stream().anyMatch(institution -> institution.getAssociationsEndpoint().equals(associationURI));
+            if (!validAssociationURI) {
+                LOG.info(String.format("Invalid associationURI '%s'. No institution with this associationsEndpoint", associationURI));
+            }
         }
         return Collections.singletonMap("valid", validPersonURI && validSchacHome && validAssociationURI);
     }
