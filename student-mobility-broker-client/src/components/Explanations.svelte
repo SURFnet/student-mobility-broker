@@ -6,6 +6,7 @@
   import relaxGrey from "../icons/icons-studmob/cocktail-glass-grey.svg";
   import {offering} from "../stores/offering";
   import hand from "../icons/icons-studmob/noun_Up hand drawn arrow_1563367.svg";
+  import DOMPurify from "dompurify";
 
   const explanations = [
     {name: "eduID", icon: eduIDGrey},
@@ -131,7 +132,7 @@
                     </div>
                     <div class="text">
                         <p class="title">{@html I18n.t(`explanation.${name}.title`)}</p>
-                        <p>{@html I18n.t(`explanation.${name}.subTitle`, {abbreviation: $offering.guestInstitution.abbreviation})}</p>
+                        <p>{@html DOMPurify.sanitize(I18n.t(`explanation.${name}.subTitle`, {abbreviation: $offering.guestInstitution.abbreviation}))}</p>
                     </div>
                 </div>
             {/each}

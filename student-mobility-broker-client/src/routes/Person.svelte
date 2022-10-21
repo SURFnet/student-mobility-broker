@@ -5,6 +5,7 @@
     import Loading from "../components/Loading.svelte";
     import {prettyPrintJson} from "pretty-print-json";
     import "pretty-print-json/dist/pretty-print-json.css";
+    import DOMPurify from "dompurify";
 
     let loading = true;
     let personHtml = {};
@@ -55,7 +56,7 @@
             login and successfully enroll.</p>
     {:else }
 
-        <pre class=json-container>{@html personHtml}</pre>
+        <pre class=json-container>{@html DOMPurify.sanitize(personHtml)}</pre>
     {/if}
 
 </div>

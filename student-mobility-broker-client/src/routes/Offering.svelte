@@ -9,7 +9,7 @@
     import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg";
     import eduID from "../icons/logo_eduID.svg";
     import balancer from "../icons/balancer.svg";
-
+    import DOMPurify from "dompurify";
     import relax from "../icons/icons-studmob/cocktail-glass.svg";
     import highFive from "../icons/icons-studmob/undraw_High_five.svg";
     import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg";
@@ -626,7 +626,7 @@
                     <div class="error">
                         <p>{I18n.t("error.info")}</p>
                         <div>
-                            <p>{@html I18n.t("error.subInfo", {msg: error})}</p>
+                            <p>{@html DOMPurify.sanitize(I18n.t("error.subInfo", {msg: error}))}</p>
                         </div>
                         <p>
                             <span>{@html I18n.t("error.surfLink")}</span>
@@ -677,7 +677,7 @@
                                     home: $offering.homeInstitution.name
                                 })}</span>
                                 <ul class="personals">
-                                    <li>{@html I18n.t("offering.personalBullet1", {privacyEndpoint: $offering.guestInstitution.privacyEndpoint})}</li>
+                                    <li>{@html DOMPurify.sanitize(I18n.t("offering.personalBullet1", {privacyEndpoint: $offering.guestInstitution.privacyEndpoint}))}</li>
                                     <li>
                                         {@html I18n.t("offering.personalBullet2sub1")}
                                         <a href="/"
@@ -685,7 +685,7 @@
                                         {@html I18n.t("offering.personalBullet2sub3")}
                                     </li>
                                 </ul>
-                                <span class="last">{@html I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation})}</span>
+                                <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
                                 <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
                                         onClick={startAuthentication}/>
                             </div>
@@ -697,13 +697,13 @@
                                 <h3>{I18n.t("offering.errorTitle", {abbreviation: $offering.guestInstitution.abbreviation})}</h3>
                                 <div class="final-action error-result">
                                     {#if result.message && result.code !== 404 && result.code !== 409}
-                                        <span class="error-message">{@html result.message}</span>
+                                        <span class="error-message">{@html DOMPurify.sanitize(result.message)}</span>
                                         <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
                                     {:else if result.code === 404}
-                                        <span class="error-message">{@html I18n.t("offering.notFoundResultErrorMessage", {institution: $offering.homeInstitution.name})}</span>
+                                        <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.notFoundResultErrorMessage", {institution: $offering.homeInstitution.name}))}</span>
                                         <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
                                     {:else if result.code === 409}
-                                        <span class="error-message">{@html I18n.t("offering.conflictResultErrorMessage", {institution: $offering.homeInstitution.name})}</span>
+                                        <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.conflictResultErrorMessage", {institution: $offering.homeInstitution.name}))}</span>
                                         <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
                                     {:else}
                                         <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
@@ -733,9 +733,9 @@
                                 <div class="final-action">
                                     {@html lightBulb}
                                     {#if result.message}
-                                        <span class="final-action-msg">{@html result.message}</span>
+                                        <span class="final-action-msg">{@html DOMPurify.sanitize(result.message)}</span>
                                     {:else}
-                                        <span class="final-action-msg">{I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                                        <span class="final-action-msg">{DOMPurify.sanitize( I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation}))}</span>
                                     {/if}
                                 </div>
                             </div>
