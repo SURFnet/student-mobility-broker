@@ -13,6 +13,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
@@ -42,7 +43,7 @@ public class BrokerController {
     private final String clientUrl;
 
     private final ServiceRegistry serviceRegistry;
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
     private final Map<String, Object> featureToggles = new HashMap<>();
     private final URI tokenEndpoint;
     private final String clientId;
@@ -68,6 +69,7 @@ public class BrokerController {
                             @Value("${config.play_guest_institution_schacHome}") String playGuestInstitutionSchacHome,
                             @Value("${config.play_offering_id}") String playOfferingID,
                             @Value("${config.catalog_url}") String catalogUrl,
+                            @Value("${config.connection_timeout_millis}") int connectionTimeoutMillis,
                             ServiceRegistry serviceRegistry) {
         this.clientUrl = clientUrl;
         this.tokenEndpoint = tokenEndpoint;
@@ -87,7 +89,7 @@ public class BrokerController {
             this.featureToggles.put("playGuestInstitutionSchacHome", playGuestInstitutionSchacHome);
             this.featureToggles.put("offeringId", playOfferingID);
         }
-
+        this.restTemplate = new RestTemplate(getClientHttpRequestFactory(connectionTimeoutMillis));
         this.restTemplate.setInterceptors(Collections.singletonList((request, body, execution) -> {
             request.getHeaders().add("Accept-Language", LanguageFilter.language.get());
             return execution.execute(request, body);
@@ -317,4 +319,10 @@ public class BrokerController {
         return headers;
     }
 
+    private SimpleClientHttpRequestFactory getClientHttpRequestFactory(int connectionTimeoutMillis) {
+        SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+        clientHttpRequestFactory.setConnectTimeout(connectionTimeoutMillis);
+        clientHttpRequestFactory.setReadTimeout(connectionTimeoutMillis);
+        return clientHttpRequestFactory;
+    }
 }

@@ -38,6 +38,7 @@ public class BrokerControllerUnitTest {
             "eindhoven.nl",
             "1",
             "https://educhange.nl/",
+            20_000,
             new InMemoryServiceRegistry(new ClassPathResource("service-registry-test.yml")));
 
     @RegisterExtension
