@@ -120,6 +120,7 @@ public class BrokerController {
             LOG.warn("Validation error in the brokerRequest: " + brokerRequest);
             return new RedirectView(clientUrl + "?error=invalid_request&details=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
         } catch (NotFoundException e) {
+            LOG.warn(e.getMessage());
             return new RedirectView(clientUrl + "?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
         }
         //This establishes a session ID for the client
