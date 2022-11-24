@@ -110,6 +110,7 @@ public class BrokerController {
                               @ModelAttribute BrokerRequest brokerRequest,
                               @RequestParam(value = "play", required = false, defaultValue = "false") boolean play)
             throws UnsupportedEncodingException {
+        LOG.debug("Called by the external catalog form submit with BrokerRequest " + brokerRequest);
         try {
             //we want to fail fast
             brokerRequest.validate();
