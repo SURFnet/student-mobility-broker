@@ -9,31 +9,34 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class InMemoryServiceRegistry implements ServiceRegistry {
 
-    private final List<Institution> institutions;
+    private final Map<String, Institution> institutions;
 
     @SneakyThrows
     public InMemoryServiceRegistry(@Value("${service_registry.path}") Resource serviceRegistryResource) {
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-        this.institutions = objectMapper.readValue(serviceRegistryResource.getInputStream(), new TypeReference<List<Institution>>() {
+        List<Institution> institutionList = objectMapper.readValue(serviceRegistryResource.getInputStream(), new TypeReference<List<Institution>>() {
         });
-        this.institutions.forEach(Institution::validate);
+        institutionList.forEach(Institution::validate);
+        this.institutions = institutionList.stream().collect(Collectors.toMap(Institution::getSchacHome, Function.identity()));
     }
 
     @Override
     public Optional<Institution> findInstitutionBySchacHome(String schacHome) {
-        return institutions.stream()
-                .filter(institution -> institution.getSchacHome().equals(schacHome))
-                .findAny();
+        return Optional.ofNullable(institutions.get(schacHome));
     }
 
     @Override
-    public List<Institution> allInstitutions() {
-        return institutions;
+    public Collection<Institution> allInstitutions() {
+        return institutions.values();
     }
 }
