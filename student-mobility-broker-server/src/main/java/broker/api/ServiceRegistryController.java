@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -43,7 +40,7 @@ public class ServiceRegistryController {
     public Map<String, Boolean> validate(@RequestBody Map<String, String> enrollmentRequest) {
         LOG.debug(String.format("Validating enrollmentRequest with %s", enrollmentRequest));
 
-        List<Institution> institutions = serviceRegistry.allInstitutions();
+        Collection<Institution> institutions = serviceRegistry.allInstitutions();
         String personURI = enrollmentRequest.get("personURI");
         boolean validPersonURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(personURI));
         if (!validPersonURI) {

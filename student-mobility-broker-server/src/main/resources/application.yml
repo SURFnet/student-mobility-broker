@@ -12,7 +12,7 @@ server:
     session:
       cookie:
         secure: false
-
+      timeout: 3d
 spring:
   jackson:
     default-property-inclusion: non_null
