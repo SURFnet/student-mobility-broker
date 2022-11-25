@@ -256,6 +256,7 @@ public class BrokerController {
     private Map<String, Object> doStart(BrokerRequest brokerRequest, Map<String, Object> offering, Map<String, String> correlationMap) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", correlationMap.get("correlationID"));
+        headers.setContentType(MediaType.APPLICATION_JSON);
         Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         headers.setBasicAuth(guestInstitution.getRegistrationUser(), guestInstitution.getRegistrationPassword());
         HttpEntity<?> requestEntity = new HttpEntity<>(offering, headers);
