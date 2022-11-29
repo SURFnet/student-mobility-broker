@@ -3,6 +3,8 @@ package broker.api;
 import broker.AbstractIntegrationTest;
 import broker.WireMockExtension;
 import broker.domain.CourseAuthentication;
+import broker.domain.Institution;
+import broker.exception.NotFoundException;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import io.restassured.common.mapper.TypeRef;
@@ -30,17 +32,22 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
 
     @Test
     public void brokerOfferingNoAuth() throws IOException {
-        happyFlow("utrecht.nl", CourseAuthentication.NONE);
+        happyFlow("utrecht.nl");
     }
 
     @Test
     public void brokerOfferingBasicAuth() throws IOException {
-        happyFlow("eindhoven.nl", CourseAuthentication.BASIC);
+        happyFlow("eindhoven.nl");
     }
 
     @Test
     public void brokerOfferingAuthOAuth2() throws IOException {
-        happyFlow("wageningen.nl", CourseAuthentication.OAUTH2);
+        happyFlow("wageningen.nl");
+    }
+
+    @Test
+    public void brokerOfferingEduHub() throws IOException {
+        happyFlow("hardewijk.nl");
     }
 
     @Test
@@ -68,17 +75,19 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         SessionFilter sessionFilter = new SessionFilter();
         formSubmitByCatalog(sessionFilter, "utrecht.nl");
         featureToggles();
-        guiGetOffering(sessionFilter, CourseAuthentication.NONE);
+        guiGetOffering(sessionFilter, CourseAuthentication.NONE, false);
         Map<String, Object> results = startRegistrationInvalid(sessionFilter);
         assertEquals(500, results.get("code"));
 
     }
 
-    private void happyFlow(String guestInstitutionSchacHome, CourseAuthentication courseAuthentication) throws IOException {
+    private void happyFlow(String guestInstitutionSchacHome) throws IOException {
+        Institution institution = this.serviceRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
+        CourseAuthentication courseAuthentication = institution.getCourseAuthentication();
         SessionFilter sessionFilter = new SessionFilter();
         formSubmitByCatalog(sessionFilter, guestInstitutionSchacHome);
         featureToggles();
-        guiGetOffering(sessionFilter, courseAuthentication);
+        guiGetOffering(sessionFilter, courseAuthentication, institution.isUseEduHubForOffering());
         startRegistration(sessionFilter);
     }
 
@@ -200,10 +209,11 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .header("Location", "http://localhost:3003?step=approve");
     }
 
-    private void guiGetOffering(SessionFilter sessionFilter, CourseAuthentication courseAuthentication) throws IOException {
+    private void guiGetOffering(SessionFilter sessionFilter, CourseAuthentication courseAuthentication, boolean useEduHubForOffering) throws IOException {
         MappingBuilder mappingBuilder = get(urlPathMatching("/offerings/1"));
-
-        if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
+        if (useEduHubForOffering) {
+            mappingBuilder = mappingBuilder.withBasicAuth("eduhub", "secret");
+        } else if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
             mappingBuilder = mappingBuilder.withBasicAuth("user", "secret");
         } else if (courseAuthentication.equals(CourseAuthentication.OAUTH2)) {
             stubFor(post(urlPathMatching("/oidc/token")).willReturn(aResponse()
@@ -211,11 +221,12 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                     .withBody("{\"access_token\":\"123456\"}")));
             mappingBuilder = mappingBuilder.withHeader(AUTHORIZATION, new EqualToPattern("Bearer " + "123456"));
         }
+        String path = useEduHubForOffering ? "data/eduhub-offering.json" : "data/offering.json";
+        String body = readFile(path);
 
         stubFor(mappingBuilder.willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
-                .withBody(readFile("data/offering.json"))));
-
+                .withBody(body)));
         Map<String, Object> result = given()
                 .filter(sessionFilter)
                 .accept(ContentType.JSON)

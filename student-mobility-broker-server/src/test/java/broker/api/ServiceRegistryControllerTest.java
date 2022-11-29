@@ -25,7 +25,7 @@ public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
                 .get("/api/service-registry")
                 .as(new TypeRef<List<Institution>>() {
                 });
-        assertEquals(3, institutions.size());
+        assertEquals(4, institutions.size());
         institutions.stream().forEach(institution -> {
             assertNull(institution.getRegistrationPassword());
             assertNull(institution.getRegistrationUser());

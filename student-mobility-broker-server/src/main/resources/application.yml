@@ -41,6 +41,11 @@ config:
     token_endpoint: http://localhost:8081/oidc/token
     client_id: student.mobility.broker.local
     secret: secret
+  edu_hub:
+    gateway_url: http://localhost:8081
+    user: eduhub
+    password: secret
+
 
 service_registry:
   path: classpath:/service-registry.yml

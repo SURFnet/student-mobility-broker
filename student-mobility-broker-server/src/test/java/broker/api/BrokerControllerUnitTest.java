@@ -39,6 +39,9 @@ public class BrokerControllerUnitTest {
             "1",
             "https://educhange.nl/",
             20_000,
+            new URI("https://eduhub.nl"),
+            "eduhub",
+            "secret",
             new InMemoryServiceRegistry(new ClassPathResource("service-registry-test.yml")));
 
     @RegisterExtension

@@ -51,6 +51,9 @@ public class BrokerController {
     private final String sisUser;
     private final String sisPassword;
     private final String sisResultsEndpoint;
+    private final URI eduHubGatewayUrl;
+    private final String eduHubUser;
+    private final String eduHubPassword;
 
     private final ParameterizedTypeReference<Map<String, Object>> mapRef = new ParameterizedTypeReference<Map<String, Object>>() {
     };
@@ -70,6 +73,9 @@ public class BrokerController {
                             @Value("${config.play_offering_id}") String playOfferingID,
                             @Value("${config.catalog_url}") String catalogUrl,
                             @Value("${config.connection_timeout_millis}") int connectionTimeoutMillis,
+                            @Value("${config.edu_hub.gateway_url}") URI eduHubGatewayUrl,
+                            @Value("${config.edu_hub.user}") String eduHubUser,
+                            @Value("${config.edu_hub.password}") String eduHubPassword,
                             ServiceRegistry serviceRegistry) {
         this.clientUrl = clientUrl;
         this.tokenEndpoint = tokenEndpoint;
@@ -79,6 +85,9 @@ public class BrokerController {
         this.sisPassword = sisPassword;
         this.sisResultsEndpoint = sisResultsEndpoint;
         this.serviceRegistry = serviceRegistry;
+        this.eduHubGatewayUrl = eduHubGatewayUrl;
+        this.eduHubUser = eduHubUser;
+        this.eduHubPassword = eduHubPassword;
         this.featureToggles.put("startBrokerEndpoint", startBrokerEndpoint);
         this.featureToggles.put("local", local);
         this.featureToggles.put("allowPlayground", allowPlayground);
@@ -160,7 +169,8 @@ public class BrokerController {
         try {
             offering = fetchOffering(guestInstitution, brokerRequest);
         } catch (RuntimeException e) {
-            throw new RemoteException(guestInstitution.getName());
+            LOG.error("Error in fetching offering from " + guestInstitution.getName(), e);
+            throw new RemoteException("Could not fetch offering from :" + guestInstitution.getName());
         }
 
         //Save the offering as we need it when starting the actual registration
@@ -279,23 +289,38 @@ public class BrokerController {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
-        String uri = String.format("%s/%s?expand=academicSession,%s",
-                guestInstitution.getCourseEndpoint(),
-                brokerRequest.getOfferingId(),
-                this.translateOfferingType(brokerRequest));
-        CourseAuthentication courseAuthentication = guestInstitution.getCourseAuthentication();
+        if (guestInstitution.isUseEduHubForOffering()) {
+            String uri = String.format("%s/%s/%s?expand=academicSession,%s",
+                    this.eduHubGatewayUrl,
+                    "offerings",
+                    brokerRequest.getOfferingId(),
+                    this.translateOfferingType(brokerRequest));
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBasicAuth(this.eduHubUser, this.eduHubPassword);
+            headers.add("X-Route", "endpoint=" + guestInstitution.getSchacHome());
 
-        LOG.debug(String.format("Fetching offering from %s with security %s", uri, courseAuthentication.name()));
-
-        if (courseAuthentication.equals(CourseAuthentication.NONE)) {
-            LOG.debug("Fetching " + uri + " without authentication");
-            return restTemplate.getForEntity(uri, Map.class).getBody();
-        } else if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
-            LOG.debug("Fetching " + uri + " with basic authentication");
-            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(basicAuthHeaders(guestInstitution)), Map.class).getBody();
+            LOG.debug("Fetching offering " + uri + " with basic authentication from eduHub");
+            Map<String, Map<String, Object>> body = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), Map.class).getBody();
+            return (Map<String, Object>) body.get("responses").get(guestInstitution.getSchacHome());
         } else {
-            LOG.debug("Fetching " + uri + " with OAUTH authentication");
-            return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(accessTokenHeaders()), Map.class).getBody();
+            String uri = String.format("%s/%s?expand=academicSession,%s",
+                    guestInstitution.getCourseEndpoint(),
+                    brokerRequest.getOfferingId(),
+                    this.translateOfferingType(brokerRequest));
+            CourseAuthentication courseAuthentication = guestInstitution.getCourseAuthentication();
+
+            LOG.debug(String.format("Fetching offering from %s with security %s", uri, courseAuthentication.name()));
+
+            if (courseAuthentication.equals(CourseAuthentication.NONE)) {
+                LOG.debug("Fetching offering " + uri + " without authentication");
+                return restTemplate.getForEntity(uri, Map.class).getBody();
+            } else if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
+                LOG.debug("Fetching offering " + uri + " with basic authentication");
+                return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(basicAuthHeaders(guestInstitution)), Map.class).getBody();
+            } else {
+                LOG.debug("Fetching offering " + uri + " with OAUTH authentication");
+                return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(accessTokenHeaders()), Map.class).getBody();
+            }
         }
     }
 

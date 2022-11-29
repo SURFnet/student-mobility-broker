@@ -62,6 +62,9 @@ public class Institution implements Serializable {
     //Authentication password for basic authentication course endpoint
     private String courseAuthenticationPassword;
 
+    //Do we get offerings from eduhub or from the courseEndpoint
+    private boolean useEduHubForOffering;
+
     public void validate() {
         Assert.notNull(courseAuthentication, "courseAuthentication is required");
         if (courseAuthentication.equals(CourseAuthentication.BASIC)) {

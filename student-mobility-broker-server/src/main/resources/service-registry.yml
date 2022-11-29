@@ -13,6 +13,7 @@
   registrationPassword: secret
   logoURI: https://static.surfconext.nl/logos/idp/uu.png
   scopes: https://utrecht/api inteken
+  useEduHubForOffering: False
 - schacHome: eindhoven.nl
   name: Eindhoven University of Technology
   abbreviation: TU/e
@@ -30,6 +31,7 @@
   registrationPassword: secret
   logoURI: https://static.surfconext.nl/logos/idp/tue.png
   scopes: https://eindhoven/api inteken
+  useEduHubForOffering: False
 - schacHome: wageningen.nl
   name: Wageningen University & Research
   abbreviation: WUR
@@ -45,3 +47,4 @@
   registrationPassword: secret
   logoURI: https://static.surfconext.nl/logos/idp/wur.png
   scopes: https://wageningen/api inteken
+  useEduHubForOffering: True
