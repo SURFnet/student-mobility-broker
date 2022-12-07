@@ -2,9 +2,10 @@ package broker.queue;
 
 import broker.domain.Institution;
 import lombok.SneakyThrows;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class QueueService {
+
+    private static final Log LOG = LogFactory.getLog(QueueService.class);
 
     private static final String algorithm = "HmacSHA256";
     private static final String charSet = Charset.defaultCharset().name();
@@ -37,31 +40,40 @@ public class QueueService {
 
     @SneakyThrows
     public String getRedirectUrl(Institution institution) {
+        String redirectUriWithInstitution = redirectUri + "?i=" + institution.getSchacHome();
         return String.format("%s?c=%s&e=%s&t=%s",
                 this.url,
                 this.customerId,
                 institution.getQueueItWaitingRoom(),
-                URLEncoder.encode(redirectUri, charSet));
+                redirectUriWithInstitution);
     }
 
-    public void validateQueueToken(Institution institution, String queueItToken) {
+    public boolean validateQueueToken(Institution institution, String queueItToken) {
         Map<String, String> queueParams = this.parse(queueItToken);
         //Validate timestamp, hash, queue
         if (queueParams.containsKey("ts")) {
-            Assert.isTrue(Long.parseLong(queueParams.get("ts")) < System.currentTimeMillis() / 1000L,
-                    "Invalid timestamp");
+            if (Long.parseLong(queueParams.get("ts")) < (System.currentTimeMillis() / 1000L)) {
+                LOG.warn("Invalid timestamp, got " + queueParams.get("ts"));
+                return false;
+            }
         }
         if (queueParams.containsKey("e")) {
-            Assert.isTrue(queueParams.get("e").equalsIgnoreCase(institution.getQueueItWaitingRoom()),
-                    String.format("Queue mismatch, expected %s, but got %s",
-                            institution.getQueueItWaitingRoom(),
-                            queueParams.get("e")));
+            if (!queueParams.get("e").equalsIgnoreCase(institution.getQueueItWaitingRoom())) {
+                LOG.warn(String.format("Queue mismatch, expected %s, but got %s",
+                        institution.getQueueItWaitingRoom(),
+                        queueParams.get("e")));
+                return false;
+            }
         }
         if (!queueParams.containsKey("h")) {
-            throw new IllegalArgumentException("Queue token does not contain hash");
+            LOG.warn("Queue token does not contain hash, " + queueParams);
         }
         String calculatedHash = generateSHA256Hash(institution.getQueueItSecret(), queueParams.get(withoutHash));
-        Assert.isTrue(calculatedHash.equalsIgnoreCase(queueParams.get("h")), "Hash value is different");
+        if (!calculatedHash.equalsIgnoreCase(queueParams.get("h"))) {
+            LOG.warn(String.format("Hash value is different, expected %, got %s", calculatedHash, queueParams.get("h")));
+            return false;
+        }
+        return true;
     }
 
     private Map<String, String> parse(String queueItToken) {

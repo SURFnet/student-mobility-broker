@@ -33,10 +33,16 @@
     }
 
     onMount(() => {
-        setTimeout(() => doOnMount(), 3500);
+        doOnMount();
     });
 
     const doOnMount = () => {
+        const redirect = getParameterByName("q");
+        if (redirect) {
+            const decodedRedirect = decodeURIComponent(redirect);
+            window.location.href = decodedRedirect ;
+            return;
+        }
         features().then(json => {
             $config = json;
             const step = getParameterByName("step");

@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class QueueServiceTest {
 
@@ -23,36 +22,34 @@ class QueueServiceTest {
                 UUID.randomUUID(),
                 System.currentTimeMillis() / 1000 - 15_000_000);
         String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
-        final String queueItToken = token + "~h_" + withoutHash;
-        //No exception is thrown
-        queueService.validateQueueToken(institution, queueItToken);
+        String queueItToken = token + "~h_" + withoutHash;
+        assertTrue(queueService.validateQueueToken(institution, queueItToken));
     }
 
     @Test
     void validateQueueTokenReplay() {
-        final String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
+        String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
                 institution.getQueueItWaitingRoom(),
                 UUID.randomUUID(),
                 System.currentTimeMillis() / 1000 + 15_000_000);
-        assertThrows(IllegalArgumentException.class, () -> queueService.validateQueueToken(institution, token));
+        assertFalse(queueService.validateQueueToken(institution, token));
     }
 
     @Test
     void validateQueueTokenNoHash() {
-        final String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
+        String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
                 institution.getQueueItWaitingRoom(),
                 UUID.randomUUID(),
                 System.currentTimeMillis() / 1000 - 15_000_000);
-        assertThrows(IllegalArgumentException.class, () -> queueService.validateQueueToken(institution, token));
+        assertFalse(queueService.validateQueueToken(institution, token));
     }
 
     @Test
     void validateQueueTokenException() {
         String token = "ce_true~rt_queue~bogus";
         String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
-        final String queueItToken = token + "~h_" + withoutHash + "X";
-
-        assertThrows(IllegalArgumentException.class, () -> queueService.validateQueueToken(institution, queueItToken));
+        String queueItToken = token + "~h_" + withoutHash + "X";
+        assertFalse(queueService.validateQueueToken(institution, queueItToken));
     }
 
     @Test

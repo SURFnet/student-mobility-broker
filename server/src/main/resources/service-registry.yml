@@ -49,7 +49,7 @@
   registrationPassword: secret
   logoURI: https://static.surfconext.nl/logos/idp/wur.png
   scopes: https://wageningen/api inteken
-  useEduHubForOffering: True
+  useEduHubForOffering: False
   useQueueIt: True
-  queueItWaitingRoom: edubroker
-  queueItSecret: secret
+  queueItWaitingRoom: test1
+  queueItSecret: 1e1e1eb3-422c-4efe-9e7a-d36bb5d4b87da8f36ba1-45aa-4b5b-931c-4bf60723bdef

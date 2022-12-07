@@ -27,7 +27,7 @@ config:
   # Default home institution if playground is enabled
   play_home_institution_schacHome: "utrecht.nl"
   # Default guest institution if playground is enabled
-  play_guest_institution_schacHome: "eindhoven.nl"
+  play_guest_institution_schacHome: "wageningen.nl"
   # Default offeringId if playground is enabled
   play_offering_id: "6259518E-EF2A-4203-83C2-757E4FEACEDD"
   # The basic authn to mimic the SIS that reports back results - only configure with values on test
@@ -49,7 +49,7 @@ config:
 queueit:
   url: "https://edubrokersurf.queue-it.net"
   customer_id: "edubrokersurf"
-  redirect_uri: "https://edubroker-test.surf.nl/"
+  redirect_uri: "http://localhost:8091/api/queue/redirect"
 
 
 service_registry:
