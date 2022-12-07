@@ -46,6 +46,11 @@ config:
     user: eduhub
     password: secret
 
+queueit:
+  url: "https://edubrokersurf.queue-it.net"
+  customer_id: "edubrokersurf"
+  redirect_uri: "https://edubroker-test.surf.nl/"
+
 
 service_registry:
   path: classpath:/service-registry.yml

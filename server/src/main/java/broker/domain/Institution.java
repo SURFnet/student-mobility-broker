@@ -65,6 +65,15 @@ public class Institution implements Serializable {
     //Do we get offerings from eduhub or from the courseEndpoint
     private boolean useEduHubForOffering;
 
+    //Do we send students to the waiting queue-it or do we allow immediate registration
+    private boolean useQueueIt;
+
+    //The name of the waiting room if queueIt is enabled
+    private String queueItWaitingRoom;
+
+    //The secret for token validation
+    private String queueItSecret;
+
     public void validate() {
         Assert.notNull(courseAuthentication, "courseAuthentication is required");
         if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
@@ -84,6 +93,17 @@ public class Institution implements Serializable {
         Assert.notNull(logoURI, "logoURI is required");
         Assert.notNull(scopes, "scopes is required");
         Assert.notNull(privacyEndpoint, "privacyEndpoint is required");
+        if (useQueueIt) {
+            Assert.hasLength(queueItWaitingRoom, "If queueIt is enabled, then specify the queueItWaitingRoom");
+            Assert.isTrue(queueItWaitingRoom.matches("[a-zA-Z0-9]+"), "queueItWaitingRoom may only contain letters");
+            Assert.hasLength(queueItSecret, "If queueIt is enabled, then specify the queueItWaitingRoom");
+        }
+    }
+
+    public Institution(boolean useQueueIt, String queueItWaitingRoom, String queueItSecret) {
+        this.useQueueIt = useQueueIt;
+        this.queueItWaitingRoom = queueItWaitingRoom;
+        this.queueItSecret = queueItSecret;
     }
 
     public Institution sanitize() {

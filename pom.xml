@@ -18,8 +18,8 @@
 	</parent>
 
 	<modules>
-		<module>student-mobility-broker-server</module>
-		<module>student-mobility-broker-client</module>
+		<module>server</module>
+		<module>client</module>
 	</modules>
 
 	<build>
