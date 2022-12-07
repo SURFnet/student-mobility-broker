@@ -159,14 +159,13 @@ public class BrokerController {
      */
     @GetMapping(value = "/api/queue/redirect")
     public View queueRedirect(HttpServletRequest request,
-                              @RequestParam("queueittoken") String queueItToken,
-                              @RequestParam("i") String guestInstitutionSchacHome) {
+                              @RequestParam("queueittoken") String queueItToken) {
         LOG.debug("Redirect from queue-it: " + queueItToken);
-        Institution institution = this.getInstitution(guestInstitutionSchacHome);
+        BrokerRequest brokerRequest = getBrokerRequest(request);
+        Institution institution = this.getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         if (!queueService.validateQueueToken(institution, queueItToken)) {
             return new RedirectView(clientUrl + "?error=invalid_queue");
         }
-        BrokerRequest brokerRequest = getBrokerRequest(request);
         return new RedirectView(clientUrl + "?step=approve");
     }
 

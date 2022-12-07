@@ -40,12 +40,11 @@ public class QueueService {
 
     @SneakyThrows
     public String getRedirectUrl(Institution institution) {
-        String redirectUriWithInstitution = redirectUri + "?i=" + institution.getSchacHome();
         return String.format("%s?c=%s&e=%s&t=%s",
                 this.url,
                 this.customerId,
                 institution.getQueueItWaitingRoom(),
-                redirectUriWithInstitution);
+                redirectUri);
     }
 
     public boolean validateQueueToken(Institution institution, String queueItToken) {
