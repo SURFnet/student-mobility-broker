@@ -32,8 +32,11 @@
         I18n.locale = "en";
     }
 
-
     onMount(() => {
+        setTimeout(() => doOnMount(), 3500);
+    });
+
+    const doOnMount = () => {
         features().then(json => {
             $config = json;
             const step = getParameterByName("step");
@@ -74,7 +77,7 @@
                 loaded = true;
             }
         });
-    });
+    }
 
 </script>
 
