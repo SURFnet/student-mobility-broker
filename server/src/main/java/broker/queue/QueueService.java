@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +37,6 @@ public class QueueService {
         this.redirectUri = redirectUri;
     }
 
-    @SneakyThrows
     public String getRedirectUrl(Institution institution) {
         return String.format("%s?c=%s&e=%s&t=%s",
                 this.url,
@@ -69,7 +67,7 @@ public class QueueService {
         }
         String calculatedHash = generateSHA256Hash(institution.getQueueItSecret(), queueParams.get(withoutHash));
         if (!calculatedHash.equalsIgnoreCase(queueParams.get("h"))) {
-            LOG.warn(String.format("Hash value is different, expected %, got %s", calculatedHash, queueParams.get("h")));
+            LOG.warn(String.format("Hash value is different, expected %s, got %s", calculatedHash, queueParams.get("h")));
             return false;
         }
         return true;
@@ -86,7 +84,7 @@ public class QueueService {
     }
 
     @SneakyThrows
-    protected String generateSHA256Hash(String secretKey, String stringToHash) {
+    public String generateSHA256Hash(String secretKey, String stringToHash) {
         SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes(charSet), algorithm);
         Mac mac = Mac.getInstance(algorithm);
         mac.init(signingKey);

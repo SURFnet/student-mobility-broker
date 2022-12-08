@@ -6,6 +6,7 @@ import broker.domain.BrokerRequest;
 import broker.domain.CourseAuthentication;
 import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
+import broker.exception.InvalidQueueException;
 import broker.exception.NotFoundException;
 import broker.exception.RemoteException;
 import broker.queue.QueueService;
@@ -117,7 +118,7 @@ public class BrokerController {
     }
 
     /*
-     * Endpoint called by the external catalog form submit. Give browser-control back to the GUI but check if we need
+     * Endpoint called by the external catalog form submit. Give browser-control back to the GUI, but check if we need
      * to redirect to queue-it
      */
     @PostMapping(value = "/api/broker", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -161,11 +162,13 @@ public class BrokerController {
     public View queueRedirect(HttpServletRequest request,
                               @RequestParam("queueittoken") String queueItToken) {
         LOG.debug("Redirect from queue-it: " + queueItToken);
-        BrokerRequest brokerRequest = getBrokerRequest(request);
+        BrokerRequest brokerRequest = getBrokerRequest(request, false);
         Institution institution = this.getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         if (!queueService.validateQueueToken(institution, queueItToken)) {
             return new RedirectView(clientUrl + "?error=invalid_queue");
         }
+        brokerRequest.setQueueItSucceeded(true);
+        request.getSession().setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
         return new RedirectView(clientUrl + "?step=approve");
     }
 
@@ -184,7 +187,7 @@ public class BrokerController {
      */
     @GetMapping(value = "/api/offering")
     public Map<String, Object> offering(HttpServletRequest request) {
-        BrokerRequest brokerRequest = getBrokerRequest(request);
+        BrokerRequest brokerRequest = getBrokerRequest(request, true);
         LOG.debug(String.format("Received request for offering for brokerRequest %s and session %s",
                 brokerRequest, request.getSession().getId()));
 
@@ -217,10 +220,13 @@ public class BrokerController {
         return result;
     }
 
-    private BrokerRequest getBrokerRequest(HttpServletRequest request) {
+    private BrokerRequest getBrokerRequest(HttpServletRequest request, boolean validateQueueIt) {
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
         if (brokerRequest == null) {
             throw new NotFoundException("No broker request in the session");
+        }
+        if (validateQueueIt && brokerRequest.isUseQueueIt() && !brokerRequest.isQueueItSucceeded()) {
+            throw new InvalidQueueException("QueueIT required but not performed");
         }
         return brokerRequest;
     }
@@ -265,15 +271,11 @@ public class BrokerController {
             LOG.debug("Returning playground request with parameters: " + correlationMap);
             return new HashMap<>(correlationMap);
         }
-        BrokerRequest brokerRequest = getBrokerRequest(request);
+        BrokerRequest brokerRequest = getBrokerRequest(request, true);
         Map<String, Object> offering = (Map<String, Object>) request.getSession().getAttribute(OFFERING_SESSION_KEY);
 
         LOG.debug(String.format("Received start registration request for brokerRequest: %s and session: %s",
                 brokerRequest, request.getSession().getId()));
-
-        if (brokerRequest == null) {
-            throw new IllegalArgumentException("BrokerRequest is null");
-        }
 
         try {
             Map<String, Object> body = doStart(brokerRequest, offering, correlationMap);

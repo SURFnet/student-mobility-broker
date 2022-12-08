@@ -12,11 +12,13 @@ import io.restassured.filter.session.SessionFilter;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
@@ -46,8 +48,79 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void brokerOfferingEduHub() throws IOException {
-        happyFlow("hardewijk.nl");
+    public void brokerOfferingEduHubWithQueueIt() throws IOException {
+        String guestInstitutionSchacHome = "hardewijk.nl";
+        Institution institution = this.serviceRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
+        CourseAuthentication courseAuthentication = institution.getCourseAuthentication();
+        SessionFilter sessionFilter = new SessionFilter();
+        given().redirects().follow(false)
+                .filter(sessionFilter)
+                .when()
+                .param("homeInstitutionSchacHome", "eindhoven.nl")
+                .param("guestInstitutionSchacHome", guestInstitutionSchacHome)
+                .param("offeringId", "1")
+                .param("type", "course")
+                .post("/api/broker")
+                .then()
+                .header("Location", "http://localhost:3003?step=approve&q=https%3A%2F%2Fedubrokersurf.queue-it.net%3Fc%3Dedubrokersurf%26e%3Dedubroker%26t%3Dhttp%3A%2F%2Flocalhost%3A8091%2Fapi%2Fqueue%2Fredirect");
+        //Now do the call to the redirect queue endpoint in order to fetch the offering later
+        String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
+                institution.getQueueItWaitingRoom(),
+                UUID.randomUUID(),
+                System.currentTimeMillis() / 1000 + 15_000_000);
+        String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
+        String queueItToken = token + "~h_" + withoutHash;
+        given().redirects().follow(false)
+                .filter(sessionFilter)
+                .when()
+                .param("queueittoken", queueItToken)
+                .get("/api/queue/redirect")
+                .then()
+                .header("Location", "http://localhost:3003?step=approve");
+        featureToggles();
+        guiGetOffering(sessionFilter, courseAuthentication, institution.isUseEduHubForOffering());
+        startRegistration(sessionFilter);
+    }
+
+    @Test
+    public void brokerOfferingWithWrongQueueItToken() throws IOException {
+        String guestInstitutionSchacHome = "hardewijk.nl";
+        Institution institution = this.serviceRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
+        SessionFilter sessionFilter = new SessionFilter();
+        given().redirects().follow(false)
+                .filter(sessionFilter)
+                .when()
+                .param("homeInstitutionSchacHome", "eindhoven.nl")
+                .param("guestInstitutionSchacHome", guestInstitutionSchacHome)
+                .param("offeringId", "1")
+                .param("type", "course")
+                .post("/api/broker")
+                .then()
+                .header("Location", "http://localhost:3003?step=approve&q=https%3A%2F%2Fedubrokersurf.queue-it.net%3Fc%3Dedubrokersurf%26e%3Dedubroker%26t%3Dhttp%3A%2F%2Flocalhost%3A8091%2Fapi%2Fqueue%2Fredirect");
+        //Now do the call to the redirect queue endpoint in order to fetch the offering later
+        String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
+                institution.getQueueItWaitingRoom(),
+                UUID.randomUUID(),
+                System.currentTimeMillis() / 1000 + 15_000_000);
+        String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
+        String queueItToken = token + "~h_" + withoutHash + "X";
+        given().redirects().follow(false)
+                .filter(sessionFilter)
+                .when()
+                .param("queueittoken", queueItToken)
+                .get("/api/queue/redirect")
+                .then()
+                .header("Location", "http://localhost:3003?error=invalid_queue");
+        //If we now try to get the offering it will fail
+        Map<String, Object> result = given()
+                .filter(sessionFilter)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/api/offering")
+                .as(new TypeRef<Map<String, Object>>() {
+                });
+        assertEquals("QueueIT required but not performed", result.get("message"));
+        assertEquals(HttpStatus.CONFLICT.value(), result.get("status"));
     }
 
     @Test

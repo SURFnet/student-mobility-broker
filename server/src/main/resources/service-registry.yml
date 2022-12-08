@@ -18,11 +18,9 @@
 - schacHome: eindhoven.nl
   name: Eindhoven University of Technology
   abbreviation: TU/e
-  courseEndpoint: http://localhost:8076/basic/offerings
-  courseAuthentication: BASIC
+  courseEndpoint: http://localhost:8076/oauth2/offerings
+  courseAuthentication: OAUTH2
   privacyEndpoint: https://www.surf.nl/studentmobiliteit
-  courseAuthenticationUserName: user
-  courseAuthenticationPassword: secret
   personsEndpoint: http://localhost:8076/persons/me
   personAuthentication: HEADER
   associationsEndpoint: http://localhost:8076/associations
@@ -37,8 +35,10 @@
 - schacHome: wageningen.nl
   name: Wageningen University & Research
   abbreviation: WUR
-  courseEndpoint: http://localhost:8076/oauth2/offerings
-  courseAuthentication: OAUTH2
+  courseEndpoint: http://localhost:8076/basic/offerings
+  courseAuthentication: BASIC
+  courseAuthenticationUserName: user
+  courseAuthenticationPassword: secret
   privacyEndpoint: https://www.surf.nl/studentmobiliteit
   personsEndpoint: http://localhost:8076/persons/me
   personAuthentication: HEADER

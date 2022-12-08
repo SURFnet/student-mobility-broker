@@ -21,6 +21,7 @@ public class BrokerRequest implements Serializable {
     private String offeringId;
     private String offeringType;
     private boolean useQueueIt;
+    private boolean queueItSucceeded;
 
     public void validate() {
         Assert.notNull(homeInstitutionSchacHome, "homeInstitutionSchacHome is required");

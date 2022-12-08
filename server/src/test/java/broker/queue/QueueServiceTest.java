@@ -20,7 +20,7 @@ class QueueServiceTest {
         String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
                 institution.getQueueItWaitingRoom(),
                 UUID.randomUUID(),
-                System.currentTimeMillis() / 1000 - 15_000_000);
+                System.currentTimeMillis() / 1000 + 15_000_000);
         String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
         String queueItToken = token + "~h_" + withoutHash;
         assertTrue(queueService.validateQueueToken(institution, queueItToken));
@@ -31,7 +31,7 @@ class QueueServiceTest {
         String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
                 institution.getQueueItWaitingRoom(),
                 UUID.randomUUID(),
-                System.currentTimeMillis() / 1000 + 15_000_000);
+                System.currentTimeMillis() / 1000 - 15_000_000);
         assertFalse(queueService.validateQueueToken(institution, token));
     }
 
@@ -40,7 +40,7 @@ class QueueServiceTest {
         String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
                 institution.getQueueItWaitingRoom(),
                 UUID.randomUUID(),
-                System.currentTimeMillis() / 1000 - 15_000_000);
+                System.currentTimeMillis() / 1000 + 15_000_000);
         assertFalse(queueService.validateQueueToken(institution, token));
     }
 
@@ -53,8 +53,19 @@ class QueueServiceTest {
     }
 
     @Test
+    void validateQueueTokenWrongQueue() {
+        String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
+                "nope",
+                UUID.randomUUID(),
+                System.currentTimeMillis() / 1000 + 15_000_000);
+        String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
+        String queueItToken = token + "~h_" + withoutHash;
+        assertFalse(queueService.validateQueueToken(institution, queueItToken));
+    }
+
+    @Test
     void getRedirectUrl() {
-        assertEquals("http://localhost:8082?c=edubrokersurf&e=queue1&t=http%3A%2F%2Flocalhost%3A8083%2Fstart",
+        assertEquals("http://localhost:8082?c=edubrokersurf&e=queue1&t=http://localhost:8083/start",
                 queueService.getRedirectUrl(institution));
     }
 }

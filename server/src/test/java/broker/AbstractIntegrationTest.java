@@ -1,5 +1,6 @@
 package broker;
 
+import broker.queue.QueueService;
 import io.restassured.RestAssured;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,9 @@ public abstract class AbstractIntegrationTest {
 
     @Autowired
     protected ServiceRegistry serviceRegistry;
+
+    @Autowired
+    protected QueueService queueService;
 
     @BeforeEach
     public void before() {
