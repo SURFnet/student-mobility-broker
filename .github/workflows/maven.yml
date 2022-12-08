@@ -22,7 +22,7 @@ jobs:
         java-version: 1.8
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-      working-directory: ./student-mobility-broker-server
+      working-directory: ./server
     - name: Codecov
       uses: codecov/codecov-action@v1.3.1
 
@@ -36,8 +36,8 @@ jobs:
         with:
           node-version: '14'
       - run: npm install
-        working-directory: ./student-mobility-broker-client
+        working-directory: ./client
       - run: npm run build
-        working-directory: ./student-mobility-broker-client
+        working-directory: ./client
       - run: CI=true npm test
-        working-directory: ./student-mobility-broker-client
+        working-directory: ./client
