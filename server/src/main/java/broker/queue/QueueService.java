@@ -38,11 +38,15 @@ public class QueueService {
     }
 
     public String getRedirectUrl(Institution institution) {
-        return String.format("%s?c=%s&e=%s&t=%s",
+        String redirect = String.format("%s?c=%s&e=%s&t=%s",
                 this.url,
                 this.customerId,
                 institution.getQueueItWaitingRoom(),
                 redirectUri);
+
+        LOG.debug("Returning redirect url for queueing " + redirect);
+
+        return redirect;
     }
 
     public boolean validateQueueToken(Institution institution, String queueItToken) {
@@ -65,11 +69,12 @@ public class QueueService {
         if (!queueParams.containsKey("h")) {
             LOG.warn("Queue token does not contain hash, " + queueParams);
         }
-        String calculatedHash = generateSHA256Hash(institution.getQueueItSecret(), queueParams.get(withoutHash));
+        String calculatedHash = Security.generateSHA256Hash(institution.getQueueItSecret(), queueParams.get(withoutHash));
         if (!calculatedHash.equalsIgnoreCase(queueParams.get("h"))) {
             LOG.warn(String.format("Hash value is different, expected %s, got %s", calculatedHash, queueParams.get("h")));
             return false;
         }
+        LOG.debug("Validated valid queueItToken " + queueItToken);
         return true;
     }
 
@@ -83,16 +88,4 @@ public class QueueService {
         return results;
     }
 
-    @SneakyThrows
-    public String generateSHA256Hash(String secretKey, String stringToHash) {
-        SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes(charSet), algorithm);
-        Mac mac = Mac.getInstance(algorithm);
-        mac.init(signingKey);
-        byte[] rawHmac = mac.doFinal(stringToHash.getBytes(charSet));
-        StringBuilder sb = new StringBuilder();
-        for (byte b : rawHmac) {
-            sb.append(String.format("%1$02x", b));
-        }
-        return sb.toString();
-    }
 }

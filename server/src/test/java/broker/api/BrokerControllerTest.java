@@ -5,6 +5,7 @@ import broker.WireMockExtension;
 import broker.domain.CourseAuthentication;
 import broker.domain.Institution;
 import broker.exception.NotFoundException;
+import broker.queue.Security;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import io.restassured.common.mapper.TypeRef;
@@ -68,7 +69,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 institution.getQueueItWaitingRoom(),
                 UUID.randomUUID(),
                 System.currentTimeMillis() / 1000 + 15_000_000);
-        String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
+        String withoutHash = Security.generateSHA256Hash(institution.getQueueItSecret(), token);
         String queueItToken = token + "~h_" + withoutHash;
         given().redirects().follow(false)
                 .filter(sessionFilter)
@@ -102,7 +103,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 institution.getQueueItWaitingRoom(),
                 UUID.randomUUID(),
                 System.currentTimeMillis() / 1000 + 15_000_000);
-        String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
+        String withoutHash = Security.generateSHA256Hash(institution.getQueueItSecret(), token);
         String queueItToken = token + "~h_" + withoutHash + "X";
         given().redirects().follow(false)
                 .filter(sessionFilter)

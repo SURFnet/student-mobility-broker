@@ -21,7 +21,7 @@ class QueueServiceTest {
                 institution.getQueueItWaitingRoom(),
                 UUID.randomUUID(),
                 System.currentTimeMillis() / 1000 + 15_000_000);
-        String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
+        String withoutHash = Security.generateSHA256Hash(institution.getQueueItSecret(), token);
         String queueItToken = token + "~h_" + withoutHash;
         assertTrue(queueService.validateQueueToken(institution, queueItToken));
     }
@@ -47,7 +47,7 @@ class QueueServiceTest {
     @Test
     void validateQueueTokenException() {
         String token = "ce_true~rt_queue~bogus";
-        String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
+        String withoutHash = Security.generateSHA256Hash(institution.getQueueItSecret(), token);
         String queueItToken = token + "~h_" + withoutHash + "X";
         assertFalse(queueService.validateQueueToken(institution, queueItToken));
     }
@@ -58,7 +58,7 @@ class QueueServiceTest {
                 "nope",
                 UUID.randomUUID(),
                 System.currentTimeMillis() / 1000 + 15_000_000);
-        String withoutHash = queueService.generateSHA256Hash(institution.getQueueItSecret(), token);
+        String withoutHash = Security.generateSHA256Hash(institution.getQueueItSecret(), token);
         String queueItToken = token + "~h_" + withoutHash;
         assertFalse(queueService.validateQueueToken(institution, queueItToken));
     }
