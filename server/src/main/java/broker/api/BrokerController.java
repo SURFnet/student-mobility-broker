@@ -142,6 +142,8 @@ public class BrokerController {
         }
         //Store if we need to redirect to queue-it
         brokerRequest.setUseQueueIt(guestInstitution.isUseQueueIt());
+        //Prevent a very smart hack
+        brokerRequest.setQueueItSucceeded(false);
         //This establishes a session ID for the client
         request.getSession().setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
 
