@@ -55,6 +55,9 @@
     onMount(() => {
         step = getParameterByName("step");
         error = getParameterByName("error");
+        if (I18n.translations[I18n.locale].error[error]) {
+            error = I18n.translations[I18n.locale].error[error];
+        }
         landing = getParameterByName("landing");
         loaded = true;
         if (error || landing) {

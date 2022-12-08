@@ -79,7 +79,8 @@ I18n.translations.nl = {
     subInfo: "The only information we currently can share with you is: <span style='font-style: italic'>{{msg}}</span>",
     surfLink: "See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
     expired: "The enrollment has been expired",
-    offering: "The course information could not be retrieved from {{name}}"
+    offering: "The course information could not be retrieved from {{name}}",
+    invalid_queue: "The queue-session validation failed"
   },
   explanation: {
     title: "How does enrolling work?",
