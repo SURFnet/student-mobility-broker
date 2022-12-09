@@ -1,4 +1,4 @@
-package broker;
+package broker.registry;
 
 import broker.domain.Institution;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -17,12 +17,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class InMemoryServiceRegistry implements ServiceRegistry {
+public class InMemoryInstitutionRegistry implements InstitutionRegistry {
 
     private final Map<String, Institution> institutions;
 
     @SneakyThrows
-    public InMemoryServiceRegistry(@Value("${service_registry.path}") Resource serviceRegistryResource) {
+    public InMemoryInstitutionRegistry(@Value("${service_registry.path}") Resource serviceRegistryResource) {
         ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
         List<Institution> institutionList = objectMapper.readValue(serviceRegistryResource.getInputStream(), new TypeReference<List<Institution>>() {
         });

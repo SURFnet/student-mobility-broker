@@ -51,7 +51,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     @Test
     public void brokerOfferingEduHubWithQueueIt() throws IOException {
         String guestInstitutionSchacHome = "hardewijk.nl";
-        Institution institution = this.serviceRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
+        Institution institution = this.institutionRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
         CourseAuthentication courseAuthentication = institution.getCourseAuthentication();
         SessionFilter sessionFilter = new SessionFilter();
         given().redirects().follow(false)
@@ -86,7 +86,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     @Test
     public void brokerOfferingWithWrongQueueItToken() throws IOException {
         String guestInstitutionSchacHome = "hardewijk.nl";
-        Institution institution = this.serviceRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
+        Institution institution = this.institutionRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
         SessionFilter sessionFilter = new SessionFilter();
         given().redirects().follow(false)
                 .filter(sessionFilter)
@@ -156,7 +156,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     }
 
     private void happyFlow(String guestInstitutionSchacHome) throws IOException {
-        Institution institution = this.serviceRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
+        Institution institution = this.institutionRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
         CourseAuthentication courseAuthentication = institution.getCourseAuthentication();
         SessionFilter sessionFilter = new SessionFilter();
         formSubmitByCatalog(sessionFilter, guestInstitutionSchacHome);

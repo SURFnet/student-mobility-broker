@@ -15,7 +15,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ServiceRegistryControllerTest extends AbstractIntegrationTest {
+public class InstitutionRegistryControllerTest extends AbstractIntegrationTest {
 
     @Test
     void institutions() {

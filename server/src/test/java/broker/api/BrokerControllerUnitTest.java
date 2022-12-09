@@ -1,7 +1,7 @@
 package broker.api;
 
 import broker.AbstractIntegrationTest;
-import broker.InMemoryServiceRegistry;
+import broker.registry.InMemoryInstitutionRegistry;
 import broker.WireMockExtension;
 import broker.domain.BrokerRequest;
 import broker.queue.QueueService;
@@ -39,7 +39,7 @@ public class BrokerControllerUnitTest {
             new URI("https://eduhub.nl"),
             "eduhub",
             "secret",
-            new InMemoryServiceRegistry(new ClassPathResource("service-registry-test.yml")),
+            new InMemoryInstitutionRegistry(new ClassPathResource("service-registry-test.yml")),
             new QueueService("http://localhost:8082", "edubrokersurf", "http://localhost:8083/start"));
 
     @RegisterExtension

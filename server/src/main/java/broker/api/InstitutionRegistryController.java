@@ -1,6 +1,6 @@
 package broker.api;
 
-import broker.ServiceRegistry;
+import broker.registry.InstitutionRegistry;
 import broker.domain.Institution;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,14 +17,14 @@ import java.util.*;
 import static java.util.stream.Collectors.toList;
 
 @RestController
-public class ServiceRegistryController {
+public class InstitutionRegistryController {
 
-    private final ServiceRegistry serviceRegistry;
+    private final InstitutionRegistry institutionRegistry;
 
-    private static final Log LOG = LogFactory.getLog(ServiceRegistryController.class);
+    private static final Log LOG = LogFactory.getLog(InstitutionRegistryController.class);
 
-    public ServiceRegistryController(ServiceRegistry serviceRegistry) {
-        this.serviceRegistry = serviceRegistry;
+    public InstitutionRegistryController(InstitutionRegistry institutionRegistry) {
+        this.institutionRegistry = institutionRegistry;
     }
 
     /*
@@ -33,14 +33,14 @@ public class ServiceRegistryController {
     @GetMapping(value = "/api/service-registry")
     public List<Institution> serviceRegistry() {
         LOG.debug("Received request for service registry.");
-        return serviceRegistry.allInstitutions().stream().map(Institution::sanitize).collect(toList());
+        return institutionRegistry.allInstitutions().stream().map(Institution::sanitize).collect(toList());
     }
 
     @PostMapping(value = "/api/validate-service-registry-endpoints")
     public Map<String, Boolean> validate(@RequestBody Map<String, String> enrollmentRequest) {
         LOG.debug(String.format("Validating enrollmentRequest with %s", enrollmentRequest));
 
-        Collection<Institution> institutions = serviceRegistry.allInstitutions();
+        Collection<Institution> institutions = institutionRegistry.allInstitutions();
         String personURI = enrollmentRequest.get("personURI");
         boolean validPersonURI = institutions.stream().anyMatch(institution -> institution.getPersonsEndpoint().equals(personURI));
         if (!validPersonURI) {
@@ -85,8 +85,6 @@ public class ServiceRegistryController {
 
     private Optional<Institution> findInstitution(Map<String, String> enrollmentRequest) {
         String homeInstitution = enrollmentRequest.get("homeInstitution");
-        return serviceRegistry.allInstitutions().stream()
-                .filter(ins -> ins.getSchacHome().equals(homeInstitution))
-                .findAny();
+        return institutionRegistry.findInstitutionBySchacHome(homeInstitution);
     }
 }

@@ -1,7 +1,7 @@
 package broker.api;
 
 import broker.LanguageFilter;
-import broker.ServiceRegistry;
+import broker.registry.InstitutionRegistry;
 import broker.domain.BrokerRequest;
 import broker.domain.CourseAuthentication;
 import broker.domain.EnrollmentRequest;
@@ -45,7 +45,7 @@ public class BrokerController {
 
     private final String clientUrl;
 
-    private final ServiceRegistry serviceRegistry;
+    private final InstitutionRegistry institutionRegistry;
     private final QueueService queueService;
     private final RestTemplate restTemplate;
     private final Map<String, Object> featureToggles = new HashMap<>();
@@ -80,7 +80,7 @@ public class BrokerController {
                             @Value("${config.edu_hub.gateway_url}") URI eduHubGatewayUrl,
                             @Value("${config.edu_hub.user}") String eduHubUser,
                             @Value("${config.edu_hub.password}") String eduHubPassword,
-                            ServiceRegistry serviceRegistry,
+                            InstitutionRegistry institutionRegistry,
                             QueueService queueService) {
         this.clientUrl = clientUrl;
         this.tokenEndpoint = tokenEndpoint;
@@ -89,7 +89,7 @@ public class BrokerController {
         this.sisUser = sisUser;
         this.sisPassword = sisPassword;
         this.sisResultsEndpoint = sisResultsEndpoint;
-        this.serviceRegistry = serviceRegistry;
+        this.institutionRegistry = institutionRegistry;
         this.queueService = queueService;
         this.eduHubGatewayUrl = eduHubGatewayUrl;
         this.eduHubUser = eduHubUser;
@@ -235,7 +235,7 @@ public class BrokerController {
 
     private Institution getInstitution(String institutionSchacHome) {
         LOG.debug("Lookup institution " + institutionSchacHome + " in serviceregistry.");
-        return serviceRegistry
+        return institutionRegistry
                 .findInstitutionBySchacHome(institutionSchacHome)
                 .orElseThrow(() -> new NotFoundException(String.format("Institution %s unknown", institutionSchacHome)));
     }
