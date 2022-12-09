@@ -19,9 +19,6 @@ import java.util.stream.Collectors;
 public class QueueService {
 
     private static final Log LOG = LogFactory.getLog(QueueService.class);
-
-    private static final String algorithm = "HmacSHA256";
-    private static final String charSet = Charset.defaultCharset().name();
     private static final String withoutHash = "W";
 
     private final String customerId;
