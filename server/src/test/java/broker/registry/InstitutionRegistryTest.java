@@ -1,7 +1,5 @@
 package broker.registry;
 
-import broker.registry.InMemoryInstitutionRegistry;
-import broker.registry.InstitutionRegistry;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
@@ -12,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class InstitutionRegistryTest {
 
-    private InstitutionRegistry subject = new InMemoryInstitutionRegistry(new ClassPathResource("service-registry.yml"));
+    private final InstitutionRegistry subject = new InMemoryInstitutionRegistry(new ClassPathResource("service-registry.yml"));
 
     @Test
     void construct() {

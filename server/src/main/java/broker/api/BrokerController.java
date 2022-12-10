@@ -261,7 +261,8 @@ public class BrokerController {
         headers.add("X-Correlation-ID", (String) message.get("correlationID"));
         headers.setBasicAuth(sisUser, sisPassword);
         //playground hacky
-        return restTemplate.exchange(sisResultsEndpoint.replace("play-results", "me"), HttpMethod.GET, new HttpEntity<>(headers), mapRef);
+        return restTemplate.exchange(sisResultsEndpoint.replace("play-results", "me"),
+                HttpMethod.GET, new HttpEntity<>(headers), mapRef);
     }
 
     /*
