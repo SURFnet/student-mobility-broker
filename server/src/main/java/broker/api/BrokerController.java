@@ -35,6 +35,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.springframework.http.HttpHeaders.ACCEPT;
+
 @RestController
 public class BrokerController {
 
@@ -335,6 +337,7 @@ public class BrokerController {
                     this.translateOfferingType(brokerRequest));
             HttpHeaders headers = new HttpHeaders();
             headers.setBasicAuth(this.eduHubUser, this.eduHubPassword);
+            headers.set(ACCEPT, "application/json;version=5");
             headers.add("X-Route", "endpoint=" + guestInstitution.getSchacHome());
 
             LOG.debug("Fetching offering " + uri + " with basic authentication from eduHub");

@@ -26,6 +26,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 public class BrokerControllerTest extends AbstractIntegrationTest {
@@ -286,7 +287,9 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     private void guiGetOffering(SessionFilter sessionFilter, CourseAuthentication courseAuthentication, boolean useEduHubForOffering) throws IOException {
         MappingBuilder mappingBuilder = get(urlPathMatching("/offerings/1"));
         if (useEduHubForOffering) {
-            mappingBuilder = mappingBuilder.withBasicAuth("eduhub", "secret");
+            mappingBuilder = mappingBuilder
+                    .withBasicAuth("eduhub", "secret")
+                    .withHeader(ACCEPT, new EqualToPattern("application/json;version=5"));
         } else if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
             mappingBuilder = mappingBuilder.withBasicAuth("user", "secret");
         } else if (courseAuthentication.equals(CourseAuthentication.OAUTH2)) {
