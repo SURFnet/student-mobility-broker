@@ -45,11 +45,10 @@ config:
     gateway_url: http://localhost:8081
     user: eduhub
     password: secret
-
-queueit:
-  url: "https://edubrokersurf.queue-it.net"
-  customer_id: "edubrokersurf"
-  redirect_uri: "http://localhost:8091/api/queue/redirect"
+  queueit:
+    url: "https://edubrokersurf.queue-it.net"
+    customer_id: "edubrokersurf"
+    redirect_uri: "http://localhost:8091/api/queue/redirect"
 
 
 service_registry:

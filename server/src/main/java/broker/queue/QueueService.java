@@ -26,9 +26,9 @@ public class QueueService {
     private final String redirectUri;
 
     public QueueService(
-            @Value("${queueit.url}") String url,
-            @Value("${queueit.customer_id}") String customerId,
-            @Value("${queueit.redirect_uri}") String redirectUri) {
+            @Value("${config.queueit.url}") String url,
+            @Value("${config.queueit.customer_id}") String customerId,
+            @Value("${config.queueit.redirect_uri}") String redirectUri) {
         this.url = url;
         this.customerId = customerId;
         this.redirectUri = redirectUri;
