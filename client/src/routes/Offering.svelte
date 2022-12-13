@@ -629,7 +629,7 @@
                     <div class="error">
                         <p>{I18n.t("error.info")}</p>
                         <div>
-                            <p>{@html DOMPurify.sanitize(I18n.t("error.subInfo", {msg: error}))}</p>
+                            <p>{DOMPurify.sanitize(I18n.t("error.subInfo", {msg: error}))}</p>
                         </div>
                         <p>
                             <span>{@html I18n.t("error.surfLink")}</span>
@@ -700,7 +700,7 @@
                                 <h3>{I18n.t("offering.errorTitle", {abbreviation: $offering.guestInstitution.abbreviation})}</h3>
                                 <div class="final-action error-result">
                                     {#if result.message && result.code !== 404 && result.code !== 409}
-                                        <span class="error-message">{@html DOMPurify.sanitize(result.message)}</span>
+                                        <span class="error-message">{DOMPurify.sanitize(result.message)}</span>
                                         <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
                                     {:else if result.code === 404}
                                         <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.notFoundResultErrorMessage", {institution: $offering.homeInstitution.name}))}</span>
