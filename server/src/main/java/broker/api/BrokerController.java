@@ -335,7 +335,7 @@ public class BrokerController {
     @SuppressWarnings("unchecked")
     private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
         if (guestInstitution.isUseEduHubForOffering()) {
-            String uri = String.format("%s/%s/%s?expand=academicSession,%s",
+            String uri = String.format("%s/%s/%s?expand=academicSession&expand=%s",
                     this.eduHubGatewayUrl,
                     "offerings",
                     brokerRequest.getOfferingId(),
