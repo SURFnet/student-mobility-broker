@@ -76,7 +76,7 @@ I18n.translations.en = {
   },
   error: {
     info: "This is embarrassing. An error has occurred.",
-    subInfo: "The only information we currently can share with you is: <span style='font-style: italic'>{{msg}}</span>",
+    subInfo: "The only information we currently can share with you is:",
     surfLink: "See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
     expired: "The enrollment has been expired",
     offering: "The course information could not be retrieved from {{name}}",

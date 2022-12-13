@@ -229,8 +229,11 @@
             }
         }
 
+    p.error-msg {
+        font-weight: bold;
+    }
 
-        :global(span.balancing svg #rotate-container-left ) {
+    :global(span.balancing svg #rotate-container-left ) {
             transform-origin: 38% 66%;
             animation: goup 3s ease infinite;
         }
@@ -629,7 +632,8 @@
                     <div class="error">
                         <p>{I18n.t("error.info")}</p>
                         <div>
-                            <p>{DOMPurify.sanitize(I18n.t("error.subInfo", {msg: error}))}</p>
+                            <p>{I18n.t("error.subInfo")}</p>
+                            <p class="error-msg">{DOMPurify.sanitize(error)}</p>
                         </div>
                         <p>
                             <span>{@html I18n.t("error.surfLink")}</span>
