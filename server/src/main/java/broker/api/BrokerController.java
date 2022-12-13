@@ -1,7 +1,6 @@
 package broker.api;
 
 import broker.LanguageFilter;
-import broker.registry.InstitutionRegistry;
 import broker.domain.BrokerRequest;
 import broker.domain.CourseAuthentication;
 import broker.domain.EnrollmentRequest;
@@ -10,6 +9,7 @@ import broker.exception.InvalidQueueException;
 import broker.exception.NotFoundException;
 import broker.exception.RemoteException;
 import broker.queue.QueueService;
+import broker.registry.InstitutionRegistry;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +21,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.View;
@@ -202,6 +203,10 @@ public class BrokerController {
             offering = fetchOffering(guestInstitution, brokerRequest);
         } catch (RuntimeException e) {
             LOG.error("Error in fetching offering from " + guestInstitution.getName(), e);
+            if (e instanceof HttpClientErrorException) {
+                HttpClientErrorException ex = (HttpClientErrorException) e;
+                LOG.error("Response error in fetching offering: " + ex.getResponseBodyAsString());
+            }
             throw new RemoteException("Could not fetch offering from :" + guestInstitution.getName());
         }
 
