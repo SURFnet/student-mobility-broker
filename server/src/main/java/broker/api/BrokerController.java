@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
@@ -256,7 +257,7 @@ public class BrokerController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", (String) message.get("correlationID"));
         headers.setBasicAuth(sisUser, sisPassword);
-        return restTemplate.exchange(sisResultsEndpoint, HttpMethod.POST, new HttpEntity<>(message, headers), mapRef);
+        return ResponseEntity.ok(exchange(sisResultsEndpoint, HttpMethod.POST, new HttpEntity<>(message, headers))) ;
     }
 
     /*
@@ -268,8 +269,8 @@ public class BrokerController {
         headers.add("X-Correlation-ID", (String) message.get("correlationID"));
         headers.setBasicAuth(sisUser, sisPassword);
         //playground hacky
-        return restTemplate.exchange(sisResultsEndpoint.replace("play-results", "me"),
-                HttpMethod.GET, new HttpEntity<>(headers), mapRef);
+        return ResponseEntity.ok(this.exchange(sisResultsEndpoint.replace("play-results", "me"),
+                HttpMethod.GET, new HttpEntity<>(headers)));
     }
 
     /*
@@ -319,8 +320,7 @@ public class BrokerController {
 
         LOG.debug(String.format("Start registration by POST-ing to %s", url));
 
-        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, mapRef);
-        return responseEntity.getBody();
+        return this.exchange(url, HttpMethod.POST, requestEntity);
     }
 
     protected String translateOfferingType(BrokerRequest brokerRequest) {
@@ -346,8 +346,8 @@ public class BrokerController {
             headers.add("X-Route", "endpoint=" + guestInstitution.getSchacHome());
 
             LOG.debug("Fetching offering " + uri + " with basic authentication from eduHub");
-            Map<String, Map<String, Object>> body = restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers), Map.class).getBody();
-            return (Map<String, Object>) body.get("responses").get(guestInstitution.getSchacHome());
+            Map<String, Object> body = this.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers));
+            return (Map<String, Object>) ((Map<String, Object>) body.get("responses")).get(guestInstitution.getSchacHome());
         } else {
             String uri = String.format("%s/%s?expand=academicSession,%s",
                     guestInstitution.getCourseEndpoint(),
@@ -359,15 +359,26 @@ public class BrokerController {
 
             if (courseAuthentication.equals(CourseAuthentication.NONE)) {
                 LOG.debug("Fetching offering " + uri + " without authentication");
-                return restTemplate.getForEntity(uri, Map.class).getBody();
+                return this.exchange(uri, HttpMethod.GET, null);
             } else if (courseAuthentication.equals(CourseAuthentication.BASIC)) {
                 LOG.debug("Fetching offering " + uri + " with basic authentication");
-                return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(basicAuthHeaders(guestInstitution)), Map.class).getBody();
+                return this.exchange(uri, HttpMethod.GET, new HttpEntity<>(basicAuthHeaders(guestInstitution)));
             } else {
                 LOG.debug("Fetching offering " + uri + " with OAUTH authentication");
-                return restTemplate.exchange(uri, HttpMethod.GET, new HttpEntity<>(accessTokenHeaders()), Map.class).getBody();
+                return this.exchange(uri, HttpMethod.GET, new HttpEntity<>(accessTokenHeaders()));
             }
         }
+    }
+
+    private Map<String, Object> exchange(String uri, HttpMethod method,
+                                         @Nullable HttpEntity<?> requestEntity) {
+        try {
+            return restTemplate.exchange(uri, method, requestEntity, mapRef).getBody();
+        } catch (HttpClientErrorException e) {
+            LOG.error(String.format("Error from uri %s with requestEntity %s and response %s", uri, requestEntity, e.getResponseBodyAsString()), e);
+            throw e;
+        }
+
     }
 
     private HttpHeaders basicAuthHeaders(Institution institution) {
@@ -384,7 +395,7 @@ public class BrokerController {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "client_credentials");
         body.add("scope", "openid");
-        Map result = restTemplate.exchange(this.tokenEndpoint, HttpMethod.POST, new HttpEntity<>(body, headers), Map.class).getBody();
+        Map result = this.exchange(this.tokenEndpoint.toString(), HttpMethod.POST, new HttpEntity<>(body, headers));
         String accessToken = (String) result.get("access_token");
 
         headers = new HttpHeaders();
