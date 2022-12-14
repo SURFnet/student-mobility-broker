@@ -34,6 +34,10 @@ public class QueueService {
         this.redirectUri = redirectUri;
     }
 
+    public String getBaseUrl() {
+        return this.url;
+    }
+
     public String getRedirectUrl(Institution institution) {
         String redirect = String.format("%s?c=%s&e=%s&t=%s",
                 this.url,

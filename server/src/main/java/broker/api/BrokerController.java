@@ -102,6 +102,7 @@ public class BrokerController {
         this.featureToggles.put("local", local);
         this.featureToggles.put("allowPlayground", allowPlayground);
         this.featureToggles.put("catalogUrl", catalogUrl);
+        this.featureToggles.put("queue", queueService.getBaseUrl());
 
         if (allowPlayground) {
             this.featureToggles.put("playHomeInstitutionSchacHome", playHomeInstitutionSchacHome);

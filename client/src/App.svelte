@@ -37,13 +37,17 @@
     });
 
     const doOnMount = () => {
-        const redirect = getParameterByName("q");
-        if (redirect) {
-            const decodedRedirect = decodeURIComponent(redirect);
-            window.location.href = decodedRedirect ;
-            return;
-        }
         features().then(json => {
+            const redirect = getParameterByName("q");
+            if (redirect) {
+                const decodedRedirect = decodeURIComponent(redirect);
+                if (decodedRedirect.startsWith(json.queue)) {
+                    window.location.href = decodedRedirect ;
+                    return;
+                } else {
+                    throw new Error("Invalid queue");
+                }
+            }
             $config = json;
             const step = getParameterByName("step");
             const playGround = window.location.pathname.indexOf("play") > -1;
