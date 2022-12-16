@@ -28,7 +28,7 @@ class QueueServiceTest {
 
     @Test
     void validateQueueTokenReplay() {
-        String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
+        String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue~h_bogus",
                 institution.getQueueItWaitingRoom(),
                 UUID.randomUUID(),
                 System.currentTimeMillis() / 1000 - 15_000_000);
