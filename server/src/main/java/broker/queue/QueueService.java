@@ -52,11 +52,11 @@ public class QueueService {
     public boolean validateQueueToken(Institution institution, String queueItToken) {
         Map<String, String> queueParams = this.parse(queueItToken);
         //Validate timestamp, hash, queue
-        List<String> missingParams = Stream.of("ts", "e", "h").filter(param -> !queueParams.containsKey(param)).collect(Collectors.toList());
+        List<String> missingParams = Stream.of("ts", "e", "h").filter(param -> !queueParams.containsKey(param))
+                .collect(Collectors.toList());
         if (!missingParams.isEmpty()) {
             LOG.warn("Missing query parameters " + String.join(", ", missingParams));
             return false;
-
         }
         if (Long.parseLong(queueParams.get("ts")) < (System.currentTimeMillis() / 1000L)) {
             LOG.warn("Invalid timestamp, got " + queueParams.get("ts"));
