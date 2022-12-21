@@ -209,7 +209,7 @@ public class BrokerController {
                 HttpClientErrorException ex = (HttpClientErrorException) e;
                 LOG.error("Response error in fetching offering: " + ex.getResponseBodyAsString());
             }
-            throw new RemoteException("Could not fetch offering from :" + guestInstitution.getName());
+            throw new RemoteException(guestInstitution.getName());
         }
 
         //Save the offering as we need it when starting the actual registration
@@ -379,7 +379,6 @@ public class BrokerController {
             LOG.error(String.format("Error from uri %s with requestEntity %s and response %s", uri, requestEntity, e.getResponseBodyAsString()), e);
             throw e;
         }
-
     }
 
     private HttpHeaders basicAuthHeaders(Institution institution) {

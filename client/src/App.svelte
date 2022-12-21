@@ -28,7 +28,7 @@
     } else {
         I18n.locale = "en";
     }
-    if (["nl", "en"].indexOf(I18n.locale) < 0) {
+    if (["nl", "en"].includes(I18n.locale)) {
         I18n.locale = "en";
     }
 

@@ -55,7 +55,12 @@
     onMount(() => {
         step = getParameterByName("step");
         error = getParameterByName("error");
-        if (I18n.translations[I18n.locale].error[error]) {
+        if (error) {
+            document.title = I18n.t("pages.error");
+        } else {
+            document.title = I18n.t("pages.approve");
+        }
+        if (error && I18n.translations[I18n.locale].error[error]) {
             error = I18n.translations[I18n.locale].error[error];
         }
         landing = getParameterByName("landing");
@@ -65,6 +70,7 @@
             subTitle = I18n.t("offering.landing");
         }
         if (step === STEPS.enroll) {
+            document.title = I18n.t("pages.registration", {abbreviation: $offering.guestInstitution.abbreviation});
             const name = getParameterByName("name");
             title = subTitle = I18n.t("offering.wait", {name});
             changeActivity(1);
@@ -98,12 +104,16 @@
         if (result && isFinished) {
             step = STEPS.finished;
             if (result.redirect) {
+                document.title = I18n.t("pages.almostThere");
                 title = subTitle = I18n.t("offering.almost");
             } else if (result.code === 200) {
+                document.title = I18n.t("pages.registrationSent");
                 title = subTitle = I18n.t("offering.done");
             } else if (result.code === 404) {
+                document.title = I18n.t("pages.error");
                 title = subTitle = I18n.t("offering.error");
             } else {
+                document.title = I18n.t("pages.error");
                 title = subTitle = I18n.t("offering.error");
             }
         }
@@ -192,6 +202,11 @@
             position: relative;
         }
 
+        .lottie-error {
+            margin: auto;
+            width: 70%;
+        }
+
         @media (max-width: 780px) {
             :global(div.lottie-player) {
                 width: 100%;
@@ -201,6 +216,9 @@
             div.lottie-container {
                 display: flex;
                 width: 100%;
+            }
+            .lottie-error {
+                width: 95%;
             }
             :global(div.lottie-container div) {
                 width: 100%;
@@ -229,11 +247,11 @@
             }
         }
 
-    p.error-msg {
-        font-weight: bold;
-    }
+        p.error-msg {
+            font-weight: bold;
+        }
 
-    :global(span.balancing svg #rotate-container-left ) {
+        :global(span.balancing svg #rotate-container-left ) {
             transform-origin: 38% 66%;
             animation: goup 3s ease infinite;
         }
@@ -630,15 +648,17 @@
                     </div>
                 {:else if error}
                     <div class="error">
-                        <p>{I18n.t("error.info")}</p>
+                        <p>
+                            <span>{I18n.t("error.info")}</span>
+                            <span>{I18n.t("error.subInfo")}</span>
+                        </p>
                         <div>
-                            <p>{I18n.t("error.subInfo")}</p>
                             <p class="error-msg">{DOMPurify.sanitize(error)}</p>
                         </div>
                         <p>
                             <span>{@html I18n.t("error.surfLink")}</span>
                         </p>
-                        <div class="lottie-container">
+                        <div class="lottie-container lottie-error">
                             <LottiePlayer
                                     src={errorAnimation}
                                     autoplay="{true}"
@@ -742,7 +762,7 @@
                                     {#if result.message}
                                         <span class="final-action-msg">{@html DOMPurify.sanitize(result.message)}</span>
                                     {:else}
-                                        <span class="final-action-msg">{DOMPurify.sanitize( I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation}))}</span>
+                                        <span class="final-action-msg">{DOMPurify.sanitize(I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation}))}</span>
                                     {/if}
                                 </div>
                             </div>
