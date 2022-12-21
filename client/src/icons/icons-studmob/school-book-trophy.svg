@@ -2,7 +2,6 @@
     <defs>
         <style>.a{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;}</style>
     </defs>
-    <title>European Credit Transfer and Accumulation System, ECTS</title>
     <path class="a" d="M.75,23.25H5.571a1.966,1.966,0,0,0,1.929-2v-2a1.966,1.966,0,0,0-1.929-2H.75"/>
     <path class="a" d="M5.641,23.25H21.75a1.5,1.5,0,0,0,1.5-1.5v-3a1.5,1.5,0,0,0-1.5-1.5H5.641"/>
     <line class="a" x1="20.25" y1="17.25" x2="20.25" y2="23.25"/>

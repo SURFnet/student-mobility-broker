@@ -2,7 +2,6 @@
     <defs>
         <style>.a{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;}</style>
     </defs>
-    <title>Period</title>
     <rect class="a" x="0.75" y="3.75" width="22.5" height="19.5" rx="1.5" ry="1.5"/>
     <line class="a" x1="6.75" y1="6" x2="6.75" y2="0.75"/>
     <line class="a" x1="17.25" y1="6" x2="17.25" y2="0.75"/>

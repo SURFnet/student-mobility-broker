@@ -2,7 +2,6 @@
     <defs>
         <style>.abuilding{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;}</style>
     </defs>
-    <title>Finalize enrolment</title>
     <rect class="abuilding" x="4.5" y="8.161" width="3" height="9"/>
     <rect class="abuilding" x="10.5" y="8.161" width="3" height="9"/>
     <rect class="abuilding" x="16.5" y="8.161" width="3" height="9"/>
