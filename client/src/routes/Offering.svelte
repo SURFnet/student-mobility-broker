@@ -62,6 +62,8 @@
         }
         if (error && I18n.translations[I18n.locale].error[error]) {
             error = I18n.translations[I18n.locale].error[error];
+        } else {
+            error = I18n.t("error.unknown");
         }
         landing = getParameterByName("landing");
         loaded = true;
@@ -656,7 +658,10 @@
                             <p class="error-msg">{DOMPurify.sanitize(error)}</p>
                         </div>
                         <p>
-                            <span>{@html I18n.t("error.surfLink")}</span>
+                            <span>{@html I18n.t("error.generic", {
+                                supportLink: ($offering.guestInstitution && $offering.guestInstitution.supportLink) ?
+                                    $offering.guestInstitution.supportLink : I18n.t("error.supportLink")
+                            })}</span>
                         </p>
                         <div class="lottie-container lottie-error">
                             <LottiePlayer
@@ -723,17 +728,21 @@
                                 </div>
                                 <h3>{I18n.t("offering.errorTitle", {abbreviation: $offering.guestInstitution.abbreviation})}</h3>
                                 <div class="final-action error-result">
-                                    {#if result.message && result.code !== 404 && result.code !== 409}
+                                    {#if result.message}
                                         <span class="error-message">{DOMPurify.sanitize(result.message)}</span>
-                                        <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
                                     {:else if result.code === 404}
                                         <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.notFoundResultErrorMessage", {institution: $offering.homeInstitution.name}))}</span>
-                                        <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
                                     {:else if result.code === 409}
                                         <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.conflictResultErrorMessage", {institution: $offering.homeInstitution.name}))}</span>
-                                        <span class="error-message">{@html I18n.t("offering.resultErrorMessage")}</span>
                                     {:else}
                                         <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
+                                    {/if}
+                                    <span>{@html I18n.t("error.generic", {
+                                        supportLink: ($offering.guestInstitution && $offering.guestInstitution.supportLink) ?
+                                            $offering.guestInstitution.supportLink : I18n.t("error.supportLink")
+                                    })}</span>
+                                    {#if result.reference}
+                                        <span class="error-message">{@html I18n.t("error.reference", {reference: result.reference})}</span>
                                     {/if}
                                 </div>
                             </div>

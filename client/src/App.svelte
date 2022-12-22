@@ -42,7 +42,7 @@
             if (redirect) {
                 const decodedRedirect = decodeURIComponent(redirect);
                 if (decodedRedirect.startsWith(json.queue)) {
-                    window.location.href = decodedRedirect ;
+                    window.location.href = decodedRedirect;
                     return;
                 } else {
                     throw new Error("Invalid queue");
@@ -69,13 +69,11 @@
                         loaded = true;
                     })
                     .catch(e => {
-                        if (e.status === 400) {
-                            e.json().then(res => {
-                                window.location.search = replaceQueryParameter("error", I18n.t("error.offering", {"name": res.message}));
-                            });
-                        } else {
+                        e.json().then(res => {
+                            window.location.search = replaceQueryParameter("error", I18n.t("error.offering", {"name": res.message}));
+                        }).catch(() => {
                             window.location.search = replaceQueryParameter("error", I18n.t("error.expired"));
-                        }
+                        });
                     });
             } else if (playGround && json.allowPlayground) {
                 $offering = data;

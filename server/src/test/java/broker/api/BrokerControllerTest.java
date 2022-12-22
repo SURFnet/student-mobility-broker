@@ -4,7 +4,7 @@ import broker.AbstractIntegrationTest;
 import broker.WireMockExtension;
 import broker.domain.CourseAuthentication;
 import broker.domain.Institution;
-import broker.exception.NotFoundException;
+import broker.exception.RemoteException;
 import broker.queue.Security;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
@@ -24,8 +24,7 @@ import java.util.UUID;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -52,7 +51,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     @Test
     public void brokerOfferingEduHubWithQueueIt() throws IOException {
         String guestInstitutionSchacHome = "hardewijk.nl";
-        Institution institution = this.institutionRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
+        Institution institution = this.findInstitutionBySchacHome(guestInstitutionSchacHome);
         CourseAuthentication courseAuthentication = institution.getCourseAuthentication();
         SessionFilter sessionFilter = new SessionFilter();
         given().redirects().follow(false)
@@ -85,9 +84,9 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void brokerOfferingWithWrongQueueItToken() throws IOException {
+    public void brokerOfferingWithWrongQueueItToken() {
         String guestInstitutionSchacHome = "hardewijk.nl";
-        Institution institution = this.institutionRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
+        Institution institution = this.findInstitutionBySchacHome(guestInstitutionSchacHome);
         SessionFilter sessionFilter = new SessionFilter();
         given().redirects().follow(false)
                 .filter(sessionFilter)
@@ -112,7 +111,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("queueittoken", queueItToken)
                 .get("/api/queue/redirect")
                 .then()
-                .header("Location", "http://localhost:3003?error=invalid_queue");
+                .header("Location", "http://localhost:3003?error=409");
         //If we now try to get the offering it will fail
         Map<String, Object> result = given()
                 .filter(sessionFilter)
@@ -143,6 +142,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .as(new TypeRef<Map<String, Object>>() {
                 });
         assertEquals(404, results.get("status"));
+        assertNotNull(results.get("reference"));
     }
 
     @Test
@@ -157,13 +157,18 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
     }
 
     private void happyFlow(String guestInstitutionSchacHome) throws IOException {
-        Institution institution = this.institutionRegistry.findInstitutionBySchacHome(guestInstitutionSchacHome).orElseThrow(() -> new NotFoundException("404"));
-        CourseAuthentication courseAuthentication = institution.getCourseAuthentication();
+        Institution institution = this.findInstitutionBySchacHome(guestInstitutionSchacHome);
+                CourseAuthentication courseAuthentication = institution.getCourseAuthentication();
         SessionFilter sessionFilter = new SessionFilter();
         formSubmitByCatalog(sessionFilter, guestInstitutionSchacHome);
         featureToggles();
         guiGetOffering(sessionFilter, courseAuthentication, institution.isUseEduHubForOffering());
         startRegistration(sessionFilter);
+    }
+
+    private Institution findInstitutionBySchacHome(String schacHome) {
+        return this.institutionRegistry.findInstitutionBySchacHome(schacHome)
+                .orElseThrow(() -> new RemoteException(HttpStatus.NOT_FOUND, "Not found: " + schacHome));
     }
 
     @Test
@@ -192,7 +197,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("type", "course")
                 .post("/api/broker")
                 .then()
-                .header("Location", "http://localhost:3003?error=Institution+nope+unknown");
+                .header("Location", "http://localhost:3003?error=404");
     }
 
     @Test
@@ -257,7 +262,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("offeringId", "1")
                 .post("/api/broker")
                 .then()
-                .header("Location", "http://localhost:3003?error=invalid_request&details=homeInstitutionSchacHome+is+required");
+                .header("Location", "http://localhost:3003?error=400");
     }
 
     private void featureToggles() {

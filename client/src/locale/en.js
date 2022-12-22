@@ -46,7 +46,6 @@ I18n.translations.en = {
         noResultErrorMessage: "No details were disclosed. See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
         notFoundResultErrorMessage: "Your personal information could not be retrieved from {{institution}}",
         conflictResultErrorMessage: "Your session was lost. Please try again.",
-        resultErrorMessage: "See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
         almost: "Almost there, one more thing!",
         questions: "There are some extra questions",
         questionsDetail: "To finalise your enrolment for this specific course, some extra questions need to be answered",
@@ -83,12 +82,22 @@ I18n.translations.en = {
         surfLink: "For more information check out the <a href=\"https://eduxchange.nl/\" target=\"_blank\">eduXchange website</a>."
     },
     error: {
-        info: "This is embarrassing. An error has occurred.",
-        subInfo: "The only information we currently can share with you is:",
+        info: "An unexpected error has occurred.",
+        subInfo: " The information we currently can share with you is:",
         surfLink: "See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
         expired: "The enrollment has been expired",
         offering: "The course information could not be retrieved from {{name}}",
-        invalid_queue: "The queue-session validation failed"
+        400: "Backend error",
+        404: "Your personal information could not be found at {{name}}",
+        409: "The queue-session validation failed",
+        417: "Your session was lost. Please try again",
+        412: "Your session was lost. Please try again",//invalid enrollmentRequest
+        419: "Backend error",//eduID not present in the ARP
+        reference: "Your ticket number is {{reference}}",
+        unknown: "",
+        supportLink: "https://eduxchange.nl/contact",
+        generic: "Please try again later. If the problem persists, " +
+            "please contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportLink}}</a>"
     },
     explanation: {
         title: "How does enrolling work?",

@@ -50,6 +50,9 @@ public class Institution implements Serializable {
     //URI of the logo
     private URI logoURI;
 
+    //URI or email of the support
+    private String supportLink;
+
     //Space separated scopes
     private String scopes;
 
@@ -111,6 +114,7 @@ public class Institution implements Serializable {
         institution.schacHome = this.schacHome;
         institution.name = this.name;
         institution.logoURI = this.logoURI;
+        institution.supportLink = this.supportLink;
         institution.privacyEndpoint = this.privacyEndpoint;
         institution.abbreviation = this.abbreviation;
         institution.courseEndpoint = this.courseEndpoint;

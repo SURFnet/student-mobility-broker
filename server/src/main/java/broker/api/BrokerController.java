@@ -5,8 +5,6 @@ import broker.domain.BrokerRequest;
 import broker.domain.CourseAuthentication;
 import broker.domain.EnrollmentRequest;
 import broker.domain.Institution;
-import broker.exception.InvalidQueueException;
-import broker.exception.NotFoundException;
 import broker.exception.RemoteException;
 import broker.queue.QueueService;
 import broker.registry.InstitutionRegistry;
@@ -139,11 +137,11 @@ public class BrokerController {
             this.getInstitution(brokerRequest.getHomeInstitutionSchacHome());
             guestInstitution = this.getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         } catch (IllegalArgumentException e) {
-            LOG.warn("Validation error in the brokerRequest: " + brokerRequest);
-            return new RedirectView(clientUrl + "?error=invalid_request&details=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
-        } catch (NotFoundException e) {
-            LOG.warn(e.getMessage());
-            return new RedirectView(clientUrl + "?error=" + URLEncoder.encode(e.getMessage(), "UTF-8"));
+            LOG.warn("Validation error in the brokerRequest: " + brokerRequest, e);
+            return new RedirectView(clientUrl + "?error=400");
+        } catch (RemoteException e) {
+            LOG.warn("RemoteException error in the brokerRequest: " + brokerRequest, e);
+            return new RedirectView(clientUrl + "?error=" + e.getRawStatusCode());
         }
         //Store if we need to redirect to queue-it
         brokerRequest.setUseQueueIt(guestInstitution.isUseQueueIt());
@@ -172,7 +170,7 @@ public class BrokerController {
         BrokerRequest brokerRequest = getBrokerRequest(request, false);
         Institution institution = this.getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         if (!queueService.validateQueueToken(institution, queueItToken)) {
-            return new RedirectView(clientUrl + "?error=invalid_queue");
+            return new RedirectView(clientUrl + "?error=409");
         }
         brokerRequest.setQueueItSucceeded(true);
         request.getSession().setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
@@ -205,11 +203,13 @@ public class BrokerController {
             offering = fetchOffering(guestInstitution, brokerRequest);
         } catch (RuntimeException e) {
             LOG.error("Error in fetching offering from " + guestInstitution.getName(), e);
+            HttpStatus status = HttpStatus.BAD_REQUEST;
             if (e instanceof HttpClientErrorException) {
                 HttpClientErrorException ex = (HttpClientErrorException) e;
-                LOG.error("Response error in fetching offering: " + ex.getResponseBodyAsString());
+                status = ex.getStatusCode();
+                LOG.error("Response error in fetching offering: " + ex.getResponseBodyAsString(), ex);
             }
-            throw new RemoteException(guestInstitution.getName());
+            throw new RemoteException(status, guestInstitution.getName(), e);
         }
 
         //Save the offering as we need it when starting the actual registration
@@ -234,10 +234,10 @@ public class BrokerController {
     private BrokerRequest getBrokerRequest(HttpServletRequest request, boolean validateQueueIt) {
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
         if (brokerRequest == null) {
-            throw new NotFoundException("No broker request in the session");
+            throw new RemoteException(HttpStatus.NOT_FOUND, "No broker request in the session");
         }
         if (validateQueueIt && brokerRequest.isUseQueueIt() && !brokerRequest.isQueueItSucceeded()) {
-            throw new InvalidQueueException("QueueIT required but not performed");
+            throw new RemoteException(HttpStatus.CONFLICT, "QueueIT required but not performed");
         }
         return brokerRequest;
     }
@@ -246,7 +246,10 @@ public class BrokerController {
         LOG.debug("Lookup institution " + institutionSchacHome + " in serviceregistry.");
         return institutionRegistry
                 .findInstitutionBySchacHome(institutionSchacHome)
-                .orElseThrow(() -> new NotFoundException(String.format("Institution %s unknown", institutionSchacHome)));
+                .orElseThrow(() -> {
+                    LOG.error(String.format("Institution %s unknown", institutionSchacHome));
+                    return new RemoteException(HttpStatus.NOT_FOUND, institutionSchacHome);
+                });
     }
 
     /*
@@ -258,7 +261,7 @@ public class BrokerController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Correlation-ID", (String) message.get("correlationID"));
         headers.setBasicAuth(sisUser, sisPassword);
-        return ResponseEntity.ok(exchange(sisResultsEndpoint, HttpMethod.POST, new HttpEntity<>(message, headers))) ;
+        return ResponseEntity.ok(this.exchange(sisResultsEndpoint, HttpMethod.POST, new HttpEntity<>(message, headers)));
     }
 
     /*
@@ -298,16 +301,16 @@ public class BrokerController {
 
             return body;
         } catch (HttpStatusCodeException e) {
-            //Anti-pattern to catch all, but tolerable in this situation
-            LOG.error("Unexpected exception", e);
+            RemoteException remoteException = new RemoteException(e.getStatusCode(), e.getMessage(), e);
 
-            Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
+            LOG.error("Unexpected exception from /api/start: " + e.getResponseBodyAsString(), remoteException);
+
             Map<String, Object> res = new HashMap<>();
-            res.put("message", String.format("Server error at %s", guestInstitution.getName()));
+            res.put("error", true);
             res.put("code", e.getRawStatusCode());
+            res.put("reference", remoteException.getReference());
             return res;
         }
-
     }
 
     private Map<String, Object> doStart(BrokerRequest brokerRequest, Map<String, Object> offering, Map<String, String> correlationMap) {

@@ -5,6 +5,7 @@ import broker.registry.InMemoryInstitutionRegistry;
 import broker.WireMockExtension;
 import broker.domain.BrokerRequest;
 import broker.queue.QueueService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.core.io.ClassPathResource;
@@ -96,8 +97,6 @@ public class BrokerControllerUnitTest {
         Map<String, Object> res = brokerController.start(request, body);
 
         assertEquals(500, res.get("code"));
-        assertEquals("Server error at Utrecht University", res.get("message"));
-
     }
 
     @Test
