@@ -87,17 +87,17 @@ I18n.translations.nl = {
         surfLink: "See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
         expired: "The enrollment has been expired",
         offering: "The course information could not be retrieved from {{name}}",
-        400: "Backend error",
-        404: "Your personal information could not be found at {{name}}",
-        409: "The queue-session validation failed",
-        417: "Your session was lost. Please try again",
+        400: "Backend error",//Invalig guest or home schachome
+        404: "Your personal information could not be found at {{name}}",//404 person endpoint
+        409: "The queue-session validation failed",//queue-it validation error
         412: "Your session was lost. Please try again",//invalid enrollmentRequest
+        417: "Your session was lost. Please try again",//tokenrequest failed
         419: "Backend error",//eduID not present in the ARP
-        reference: "Your ticket number is {{reference}}",
+        reference: "Your ticket number is {{reference}}.",
         unknown: "",
         supportLink: "https://eduxchange.nl/contact",
         generic: "Please try again later. If the problem persists, " +
-            "please contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportLink}}</a>"
+            " contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportLink}}</a>"
     },
     explanation: {
         title: "How does enrolling work?",

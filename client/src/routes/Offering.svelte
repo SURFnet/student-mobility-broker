@@ -527,7 +527,6 @@
 
                 div.final-action {
                     display: flex;
-                    align-items: center;
 
                     &.error-result {
                         flex-direction: column;
@@ -737,7 +736,7 @@
                                     {:else}
                                         <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
                                     {/if}
-                                    <span>{@html I18n.t("error.generic", {
+                                    <span class="error-message">{@html I18n.t("error.generic", {
                                         supportLink: ($offering.guestInstitution && $offering.guestInstitution.supportLink) ?
                                             $offering.guestInstitution.supportLink : I18n.t("error.supportLink")
                                     })}</span>
