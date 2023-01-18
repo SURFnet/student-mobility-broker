@@ -4,7 +4,7 @@
     import {onMount} from "svelte";
     import Loading from "../components/Loading.svelte";
     import {prettyPrintJson} from "pretty-print-json";
-    import "pretty-print-json/dist/pretty-print-json.css";
+    import "../stylesheets/pretty-print-json.min.css";
     import DOMPurify from "dompurify";
 
     let loading = true;
