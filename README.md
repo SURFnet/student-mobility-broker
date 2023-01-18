@@ -11,7 +11,7 @@ Broker for educational cross-institution registrations.
 - Java 8
 - Maven 3
 - Yarn 1.x
-- NodeJS 12+
+- NodeJS 14+
 
 ## [Building and running](#building-and-running)
 
