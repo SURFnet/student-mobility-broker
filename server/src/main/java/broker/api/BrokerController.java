@@ -209,7 +209,9 @@ public class BrokerController {
                 status = ex.getStatusCode();
                 LOG.error("Response error in fetching offering: " + ex.getResponseBodyAsString(), ex);
             }
-            throw new RemoteException(status, guestInstitution.getName(), e);
+            RemoteException remoteException = new RemoteException(status, guestInstitution.getName(), e);
+            LOG.error("Reference number for client error correlation: " + remoteException.getReference());
+            throw remoteException;
         }
 
         //Save the offering as we need it when starting the actual registration
@@ -234,10 +236,14 @@ public class BrokerController {
     private BrokerRequest getBrokerRequest(HttpServletRequest request, boolean validateQueueIt) {
         BrokerRequest brokerRequest = (BrokerRequest) request.getSession().getAttribute(BROKER_REQUEST_SESSION_KEY);
         if (brokerRequest == null) {
-            throw new RemoteException(HttpStatus.NOT_FOUND, "No broker request in the session");
+            RemoteException remoteException = new RemoteException(HttpStatus.NOT_FOUND, "No broker request in the session");
+            LOG.error("Reference number for client error correlation: " + remoteException.getReference());
+            throw remoteException;
         }
         if (validateQueueIt && brokerRequest.isUseQueueIt() && !brokerRequest.isQueueItSucceeded()) {
-            throw new RemoteException(HttpStatus.CONFLICT, "QueueIT required but not performed");
+            RemoteException remoteException = new RemoteException(HttpStatus.CONFLICT, "QueueIT required but not performed");
+            LOG.error("Reference number for client error correlation: " + remoteException.getReference());
+            throw remoteException;
         }
         return brokerRequest;
     }
@@ -247,8 +253,9 @@ public class BrokerController {
         return institutionRegistry
                 .findInstitutionBySchacHome(institutionSchacHome)
                 .orElseThrow(() -> {
-                    LOG.error(String.format("Institution %s unknown", institutionSchacHome));
-                    return new RemoteException(HttpStatus.NOT_FOUND, institutionSchacHome);
+                    RemoteException remoteException = new RemoteException(HttpStatus.NOT_FOUND, institutionSchacHome);
+                    LOG.error(String.format("Institution %s unknown with reference number %s", institutionSchacHome, remoteException.getReference()));
+                    return remoteException;
                 });
     }
 
@@ -303,7 +310,8 @@ public class BrokerController {
         } catch (HttpStatusCodeException e) {
             RemoteException remoteException = new RemoteException(e.getStatusCode(), e.getMessage(), e);
 
-            LOG.error("Unexpected exception from /api/start: " + e.getResponseBodyAsString(), remoteException);
+            LOG.error(String.format("Unexpected exception from /api/start: %s, reference number %s",
+                    e.getResponseBodyAsString(), remoteException.getReference()));
 
             Map<String, Object> res = new HashMap<>();
             res.put("error", true);
