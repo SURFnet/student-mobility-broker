@@ -93,7 +93,7 @@ I18n.translations.en = {
         412: "Your session was lost. Please try again",//invalid enrollmentRequest
         417: "Your session was lost. Please try again",//tokenrequest failed
         419: "Backend error",//eduID not present in the ARP
-        reference: "Your ticket number is {{reference}}.",
+        reference: "Your reference number is {{reference}}.",
         unknown: "",
         supportLink: "https://eduxchange.nl/contact",
         generic: "Please try again later. If the problem persists, " +
