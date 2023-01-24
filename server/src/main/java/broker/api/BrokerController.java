@@ -31,6 +31,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -332,7 +333,7 @@ public class BrokerController {
 
         LOG.debug(String.format("Start registration by POST-ing to %s", url));
 
-        return this.exchange(url, HttpMethod.POST, requestEntity);
+        return this.exchange(url, HttpMethod.POST, requestEntity, HttpStatus.NOT_FOUND);
     }
 
     protected String translateOfferingType(BrokerRequest brokerRequest) {
@@ -382,12 +383,18 @@ public class BrokerController {
         }
     }
 
-    private Map<String, Object> exchange(String uri, HttpMethod method,
-                                         @Nullable HttpEntity<?> requestEntity) {
+    private Map<String, Object> exchange(String uri,
+                                         HttpMethod method,
+                                         @Nullable HttpEntity<?> requestEntity,
+                                         @Nullable HttpStatus... ignoreHtpStatusCodes) {
         try {
             return restTemplate.exchange(uri, method, requestEntity, mapRef).getBody();
         } catch (HttpClientErrorException e) {
-            LOG.error(String.format("Error from uri %s with requestEntity %s and response %s", uri, requestEntity, e.getResponseBodyAsString()), e);
+            if (ignoreHtpStatusCodes != null && Arrays.stream(ignoreHtpStatusCodes).anyMatch(httpStatus -> httpStatus.equals(e.getStatusCode()))) {
+                LOG.warn(String.format("Error from uri %s with requestEntity %s and response %s", uri, requestEntity, e.getResponseBodyAsString()));
+            } else {
+                LOG.error(String.format("Error from uri %s with requestEntity %s and response %s", uri, requestEntity, e.getResponseBodyAsString()), e);
+            }
             throw e;
         }
     }
