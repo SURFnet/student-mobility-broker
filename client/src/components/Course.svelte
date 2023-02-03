@@ -145,7 +145,8 @@
             {#if $offering.offering.academicSession && $offering.offering.academicSession.startDate}
                 <tr>
                     <td class="icon">{@html launches}</td>
-                    <td class="value">{new Date($offering.offering.academicSession.startDate).toLocaleString("default", formatOptions) }</td>
+                    <td class="value">{new Date($offering.offering.academicSession.startDate)
+                        .toLocaleString(I18n.locale === "nl" ? "nl-NL" : "en-GB", formatOptions) }</td>
                 </tr>
             {/if}
         </table>
