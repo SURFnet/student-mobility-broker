@@ -137,7 +137,7 @@ I18n.translations.en = {
             address: "Address",
             ice: "ICE details",
             identifier: "Unique identifier"
-
         }
-    }
+    },
+
 };

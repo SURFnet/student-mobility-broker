@@ -137,7 +137,6 @@ I18n.translations.nl = {
             address: "Adres",
             ice: "ICE details",
             identifier: "Unieke identificatie"
-
         }
-    }
+    },
 };

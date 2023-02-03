@@ -10,6 +10,7 @@
     import eduID from "../icons/logo_eduID.svg";
     import balancer from "../icons/balancer.svg";
     import DOMPurify from "dompurify";
+    import Cookies from "js-cookie";
     import relax from "../icons/icons-studmob/cocktail-glass.svg";
     import highFive from "../icons/icons-studmob/undraw_High_five.svg";
     import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg";
@@ -100,6 +101,13 @@
                 });
         }
     });
+
+    const changeLanguage = lang => () => {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        urlSearchParams.set("lang", lang);
+        Cookies.set("lang", lang, {expires: 365, secure: true, sameSite: "Lax"});
+        window.location.search = urlSearchParams.toString();
+    };
 
     const invariantState = (aResult, isFinished) => {
         result = aResult || result;
@@ -239,8 +247,8 @@
 
         span.balancer {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 0;
+            right: 50%;
             cursor: pointer;
 
             :global(svg) {
@@ -295,6 +303,7 @@
         justify-content: space-between;
         position: absolute;
         top: -39px;
+        left: 1px;
         width: 100%;
 
         @media (max-width: 780px) {
@@ -372,22 +381,6 @@
             display: block;
         }
 
-        &.link-back {
-            color: #0077c8;
-            cursor: pointer;
-            margin-top: 15px;
-            align-items: center;
-
-            :global(svg) {
-                height: 20px;
-                margin-right: 10px;
-            }
-
-            a {
-                margin-top: -5px;
-            }
-        }
-
         :global(.button) {
             margin-left: auto;
             fill: white;
@@ -400,8 +393,51 @@
             width: auto;
             height: 30px;
         }
+    }
 
+    div.link-back {
+        color: #0077c8;
+        display: flex;
+        cursor: pointer;
+        margin-top: 15px;
+        align-items: center;
 
+        :global(svg) {
+            height: 20px;
+            margin-right: 10px;
+        }
+
+        a {
+            margin-top: -5px;
+        }
+    }
+
+    div.language-switcher {
+        margin: 15px 0 0 auto;
+
+        ul {
+            list-style: none;
+
+            li {
+                display: inline-block;
+                padding: 0 10px;
+            }
+
+            li:last-child {
+                border-left: 1px solid black;
+            }
+
+            li.non_active a {
+                color: #0077c8;
+                font-weight: normal;
+            }
+
+            li.active a {
+                font-weight: bold;
+                color: black;
+                cursor: default;
+            }
+        }
     }
 
 
@@ -594,11 +630,23 @@
                         <span id="balancer" class="balancer" class:balancing={balancing}
                               on:click={gotoPlay}>{@html balancer}</span>
                 {/if}
-                <div class="header link-back" on:click={() => window.location.href = $config.catalogUrl}>
-                    <span>{@html chevronLeft}</span>
-                    <a href={`${$config.catalogUrl}`}>
-                        {I18n.t("offering.backToCatalog")}
-                    </a>
+                <div class="header">
+                    <div class="link-back" on:click={() => window.location.href = $config.catalogUrl}>
+                        <span>{@html chevronLeft}</span>
+                        <a href={`${$config.catalogUrl}`}>
+                            {I18n.t("offering.backToCatalog")}
+                        </a>
+                    </div>
+                    <div class="language-switcher">
+                        <ul>
+                            <li class="{I18n.locale === 'en' ? 'active' : 'non_active'}">
+                                <a href="/en" on:click|preventDefault|stopPropagation={changeLanguage("en")}>EN</a>
+                            </li>
+                            <li class="{I18n.locale === 'nl' ? 'active' : 'non_active'}">
+                                <a href="/nl" on:click|preventDefault|stopPropagation={changeLanguage("nl")}>NL</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="header">
                     <h2>{I18n.t("offering.title", {
