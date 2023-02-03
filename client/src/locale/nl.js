@@ -16,10 +16,10 @@ I18n.translations.nl = {
         person: "Person"
     },
     offering: {
-        title: "Register for a {{type}} at {{abbreviation}}",
+        title: "Registreer voor een {{type}} bij {{abbreviation}}",
         types: {
-            course: "course",
-            program: "program",
+            course: "cursus",
+            program: "programma",
             component: "component"
         },
         wizard: {
@@ -102,7 +102,7 @@ I18n.translations.nl = {
     explanation: {
         title: "Hoe werkt aanmelden?",
         eduID: {
-            title: "Je meldt je aan met je eduID (<a class=\"link\" href=\"https://eduid.nl\" target=\"_blank\">read why</a>)",
+            title: "Je meldt je aan met je eduID (<a class=\"link\" href=\"https://eduid.nl\" target=\"_blank\">lees waarom</a>)",
             subTitle: "Maak je geen zorgen als je nog geen eduID hebt, het aanmaken ervan kost minder dan 30 seconden.",
         },
         transfer: {
@@ -135,7 +135,7 @@ I18n.translations.nl = {
             emailPersonal: "Privé e-mailadres",
             phone: "Telefoonnummers",
             address: "Adres",
-            ice: "ICE details",
+            ice: "ICE gegevens",
             identifier: "Unieke identificatie"
         }
     },
