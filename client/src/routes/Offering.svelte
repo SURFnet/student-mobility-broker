@@ -159,6 +159,12 @@
         }
     }
 
+    const genericErrorMessage = () => {
+        const supportLink = ($offering.guestInstitution && $offering.guestInstitution.supportLink) ?
+            $offering.guestInstitution.supportLink : I18n.t("error.supportLink");
+        return I18n.t("error.generic", {supportDisplay: supportLink.replaceAll("mailto:", ""), supportLink: supportLink})
+    }
+
     const registrationSuccessful = (currentResult, isFinished) => currentResult && currentResult.code === 200 && !result.redirect && isFinished;
     const pendingApproval = currentStep => currentStep === STEPS.approve;
 
@@ -705,10 +711,7 @@
                             <p class="error-msg">{DOMPurify.sanitize(error)}</p>
                         </div>
                         <p>
-                            <span>{@html I18n.t("error.generic", {
-                                supportLink: ($offering.guestInstitution && $offering.guestInstitution.supportLink) ?
-                                    $offering.guestInstitution.supportLink : I18n.t("error.supportLink")
-                            })}</span>
+                            <span>{@html genericErrorMessage()}</span>
                         </p>
                         <div class="lottie-container lottie-error">
                             <LottiePlayer
@@ -779,15 +782,14 @@
                                         <span class="error-message">{DOMPurify.sanitize(result.message)}</span>
                                     {:else if result.code === 404}
                                         <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.notFoundResultErrorMessage", {institution: $offering.homeInstitution.name}))}</span>
+                                    {:else if result.code === 408}
+                                        <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.timeOutResultErrorMessage", {institution: $offering.guestInstitution.name}))}</span>
                                     {:else if result.code === 409}
                                         <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.conflictResultErrorMessage", {institution: $offering.homeInstitution.name}))}</span>
                                     {:else}
                                         <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
                                     {/if}
-                                    <span class="error-message">{@html I18n.t("error.generic", {
-                                        supportLink: ($offering.guestInstitution && $offering.guestInstitution.supportLink) ?
-                                            $offering.guestInstitution.supportLink : I18n.t("error.supportLink")
-                                    })}</span>
+                                    <span class="error-message">{@html genericErrorMessage()}</span>
                                     {#if result.reference}
                                         <span class="error-message">{@html I18n.t("error.reference", {reference: result.reference})}</span>
                                     {/if}

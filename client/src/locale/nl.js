@@ -46,6 +46,7 @@ I18n.translations.nl = {
         noResultErrorMessage: "Er is helaas niet meer informatie.",
         notFoundResultErrorMessage: "Jouw persoonlijke gegevens konden niet worden opgehaald bij {{institution}}",
         conflictResultErrorMessage: "Je sessie is verloren gegaan. Probeer het nogmaals.",
+        timeOutResultErrorMessage: "Het duurde te lang om antwoord te krijgen van instelling {{institution}}.",
         almost: "Bijna klaar, nog één ding!",
         questions: "Er zijn extra vragen",
         questionsDetail: "Om je inschrijving definitief te maken, moet je nog wat extra vragen beantwoorden",
@@ -97,7 +98,7 @@ I18n.translations.nl = {
         unknown: "",
         supportLink: "https://eduxchange.nl/contact",
         generic: "Probeer het nogmaals. Als het probleem zich voor blijft doen, " +
-            " neem contact op met de student administratie van <a href=\"{{supportLink}}\" target=\"_blank\">{{supportLink}}</a>"
+            " neem contact op met de student administratie van <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a>"
     },
     explanation: {
         title: "Hoe werkt aanmelden?",

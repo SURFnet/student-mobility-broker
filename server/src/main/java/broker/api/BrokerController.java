@@ -22,6 +22,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
@@ -308,15 +309,17 @@ public class BrokerController {
                     body, brokerRequest, request.getSession().getId()));
 
             return body;
-        } catch (HttpStatusCodeException e) {
-            RemoteException remoteException = new RemoteException(e.getStatusCode(), e.getMessage(), e);
+        } catch (HttpStatusCodeException | ResourceAccessException e) {
+            HttpStatus statusCode = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException)e).getStatusCode() : HttpStatus.REQUEST_TIMEOUT;
+            RemoteException remoteException = new RemoteException(statusCode, e.getMessage(), e);
 
+            String body = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException)e).getResponseBodyAsString() : e.getMessage();
             LOG.error(String.format("Unexpected exception from /api/start: %s, reference number %s",
-                    e.getResponseBodyAsString(), remoteException.getReference()));
+                    body, remoteException.getReference()));
 
             Map<String, Object> res = new HashMap<>();
             res.put("error", true);
-            res.put("code", e.getRawStatusCode());
+            res.put("code", statusCode.value());
             res.put("reference", remoteException.getReference());
             return res;
         }

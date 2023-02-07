@@ -46,6 +46,7 @@ I18n.translations.en = {
         noResultErrorMessage: "No details were disclosed.",
         notFoundResultErrorMessage: "Your personal information could not be retrieved from {{institution}}",
         conflictResultErrorMessage: "Your session was lost. Please try again.",
+        timeOutResultErrorMessage: "Institution {{institution}} took too long to respond.",
         almost: "Almost there, one more thing!",
         questions: "There are some extra questions",
         questionsDetail: "To finalise your enrolment for this specific course, some extra questions need to be answered",
@@ -97,7 +98,7 @@ I18n.translations.en = {
         unknown: "",
         supportLink: "https://eduxchange.nl/contact",
         generic: "Please try again later. If the problem persists, " +
-            " contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportLink}}</a>"
+            " contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a>"
     },
     explanation: {
         title: "How does enrolling work?",
