@@ -11,15 +11,15 @@ I18n.translations.nl = {
     },
     tabs: {
         intake: "Intake",
-        results: "Results",
-        resultsV4: "Results (old)",
-        person: "Person"
+        results: "Resultaten",
+        resultsV4: "Resultaten (oud)",
+        person: "Persoon"
     },
     offering: {
         title: "Registreer voor een {{type}} bij {{abbreviation}}",
         types: {
             course: "cursus",
-            program: "programma",
+            program: "minor",
             component: "component"
         },
         wizard: {
@@ -55,7 +55,7 @@ I18n.translations.nl = {
         next: "Wat volgt nu?",
         receiveMail: "Je ontvangt bericht van {{abbreviation}} over de volgende stappen.",
         homeInstitution: "Jouw thuisinstelling",
-        personal: "<b>{{guest}}</b> moet alle nodige informatie aanvragen voor je inschrijving bij <b>{{home}}</b>.",
+        personal: "<b>{{guest}}</b> moet alle nodige informatie voor je inschrijving aanvragen bij <b>{{home}}</b>.",
         personalBullet1: "Beide instellingen zijn verwerkingsverantwoordelijke van deze verwerking van persoonsgegevens (lees de <a href='{{privacyEndpoint}}' target='_blank'>volledige privacy statement</a>).",
         personalBullet2sub1: "Begrijp precies welke ",
         personalBullet2sub2: "persoonlijke gegevens",
@@ -73,7 +73,7 @@ I18n.translations.nl = {
             "en-GB": "English",
             "en-gb": "English"
         },
-        dateTime: "Datum & tijd",
+        dateTime: "Datum",
         places: "{{nbr}} plaatsen",
         backToCatalog: "terug naar eduXchange"
     },
