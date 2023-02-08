@@ -759,13 +759,13 @@
                                     home: $offering.homeInstitution.name
                                 })}</span>
                                 <ul class="personals">
-                                    <li>{@html DOMPurify.sanitize(I18n.t("offering.personalBullet1", {privacyEndpoint: $offering.guestInstitution.privacyEndpoint}))}</li>
                                     <li>
-                                        {@html I18n.t("offering.personalBullet2sub1")}
+                                        {@html I18n.t("offering.personalBullet1sub1")}
                                         <a href="/"
-                                           on:click|preventDefault|stopPropagation={() => showModal=true}>{I18n.t("offering.personalBullet2sub2")}</a>
-                                        {@html I18n.t("offering.personalBullet2sub3")}
+                                           on:click|preventDefault|stopPropagation={() => showModal=true}>{I18n.t("offering.personalBullet1sub2")}</a>
+                                        {@html I18n.t("offering.personalBullet1sub3")}
                                     </li>
+                                    <li>{@html DOMPurify.sanitize(I18n.t("offering.personalBullet2", {privacyEndpoint: $offering.guestInstitution.privacyEndpoint}))}</li>
                                 </ul>
                                 <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
                                 <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
