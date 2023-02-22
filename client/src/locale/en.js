@@ -46,7 +46,7 @@ I18n.translations.en = {
         noResultErrorMessage: "No details were disclosed.",
         notFoundResultErrorMessage: "Your personal information could not be retrieved from {{institution}}",
         conflictResultErrorMessage: "Your session was lost. Please try again.",
-        timeOutResultErrorMessage: "Institution {{institution}} took too long to respond.",
+        timeOutResultErrorMessage: "Institution {{institution}} took too long to respond. Please check if you received a confirmation of your registration via email within 10 minutes. If not, please try registering again later. If the problem persists, please check the information on your university's minor website on what to do.",
         almost: "Almost there, one more thing!",
         questions: "There are some extra questions",
         questionsDetail: "To finalise your enrolment for this specific course, some extra questions need to be answered",
@@ -86,9 +86,9 @@ I18n.translations.en = {
         info: "An unexpected error has occurred.",
         subInfo: " The information we currently can share with you is:",
         surfLink: "See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
-        expired: "The enrollment has been expired",
+        expired: "The enrollment has expired",
         offering: "The course information could not be retrieved from {{name}}",
-        400: "Backend error",//Invalig guest or home schachome
+        400: "Backend error",//Invalid guest or home schachome
         404: "Your personal information could not be found at {{name}}",//404 person endpoint
         409: "The queue-session validation failed",//queue-it validation error
         412: "Your session was lost. Please try again",//invalid enrollmentRequest

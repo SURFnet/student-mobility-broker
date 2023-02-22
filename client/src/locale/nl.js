@@ -46,7 +46,7 @@ I18n.translations.nl = {
         noResultErrorMessage: "Er is helaas niet meer informatie.",
         notFoundResultErrorMessage: "Jouw persoonlijke gegevens konden niet worden opgehaald bij {{institution}}",
         conflictResultErrorMessage: "Je sessie is verloren gegaan. Probeer het nogmaals.",
-        timeOutResultErrorMessage: "Het duurde te lang om antwoord te krijgen van instelling {{institution}}.",
+        timeOutResultErrorMessage: "De server van {{institution}} deed er te lang over om te reageren. Check of je binnen 10 minuten een bevestiging van je aanmelding via e-mail hebt ontvangen. Zo niet, probeer je dan later opnieuw aan te melden. Als het probleem aanhoudt, kijk dan op de minorwebsite van je universiteit wat je moet doen. ",
         almost: "Bijna klaar, nog één ding!",
         questions: "Er zijn extra vragen",
         questionsDetail: "Om je inschrijving definitief te maken, moet je nog wat extra vragen beantwoorden",
@@ -88,7 +88,7 @@ I18n.translations.nl = {
         surfLink: "Ga naar <a href=\"https://eduxchange.nl/contact\">eduXchange</a> voor hulp.",
         expired: "De aanmelding is verlopen",
         offering: "De informatie kon niet opgehaald worden bij {{name}}",
-        400: "Backend error",//Invalig guest or home schachome
+        400: "Backend error",//Invalid guest or home schachome
         404: "Je gegevens zijn niet gevonden worden bij {{name}}",//404 person endpoint
         409: "De wachtrij sessie validatie is mislukt",//queue-it validation error
         412: "Je sessie is verloren gegaan. Probeer het opnieuw",//invalid enrollmentRequest
