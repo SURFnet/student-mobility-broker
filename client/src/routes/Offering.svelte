@@ -72,7 +72,9 @@
             title = I18n.t("offering.landing");
             subTitle = I18n.t("offering.landing");
         }
-        if (step === STEPS.enroll) {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const reload = urlSearchParams.has("reload");
+        if (step === STEPS.enroll && !reload) {
             document.title = I18n.t("pages.registration", {abbreviation: $offering.guestInstitution.abbreviation});
             const name = getParameterByName("name");
             title = subTitle = I18n.t("offering.wait", {name});
@@ -105,6 +107,7 @@
     const changeLanguage = lang => () => {
         const urlSearchParams = new URLSearchParams(window.location.search);
         urlSearchParams.set("lang", lang);
+        urlSearchParams.set("reload", "false");
         Cookies.set("lang", lang, {expires: 365, secure: true, sameSite: "Lax"});
         window.location.search = urlSearchParams.toString();
     };
