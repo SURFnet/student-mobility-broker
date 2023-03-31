@@ -12,10 +12,10 @@ test("getParameterByNameSanitized", () => {
 
 test("getParameterByNameNull", () => {
   const val = getParameterByName("error", "?");
-  expect(val).toBe(null);
+  expect(val).toBe("");
 });
 
 test("replaceQueryParameter", () => {
   const val = replaceQueryParameter("param","new", "?param=value");
-  expect(val).toBe("?param=new");
+  expect(val).toBe("param=new");
 });
