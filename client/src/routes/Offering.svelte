@@ -162,10 +162,14 @@
         }
     }
 
-    const genericErrorMessage = () => {
+    const genericErrorMessage = code => {
         const supportLink = ($offering.guestInstitution && $offering.guestInstitution.supportLink) ?
             $offering.guestInstitution.supportLink : I18n.t("error.supportLink");
-        return I18n.t("error.generic", {supportDisplay: supportLink.replaceAll("mailto:", ""), supportLink: supportLink})
+
+        return I18n.t(`error.${code === 422 ? "noRetry" : "generic"}`, {
+            supportDisplay: supportLink.replaceAll("mailto:", ""),
+            supportLink: supportLink
+        })
     }
 
     const registrationSuccessful = (currentResult, isFinished) => currentResult && currentResult.code === 200 && !result.redirect && isFinished;
@@ -714,7 +718,7 @@
                             <p class="error-msg">{DOMPurify.sanitize(error)}</p>
                         </div>
                         <p>
-                            <span>{@html genericErrorMessage()}</span>
+                            <span>{@html genericErrorMessage(error)}</span>
                         </p>
                         <div class="lottie-container lottie-error">
                             <LottiePlayer
@@ -770,7 +774,7 @@
                                     </li>
                                     <li>
                                         {@html DOMPurify.sanitize(I18n.t("offering.personalBullet2", {privacyEndpoint: $offering.guestInstitution.privacyEndpoint}),
-                                        {ADD_ATTR: ["target"]})}
+                                            {ADD_ATTR: ["target"]})}
                                     </li>
                                 </ul>
                                 <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
@@ -795,7 +799,7 @@
                                     {:else}
                                         <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
                                     {/if}
-                                    <span class="error-message">{@html genericErrorMessage()}</span>
+                                    <span class="error-message">{@html genericErrorMessage(result.code)}</span>
                                     {#if result.reference}
                                         <span class="error-message">{@html I18n.t("error.reference", {reference: result.reference})}</span>
                                     {/if}

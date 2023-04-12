@@ -94,11 +94,13 @@ I18n.translations.en = {
         412: "Your session was lost. Please try again",//invalid enrollmentRequest
         417: "Your session was lost. Please try again",//tokenrequest failed
         419: "Backend error",//eduID not present in the ARP
+        422: "There is an administrative reason why you can not be enrolled",
         reference: "Your reference number is {{reference}}.",
         unknown: "",
         supportLink: "https://eduxchange.nl/contact",
         generic: "Please try again later. If the problem persists, " +
-            " contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a>"
+            " contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a>",
+        noRetry: "You can contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a> for more information"
     },
     explanation: {
         title: "How does enrolling work?",

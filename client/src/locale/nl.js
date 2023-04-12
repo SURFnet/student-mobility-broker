@@ -94,11 +94,13 @@ I18n.translations.nl = {
         412: "Je sessie is verloren gegaan. Probeer het opnieuw",//invalid enrollmentRequest
         417: "Je sessie is verloren gegaan. Probeer het opnieuw",//tokenrequest failed
         419: "Backend error",//eduID not present in the ARP
+        422: "Er is een administratieve reden waarom je niet kon worden ingeschreven",
         reference: "Je referentienummer is {{reference}}.",
         unknown: "",
         supportLink: "https://eduxchange.nl/contact",
         generic: "Probeer het nogmaals. Als het probleem zich voor blijft doen, " +
-            " neem contact op met de student administratie van <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a>"
+            " neem contact op met de student administratie van <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a>",
+        noRetry: "Je kan contact opnemen met de student administratie van <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a> voor meer informatie"
     },
     explanation: {
         title: "Hoe werkt aanmelden?",
