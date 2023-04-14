@@ -99,8 +99,8 @@ I18n.translations.en = {
         unknown: "",
         supportLink: "https://eduxchange.nl/all/help",
         generic: "Please try again later. If the problem persists, " +
-            " contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a>",
-        noRetry: "You can contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a> for more information"
+            " <a href=\"{{supportLink}}\" target=\"_blank\">contact the student administration</a> for more information",
+        noRetry: "You can <a href=\"{{supportLink}}\" target=\"_blank\">contact the student administration</a> for more information"
     },
     explanation: {
         title: "How does enrolling work?",

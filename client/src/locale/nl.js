@@ -99,8 +99,8 @@ I18n.translations.nl = {
         unknown: "",
         supportLink: "https://eduxchange.nl/nl/all/help",
         generic: "Probeer het nogmaals. Als het probleem zich voor blijft doen, " +
-            " neem contact op met de student administratie van <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a>",
-        noRetry: "Je kan contact opnemen met de student administratie van <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a> voor meer informatie"
+            " neem <a href=\"{{supportLink}}\" target=\"_blank\">contact op met de student administratie</a> voor meer informatie",
+        noRetry: "Je kan <a href=\"{{supportLink}}\" target=\"_blank\">contact opnemen met de student administratie</a> voor meer informatie"
     },
     explanation: {
         title: "Hoe werkt aanmelden?",
