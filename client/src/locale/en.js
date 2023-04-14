@@ -97,7 +97,7 @@ I18n.translations.en = {
         422: "There is an administrative reason why you can not be enrolled",
         reference: "Your reference number is {{reference}}.",
         unknown: "",
-        supportLink: "https://eduxchange.nl/contact",
+        supportLink: "https://eduxchange.nl/all/help",
         generic: "Please try again later. If the problem persists, " +
             " contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a>",
         noRetry: "You can contact the student administration at <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a> for more information"

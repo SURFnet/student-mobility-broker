@@ -97,7 +97,7 @@ I18n.translations.nl = {
         422: "Er is een administratieve reden waarom je niet kon worden ingeschreven",
         reference: "Je referentienummer is {{reference}}.",
         unknown: "",
-        supportLink: "https://eduxchange.nl/contact",
+        supportLink: "https://eduxchange.nl/nl/all/help",
         generic: "Probeer het nogmaals. Als het probleem zich voor blijft doen, " +
             " neem contact op met de student administratie van <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a>",
         noRetry: "Je kan contact opnemen met de student administratie van <a href=\"{{supportLink}}\" target=\"_blank\">{{supportDisplay}}</a> voor meer informatie"
