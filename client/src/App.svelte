@@ -15,6 +15,8 @@
 
     export let url = "";
     let loaded = false;
+    let offeringError = null;
+
 
     if (typeof window !== "undefined") {
         const urlSearchParams = new URLSearchParams(window.location.search);
@@ -70,9 +72,11 @@
                     })
                     .catch(e => {
                         e.json().then(res => {
-                            window.location.search = replaceQueryParameter("error", I18n.t("error.offering", {"name": res.message}));
+                            offeringError = I18n.t("error.offering", {"name": res.message});
+                            loaded = true;
                         }).catch(() => {
-                            window.location.search = replaceQueryParameter("error", I18n.t("error.expired"));
+                            offeringError = I18n.t("error.expired");
+                            loaded = true;
                         });
                     });
             } else if (playGround && json.allowPlayground) {
@@ -103,7 +107,9 @@
 {#if loaded }
     <div class="broker">
         <Router url="{url}">
-            <Route path="/" component={Offering}/>
+            <Route path="/">
+                <Offering offeringError={offeringError}/>
+            </Route>
             {#if $config.allowPlayground}
                 <Route path="/intake">
                     <PlayGround bookmark="intake"/>

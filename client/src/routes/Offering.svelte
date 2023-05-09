@@ -40,6 +40,8 @@
         finished: "finished"
     }
 
+    export let offeringError = null;
+
     let title = I18n.t("offering.approve");
     let subTitle = I18n.t("offering.enrolled");
     let activity = null;
@@ -56,7 +58,7 @@
     onMount(() => {
         step = getParameterByName("step");
         error = getParameterByName("error");
-        if (error) {
+        if (error || offeringError) {
             document.title = I18n.t("pages.error");
         } else {
             document.title = I18n.t("pages.approve");
@@ -68,7 +70,7 @@
         }
         landing = getParameterByName("landing");
         loaded = true;
-        if (error || landing) {
+        if (error || landing || offeringError) {
             title = I18n.t("offering.landing");
             subTitle = I18n.t("offering.landing");
         }
@@ -638,7 +640,7 @@
 {#if loaded }
     <div class="container">
         <div class="offering">
-            {#if !landing && !error }
+            {#if !landing && !error && !offeringError}
                 {#if $config.allowPlayground}
                         <span id="balancer" class="balancer" class:balancing={balancing}
                               on:click={gotoPlay}>{@html balancer}</span>
@@ -708,17 +710,17 @@
                             />
                         </div>
                     </div>
-                {:else if error}
+                {:else if error || offeringError}
                     <div class="error">
                         <p>
                             <span>{I18n.t("error.info")}</span>
                             <span>{I18n.t("error.subInfo")}</span>
                         </p>
                         <div>
-                            <p class="error-msg">{DOMPurify.sanitize(error)}</p>
+                            <p class="error-msg">{DOMPurify.sanitize(error || offeringError)}</p>
                         </div>
                         <p>
-                            <span>{@html genericErrorMessage(error)}</span>
+                            <span>{@html genericErrorMessage(error || offeringError)}</span>
                         </p>
                         <div class="lottie-container lottie-error">
                             <LottiePlayer
