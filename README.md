@@ -13,6 +13,16 @@ Broker for educational cross-institution registrations.
 - Yarn 1.x
 - NodeJS 14+
 
+The use of a MySQL database is optional. If you want to enable sessions backed up by the database, create a database:
+
+```sql
+DROP DATABASE IF EXISTS student_mobility;
+CREATE DATABASE student_mobility CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+CREATE USER 'student_mobility'@'localhost' IDENTIFIED BY 'secret';
+GRANT ALL privileges ON `student_mobility`.* TO 'student_mobility'@'localhost';
+```
+
+
 ## [Building and running](#building-and-running)
 
 ### [The student-mobility-broker-server](#student-mobility-broker-server)

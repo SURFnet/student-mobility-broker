@@ -17,6 +17,19 @@ server:
 spring:
   jackson:
     default-property-inclusion: non_null
+  session:
+    jdbc:
+      initialize-schema: always
+    store-type: jdbc
+
+# If enabled there must be a database according to the datasource properties below
+database-session-enabled: false
+
+datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost/student_mobility
+  username: student_mobility
+  password: secret
 
 config:
   # Endpoint called by catalog. For testing purposes the client can call it as well
