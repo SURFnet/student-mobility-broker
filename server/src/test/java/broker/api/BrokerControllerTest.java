@@ -9,7 +9,7 @@ import broker.queue.Security;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import io.restassured.common.mapper.TypeRef;
-import io.restassured.filter.session.SessionFilter;
+import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -53,9 +53,9 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         String guestInstitutionSchacHome = "hardewijk.nl";
         Institution institution = this.findInstitutionBySchacHome(guestInstitutionSchacHome);
         CourseAuthentication courseAuthentication = institution.getCourseAuthentication();
-        SessionFilter sessionFilter = new SessionFilter();
+        CookieFilter cookieFilter = new CookieFilter();
         given().redirects().follow(false)
-                .filter(sessionFilter)
+                .filter(cookieFilter)
                 .when()
                 .param("homeInstitutionSchacHome", "eindhoven.nl")
                 .param("guestInstitutionSchacHome", guestInstitutionSchacHome)
@@ -72,24 +72,24 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         String withoutHash = Security.generateSHA256Hash(institution.getQueueItSecret(), token);
         String queueItToken = token + "~h_" + withoutHash;
         given().redirects().follow(false)
-                .filter(sessionFilter)
+                .filter(cookieFilter)
                 .when()
                 .param("queueittoken", queueItToken)
                 .get("/api/queue/redirect")
                 .then()
                 .header("Location", "http://localhost:3003?step=approve");
         featureToggles();
-        guiGetOffering(sessionFilter, courseAuthentication, institution.isUseEduHubForOffering());
-        startRegistration(sessionFilter);
+        guiGetOffering(cookieFilter, courseAuthentication, institution.isUseEduHubForOffering());
+        startRegistration(cookieFilter);
     }
 
     @Test
     public void brokerOfferingWithWrongQueueItToken() {
         String guestInstitutionSchacHome = "hardewijk.nl";
         Institution institution = this.findInstitutionBySchacHome(guestInstitutionSchacHome);
-        SessionFilter sessionFilter = new SessionFilter();
+        CookieFilter cookieFilter = new CookieFilter();
         given().redirects().follow(false)
-                .filter(sessionFilter)
+                .filter(cookieFilter)
                 .when()
                 .param("homeInstitutionSchacHome", "eindhoven.nl")
                 .param("guestInstitutionSchacHome", guestInstitutionSchacHome)
@@ -106,7 +106,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         String withoutHash = Security.generateSHA256Hash(institution.getQueueItSecret(), token);
         String queueItToken = token + "~h_" + withoutHash + "X";
         given().redirects().follow(false)
-                .filter(sessionFilter)
+                .filter(cookieFilter)
                 .when()
                 .param("queueittoken", queueItToken)
                 .get("/api/queue/redirect")
@@ -114,7 +114,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .header("Location", "http://localhost:3003?error=409");
         //If we now try to get the offering it will fail
         Map<String, Object> result = given()
-                .filter(sessionFilter)
+                .filter(cookieFilter)
                 .accept(ContentType.JSON)
                 .when()
                 .get("/api/offering")
@@ -126,10 +126,10 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
 
     @Test
     public void brokerOfferingInvalid() {
-        SessionFilter sessionFilter = new SessionFilter();
-        formSubmitByCatalog(sessionFilter, "utrecht.nl");
+        CookieFilter cookieFilter = new CookieFilter();
+        formSubmitByCatalog(cookieFilter, "utrecht.nl");
         featureToggles();
-        Map<String, Object> result = guiGetOfferingInvalid(sessionFilter);
+        Map<String, Object> result = guiGetOfferingInvalid(cookieFilter);
         assertEquals(400, result.get("status"));
     }
 
@@ -147,23 +147,23 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
 
     @Test
     public void invalidStartRegistration() throws IOException {
-        SessionFilter sessionFilter = new SessionFilter();
-        formSubmitByCatalog(sessionFilter, "utrecht.nl");
+        CookieFilter cookieFilter = new CookieFilter();
+        formSubmitByCatalog(cookieFilter, "utrecht.nl");
         featureToggles();
-        guiGetOffering(sessionFilter, CourseAuthentication.NONE, false);
-        Map<String, Object> results = startRegistrationInvalid(sessionFilter);
+        guiGetOffering(cookieFilter, CourseAuthentication.NONE, false);
+        Map<String, Object> results = startRegistrationInvalid(cookieFilter);
         assertEquals(500, results.get("code"));
 
     }
 
     private void happyFlow(String guestInstitutionSchacHome) throws IOException {
         Institution institution = this.findInstitutionBySchacHome(guestInstitutionSchacHome);
-                CourseAuthentication courseAuthentication = institution.getCourseAuthentication();
-        SessionFilter sessionFilter = new SessionFilter();
-        formSubmitByCatalog(sessionFilter, guestInstitutionSchacHome);
+        CourseAuthentication courseAuthentication = institution.getCourseAuthentication();
+        CookieFilter cookieFilter = new CookieFilter();
+        formSubmitByCatalog(cookieFilter, guestInstitutionSchacHome);
         featureToggles();
-        guiGetOffering(sessionFilter, courseAuthentication, institution.isUseEduHubForOffering());
-        startRegistration(sessionFilter);
+        guiGetOffering(cookieFilter, courseAuthentication, institution.isUseEduHubForOffering());
+        startRegistration(cookieFilter);
     }
 
     private Institution findInstitutionBySchacHome(String schacHome) {
@@ -276,9 +276,9 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
 
     }
 
-    private void formSubmitByCatalog(SessionFilter sessionFilter, String guestInstitutionSchacHome) {
+    private void formSubmitByCatalog(CookieFilter cookieFilter, String guestInstitutionSchacHome) {
         given().redirects().follow(false)
-                .filter(sessionFilter)
+                .filter(cookieFilter)
                 .when()
                 .param("homeInstitutionSchacHome", "eindhoven.nl")
                 .param("guestInstitutionSchacHome", guestInstitutionSchacHome)
@@ -289,7 +289,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .header("Location", "http://localhost:3003?step=approve");
     }
 
-    private void guiGetOffering(SessionFilter sessionFilter, CourseAuthentication courseAuthentication, boolean useEduHubForOffering) throws IOException {
+    private void guiGetOffering(CookieFilter cookieFilter, CourseAuthentication courseAuthentication, boolean useEduHubForOffering) throws IOException {
         MappingBuilder mappingBuilder = get(urlPathMatching("/offerings/1"));
         if (useEduHubForOffering) {
             mappingBuilder = mappingBuilder
@@ -310,7 +310,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(body)));
         Map<String, Object> result = given()
-                .filter(sessionFilter)
+                .filter(cookieFilter)
                 .accept(ContentType.JSON)
                 .when()
                 .get("/api/offering")
@@ -326,12 +326,12 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         assertEquals("https://eindhoven/api inteken", enrollmentRequest.get("scope"));
     }
 
-    private Map<String, Object> guiGetOfferingInvalid(SessionFilter sessionFilter) {
+    private Map<String, Object> guiGetOfferingInvalid(CookieFilter cookieFilter) {
         stubFor(get(urlPathMatching("/offerings/1")).willReturn(aResponse()
                 .withStatus(400)));
 
         return given()
-                .filter(sessionFilter)
+                .filter(cookieFilter)
                 .accept(ContentType.JSON)
                 .when()
                 .get("/api/offering")
@@ -339,7 +339,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 });
     }
 
-    private void startRegistration(SessionFilter sessionFilter) throws IOException {
+    private void startRegistration(CookieFilter cookieFilter) throws IOException {
         String correlationID = "123456";
         stubFor(post(urlPathMatching("/api/start"))
                 .withHeader("X-Correlation-ID", new EqualToPattern(correlationID))
@@ -348,7 +348,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(readFile("data/registration-result.json"))));
         Map<String, Object> result = given()
-                .filter(sessionFilter)
+                .filter(cookieFilter)
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .body(Collections.singletonMap("correlationID", correlationID))
@@ -359,7 +359,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         assertEquals("ok", result.get("result"));
     }
 
-    private Map<String, Object> startRegistrationInvalid(SessionFilter sessionFilter) throws IOException {
+    private Map<String, Object> startRegistrationInvalid(CookieFilter cookieFilter) throws IOException {
         String correlationID = "123456";
         stubFor(post(urlPathMatching("/api/start"))
                 .withHeader("X-Correlation-ID", new EqualToPattern(correlationID))
@@ -368,7 +368,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                         .withStatus(500)));
 
         return given()
-                .filter(sessionFilter)
+                .filter(cookieFilter)
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .body(Collections.singletonMap("correlationID", correlationID))

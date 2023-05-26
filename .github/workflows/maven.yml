@@ -20,6 +20,20 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Set up MySQL
+      uses: shogo82148/actions-setup-mysql@v1
+      with:
+        mysql-version: '8.0'
+    - run: |
+        mysql -uroot -h127.0.0.1 -e \
+        "CREATE DATABASE student_mobility CHARACTER SET utf8mb4 \
+        COLLATE utf8mb4_0900_ai_ci;"
+    - run: |
+        mysql -uroot -h127.0.0.1 -e \
+        "CREATE USER 'student_mobility'@'localhost' IDENTIFIED BY 'secret';";
+    - run: |
+        mysql -uroot -h127.0.0.1 -e \
+        "GRANT ALL privileges ON student_mobility.* TO 'student_mobility'@'localhost';"
     - name: Build with Maven
       run: mvn -B package --file pom.xml
       working-directory: ./server

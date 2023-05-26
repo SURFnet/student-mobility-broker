@@ -13,6 +13,11 @@ Broker for educational cross-institution registrations.
 - Yarn 1.x
 - NodeJS 14+
 
+Set the JAVA_HOME property for maven (example for macOS):
+```
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/
+```
+
 The use of a MySQL database is optional. If you want to enable sessions backed up by the database, create a database:
 
 ```sql

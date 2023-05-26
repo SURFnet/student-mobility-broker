@@ -38,10 +38,7 @@ public class HttpSessionConfig {
     JdbcSessionDataSourceScriptDatabaseInitializer scriptInitializer(DataSource dataSource) {
         JdbcSessionProperties properties = new JdbcSessionProperties();
         properties.setInitializeSchema(DatabaseInitializationMode.ALWAYS);
-
-        JdbcSessionDataSourceScriptDatabaseInitializer scriptInitializer =
-                new JdbcSessionDataSourceScriptDatabaseInitializer(dataSource, properties);
-        return scriptInitializer;
+        return new JdbcSessionDataSourceScriptDatabaseInitializer(dataSource, properties);
     }
 
 }

@@ -1,8 +1,9 @@
 logging:
   level:
-    root: INFO
+    root: WARN
     broker: DEBUG
-    org.springframework.security: INFO
+    org.springframework: WARN
+    org.springframework.security: WARN
 
 server:
   port: 8091
@@ -14,7 +15,10 @@ server:
       cookie:
         secure: false
       timeout: 3d
+
 spring:
+  main:
+    banner-mode: off
   jackson:
     default-property-inclusion: non_null
   session:
@@ -23,7 +27,7 @@ spring:
     store-type: jdbc
 
 # If enabled there must be a database according to the datasource properties below
-database-session-enabled: false
+database-session-enabled: true
 
 datasource:
   driver-class-name: com.mysql.cj.jdbc.Driver
