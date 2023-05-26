@@ -188,7 +188,6 @@ public class BrokerController {
         return featureToggles;
     }
 
-
     /*
      * Endpoint called by the GUI in first rendering
      */

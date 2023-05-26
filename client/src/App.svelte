@@ -72,7 +72,12 @@
                     })
                     .catch(e => {
                         e.json().then(res => {
-                            offeringError = I18n.t("error.offering", {"name": res.message});
+                            let message = res.message;
+                            if (message.indexOf("session")) {
+                                offeringError = I18n.t("error.412");
+                            }else {
+                                offeringError = I18n.t("error.offering", {"name": res.message});
+                            }
                             loaded = true;
                         }).catch(() => {
                             offeringError = I18n.t("error.expired");

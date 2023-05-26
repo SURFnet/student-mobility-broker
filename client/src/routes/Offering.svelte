@@ -640,29 +640,29 @@
 {#if loaded }
     <div class="container">
         <div class="offering">
+            <div class="header">
+                <div class="link-back" on:click={() => window.location.href = $config.catalogUrl}>
+                    <span>{@html chevronLeft}</span>
+                    <a href={`${$config.catalogUrl}`}>
+                        {I18n.t("offering.backToCatalog")}
+                    </a>
+                </div>
+                <div class="language-switcher">
+                    <ul>
+                        <li class="{I18n.locale === 'en' ? 'active' : 'non_active'}">
+                            <a href="/en" on:click|preventDefault|stopPropagation={changeLanguage("en")}>EN</a>
+                        </li>
+                        <li class="{I18n.locale === 'nl' ? 'active' : 'non_active'}">
+                            <a href="/nl" on:click|preventDefault|stopPropagation={changeLanguage("nl")}>NL</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             {#if !landing && !error && !offeringError}
                 {#if $config.allowPlayground}
                         <span id="balancer" class="balancer" class:balancing={balancing}
                               on:click={gotoPlay}>{@html balancer}</span>
                 {/if}
-                <div class="header">
-                    <div class="link-back" on:click={() => window.location.href = $config.catalogUrl}>
-                        <span>{@html chevronLeft}</span>
-                        <a href={`${$config.catalogUrl}`}>
-                            {I18n.t("offering.backToCatalog")}
-                        </a>
-                    </div>
-                    <div class="language-switcher">
-                        <ul>
-                            <li class="{I18n.locale === 'en' ? 'active' : 'non_active'}">
-                                <a href="/en" on:click|preventDefault|stopPropagation={changeLanguage("en")}>EN</a>
-                            </li>
-                            <li class="{I18n.locale === 'nl' ? 'active' : 'non_active'}">
-                                <a href="/nl" on:click|preventDefault|stopPropagation={changeLanguage("nl")}>NL</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
                 <div class="header">
                     <h2>{I18n.t("offering.title", {
                         type: I18n.t(`offering.types.${$offering.offering.offeringType}`),
