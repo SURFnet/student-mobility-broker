@@ -20,7 +20,8 @@ I18n.translations.en = {
         types: {
             course: "course",
             program: "program",
-            component: "component"
+            component: "component",
+            undefined: "course or program"
         },
         wizard: {
             course: "Select course",

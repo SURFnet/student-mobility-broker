@@ -20,7 +20,8 @@ I18n.translations.nl = {
         types: {
             course: "cursus",
             program: "minor",
-            component: "component"
+            component: "component",
+            undefined: "cursus of minor"
         },
         wizard: {
             course: "Maak een keuze",
