@@ -76,7 +76,7 @@ I18n.translations.en = {
         },
         dateTime: "Date & Time",
         places: "{{nbr}} places",
-        backToCatalog: "return to eduXchange"
+        backToCatalog: "Return"
     },
     landing: {
         info: "You have landed on the Student Mobility homepage, where you normally only would land after selecting a course in the education catalogue.",

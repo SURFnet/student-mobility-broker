@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 @Configuration
 @ConditionalOnProperty(value = "database-session-enabled", havingValue = "true", matchIfMissing = false)
 @Import(SessionAutoConfiguration.class)
-@EnableJdbcHttpSession
+@EnableJdbcHttpSession(maxInactiveIntervalInSeconds = 60 * 60 * 8)
 public class HttpSessionConfig {
 
     @Bean

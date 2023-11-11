@@ -76,7 +76,7 @@ I18n.translations.nl = {
         },
         dateTime: "Datum",
         places: "{{nbr}} plaatsen",
-        backToCatalog: "terug naar eduXchange"
+        backToCatalog: "Terug"
     },
     landing: {
         info: "Je bent beland op de homepage van Student Mobility, waar je normaal gesproken pas terechtkomt na het selecteren van een vak of minor in de onderwijscatalogus.",
