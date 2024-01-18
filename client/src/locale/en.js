@@ -93,7 +93,7 @@ I18n.translations.en = {
         404: "Your personal information could not be found at {{name}}",//404 person endpoint
         409: "The queue-session validation failed",//queue-it validation error
         412: "Your session was lost. Please try again",//invalid enrollmentRequest
-        417: "Your session was lost. Please try again",//tokenrequest failed
+        417: "Your session was lost (Token error). Please try again",//tokenrequest failed
         419: "Backend error",//eduID not present in the ARP
         422: "There is an administrative reason why you can not be enrolled",
         reference: "Your reference number is {{reference}}.",
