@@ -93,7 +93,7 @@ I18n.translations.nl = {
         404: "Je gegevens zijn niet gevonden worden bij {{name}}",//404 person endpoint
         409: "De wachtrij sessie validatie is mislukt",//queue-it validation error
         412: "Je sessie is verloren gegaan. Probeer het opnieuw",//invalid enrollmentRequest
-        417: "Je sessie is verloren gegaan. Probeer het opnieuw",//tokenrequest failed
+        417: "Je sessie is verloren gegaan (token fout). Probeer het opnieuw",//tokenrequest failed
         419: "Backend error",//eduID not present in the ARP
         422: "Er is een administratieve reden waarom je niet kon worden ingeschreven",
         reference: "Je referentienummer is {{reference}}.",
