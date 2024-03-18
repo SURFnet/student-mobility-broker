@@ -42,7 +42,7 @@ I18n.translations.nl = {
         },
         done: "Klaar voor nu. Er wordt contact met je opgenomen",
         landing: "Student Mobility Broker",
-        error: "Er is iets fout gegaan...",
+        error: "Inschrijven niet gelukt",
         errorTitle: "Details van {{abbreviation}}",
         noResultErrorMessage: "Er is helaas niet meer informatie.",
         notFoundResultErrorMessage: "Jouw persoonlijke gegevens konden niet worden opgehaald bij {{institution}}",

@@ -42,7 +42,7 @@ I18n.translations.en = {
         },
         done: "Done for now, we'll be in touch",
         landing: "Student Mobility Broker",
-        error: "Something went wrong...",
+        error: "Unable to register",
         errorTitle: "Provided details from {{abbreviation}}",
         noResultErrorMessage: "No details were disclosed.",
         notFoundResultErrorMessage: "Your personal information could not be retrieved from {{institution}}",
