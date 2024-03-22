@@ -1,0 +1,100 @@
+logging:
+  level:
+    root: WARN
+    broker: DEBUG
+    org.springframework: WARN
+    org.springframework.security: WARN
+
+server:
+  port: 8091
+  error:
+    path: "/error"
+    include-message: always
+  servlet:
+    session:
+      cookie:
+        secure: false
+      timeout: 3d
+
+spring:
+  main:
+    banner-mode: off
+  jackson:
+    default-property-inclusion: non_null
+  session:
+    jdbc:
+      initialize-schema: always
+    store-type: jdbc
+
+# If enabled there must be a database according to the datasource properties below
+database-session-enabled: true
+
+datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost/student_mobility
+  username: student_mobility
+  password: secret
+
+config:
+  # Endpoint called by catalog. For testing purposes the client can call it as well
+  start_broker_endpoint: http://localhost:8091/api/broker
+  # Set to False in every non-local environment
+  local: True
+  # Do we allow to mock the different scenario's - only allow on test
+  allow_playground: True
+  # Default home institution if playground is enabled
+  play_home_institution_schacHome: "utrecht.nl"
+  # Default guest institution if playground is enabled
+  play_guest_institution_schacHome: "wageningen.nl"
+  # Default offeringId if playground is enabled
+  play_offering_id: "6259518E-EF2A-4203-83C2-757E4FEACEDD"
+  # The basic authn to mimic the SIS that reports back results - only configure with values on test
+  sis_user: sis
+  sis_password: secret
+  sis_results_endpoint: http://localhost:8092/api/play-results
+  broker_client_url: http://localhost:3003
+  catalog_url: http://educhange.nl/
+  connection_timeout_millis: 20_000
+  oauth2:
+    token_endpoint: http://localhost:8081/oidc/token
+    client_id: student.mobility.broker.local
+    secret: secret
+  edu_hub:
+    gateway_url: http://localhost:8081
+    user: eduhub
+    password: secret
+  queueit:
+    url: "https://edubrokersurf.queue-it.net"
+    customer_id: "edubrokersurf"
+    redirect_uri: "http://localhost:8091/api/queue/redirect"
+
+
+service_registry:
+  path: classpath:/service-registry.yml
+
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include:
+          - health
+          - info
+      base-path: "/internal"
+  endpoint:
+    health:
+      enabled: true
+      show-details: when_authorized
+    info:
+      enabled: true
+  info:
+    git:
+      mode: full
+    defaults:
+      enabled: true
+
+# used by the git plugin
+info:
+  build:
+    artifact: "@project.artifactId@"
+    version: "@project.version@"

@@ -1,5 +1,5 @@
 # student-mobility-broker
-[![Build Status](https://github.com/SURFnet/student-mobility-broker/actions/workflows/maven.yml/badge.svg)](https://github.com/SURFnet/student-mobility-broker/actions/workflows/maven.yml/badge.svg)
+[![Build](https://github.com/SURFnet/student-mobility-broker/actions/workflows/build.yml/badge.svg)](https://github.com/SURFnet/student-mobility-broker/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/SURFnet/student-mobility-broker/branch/master/graph/badge.svg)](https://codecov.io/gh/SURFnet/student-mobility-broker)
 
 Broker for educational cross-institution registrations.
