@@ -45,9 +45,6 @@ I18n.translations.en = {
         error: "Something went wrong...",
         errorTitle: "Provided details from {{abbreviation}}",
         noResultErrorMessage: "No details were disclosed.",
-        notFoundResultErrorMessage: "Your personal information could not be retrieved from {{institution}}",
-        conflictResultErrorMessage: "Your session was lost. Please try again.",
-        timeOutResultErrorMessage: "Institution {{institution}} took too long to respond. Please check if you received a confirmation of your registration via email within 10 minutes. If not, please try registering again later. If the problem persists, please check the information on your university's minor website on what to do.",
         almost: "Almost there, one more thing!",
         questions: "There are some extra questions",
         questionsDetail: "To finalise your enrolment for this specific course, some extra questions need to be answered",
@@ -89,19 +86,21 @@ I18n.translations.en = {
         surfLink: "See <a href=\"https://eduxchange.nl/contact\">eduXchange</a> for help.",
         expired: "The enrollment has expired",
         offering: "The course information could not be retrieved from {{name}}",
-        400: "Backend error",//Invalid guest or home schachome
-        404: "Your personal information could not be found at {{name}}",//404 person endpoint
-        409: "The queue-session validation failed",//queue-it validation error
-        412: "Your session was lost. Please try again",//invalid enrollmentRequest
-        417: "Your session was lost. Please try again",//tokenrequest failed
+        400: "Backend error.",//Invalid guest or home schachome
+        404: "Your personal information could not be retrieved from {{homeInstitution}}.",//404 person endpoint
+        407: "The queue-session validation failed",//queue-it validation error
+        408: "Institution {{guestInstitution}} t ok too long to respond. Please check if you received a confirmation of your registration via email within 10 minutes. If not, please try registering again later. If the problem persists, please check the information on your university's minor website on what to do.",
+        409: "Your session was lost. Please try again.",//conflict
+        412: "Your session was lost. Please try again.",//invalid enrollmentRequest
+        417: "Your session was lost. Please try again.",//tokenrequest failed
         419: "Backend error",//eduID not present in the ARP
-        422: "There is an administrative reason why you can not be enrolled",
+        422: "There is an administrative reason why you can not be enrolled.",
         reference: "Your reference number is {{reference}}.",
         unknown: "",
         supportLink: "https://eduxchange.nl/all/help",
         generic: "Please try again later. If the problem persists, " +
-            " <a href=\"{{supportLink}}\" target=\"_blank\">contact the student administration</a> for more information",
-        noRetry: "You can <a href=\"{{supportLink}}\" target=\"_blank\">contact the student administration</a> for more information"
+            " <a href=\"{{supportLink}}\" target=\"_blank\">contact the student administration</a> for more information.",
+        noRetry: "You can <a href=\"{{supportLink}}\" target=\"_blank\">contact the student administration</a> for more information."
     },
     explanation: {
         title: "How does enrolling work?",

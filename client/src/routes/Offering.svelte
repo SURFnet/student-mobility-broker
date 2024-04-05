@@ -14,6 +14,7 @@
     import relax from "../icons/icons-studmob/cocktail-glass.svg";
     import highFive from "../icons/icons-studmob/undraw_High_five.svg";
     import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg";
+    import accessDenied from "../icons/undraw_access_denied_422.svg";
     import lightBulb from "../icons/icons-studmob/Lightbulb.svg";
     import questions from "../icons/icons-studmob/undraw_faq_rjoy.svg";
     import {offering} from "../stores/offering";
@@ -32,6 +33,7 @@
     import Course from "../components/Course.svelte";
     import Loading from "../components/Loading.svelte";
     import Modal from "../components/Modal.svelte";
+    import {isEmpty} from "../utils/forms";
 
     const timeoutStep = 1500;
     const STEPS = {
@@ -88,7 +90,8 @@
                 {
                     code: $playground.code,
                     redirect: $playground.redirect,
-                    message: $playground.message
+                    message: $playground.message,
+                    reference: 123456
                 } : {correlationID}
 
             if ($playground.active) {
@@ -105,6 +108,11 @@
                 });
         }
     });
+
+    const translationPresent = code => {
+        const errors = I18n.translations[I18n.locale].error
+        return !isEmpty(errors[code])
+    }
 
     const changeLanguage = lang => () => {
         const urlSearchParams = new URLSearchParams(window.location.search);
@@ -124,9 +132,6 @@
             } else if (result.code === 200) {
                 document.title = I18n.t("pages.registrationSent");
                 title = subTitle = I18n.t("offering.done");
-            } else if (result.code === 404) {
-                document.title = I18n.t("pages.error");
-                title = subTitle = I18n.t("offering.error");
             } else {
                 document.title = I18n.t("pages.error");
                 title = subTitle = I18n.t("offering.error");
@@ -167,7 +172,6 @@
     const genericErrorMessage = code => {
         const supportLink = ($offering.guestInstitution && $offering.guestInstitution.supportLink) ?
             $offering.guestInstitution.supportLink : I18n.t("error.supportLink");
-
         return I18n.t(`error.${code === 422 ? "noRetry" : "generic"}`, {
             supportDisplay: supportLink.replaceAll("mailto:", ""),
             supportLink: supportLink
@@ -786,18 +790,22 @@
                         {:else if result && result.code >= 400}
                             <div class="result">
                                 <div class="hero">
-                                    {@html moody}
+                                    {#if result.code === 422}
+                                        {@html accessDenied}
+                                    {:else}
+                                        {@html moody}
+                                    {/if}
                                 </div>
                                 <h3>{I18n.t("offering.errorTitle", {abbreviation: $offering.guestInstitution.abbreviation})}</h3>
                                 <div class="final-action error-result">
                                     {#if result.message}
                                         <span class="error-message">{DOMPurify.sanitize(result.message)}</span>
-                                    {:else if result.code === 404}
-                                        <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.notFoundResultErrorMessage", {institution: $offering.homeInstitution.name}))}</span>
-                                    {:else if result.code === 408}
-                                        <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.timeOutResultErrorMessage", {institution: $offering.guestInstitution.name}))}</span>
-                                    {:else if result.code === 409}
-                                        <span class="error-message">{@html DOMPurify.sanitize(I18n.t("offering.conflictResultErrorMessage", {institution: $offering.homeInstitution.name}))}</span>
+                                    {:else if translationPresent(result.code)}
+                                        <span class="error-message">{@html DOMPurify.sanitize(I18n.t(`error.${result.code.toString()}`,
+                                            {
+                                                guestInstitution: $offering.guestInstitution.name,
+                                                homeInstitution: $offering.homeInstitution.name
+                                            }))}</span>
                                     {:else}
                                         <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
                                     {/if}

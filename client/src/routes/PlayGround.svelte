@@ -32,7 +32,7 @@
                 label: `${o.name} (${o.courseAuthentication.toLowerCase()} authentication)`
             }));
             $offering.homeInstitution = institutions[0];
-            $offering.guestInstitution = institutions[1];
+            $offering.guestInstitution = institutions[2];
             currentTab = bookmark ? currentTab = tabs.find(tab => tab.name === bookmark) : tabs[0];
             loaded = true;
         });

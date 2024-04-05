@@ -45,9 +45,6 @@ I18n.translations.nl = {
         error: "Er is iets fout gegaan...",
         errorTitle: "Details van {{abbreviation}}",
         noResultErrorMessage: "Er is helaas niet meer informatie.",
-        notFoundResultErrorMessage: "Jouw persoonlijke gegevens konden niet worden opgehaald bij {{institution}}",
-        conflictResultErrorMessage: "Je sessie is verloren gegaan. Probeer het nogmaals.",
-        timeOutResultErrorMessage: "De server van {{institution}} deed er te lang over om te reageren. Check of je binnen 10 minuten een bevestiging van je aanmelding via e-mail hebt ontvangen. Zo niet, probeer je dan later opnieuw aan te melden. Als het probleem aanhoudt, kijk dan op de minorwebsite van je universiteit wat je moet doen. ",
         almost: "Bijna klaar, nog één ding!",
         questions: "Er zijn extra vragen",
         questionsDetail: "Om je inschrijving definitief te maken, moet je nog wat extra vragen beantwoorden",
@@ -87,21 +84,23 @@ I18n.translations.nl = {
         info: "Er is een onverwachte fout opgetreden.",
         subInfo: " De informatie die we op dit moment met je kunnen delen is:",
         surfLink: "Ga naar <a href=\"https://eduxchange.nl/contact\">eduXchange</a> voor hulp.",
-        expired: "De aanmelding is verlopen",
-        offering: "De informatie kon niet opgehaald worden bij {{name}}",
-        400: "Backend error",//Invalid guest or home schachome
-        404: "Je gegevens zijn niet gevonden worden bij {{name}}",//404 person endpoint
-        409: "De wachtrij sessie validatie is mislukt",//queue-it validation error
-        412: "Je sessie is verloren gegaan. Probeer het opnieuw",//invalid enrollmentRequest
-        417: "Je sessie is verloren gegaan. Probeer het opnieuw",//tokenrequest failed
-        419: "Backend error",//eduID not present in the ARP
-        422: "Er is een administratieve reden waarom je niet kon worden ingeschreven",
+        expired: "De aanmelding is verlopen.",
+        offering: "De informatie kon niet opgehaald worden bij {{name}}.",
+        400: "Backend error.",//Invalid guest or home schachome
+        404: "Jouw persoonlijke gegevens konden niet worden opgehaald bij {{homeInstitution}}.",//404 person endpoint
+        407: "De wachtrij sessie validatie is mislukt.",//queue-it validation error
+        408: "De server van {{institution}} deed er te lang over om te reageren. Check of je binnen 10 minuten een bevestiging van je aanmelding via e-mail hebt ontvangen. Zo niet, probeer je dan later opnieuw aan te melden. Als het probleem aanhoudt, kijk dan op de minorwebsite van je universiteit wat je moet doen.",
+        409: "Je sessie is verloren gegaan. Probeer het nogmaals.",
+        412: "Je sessie is verloren gegaan. Probeer het opnieuw.",//invalid enrollmentRequest
+        417: "Je sessie is verloren gegaan. Probeer het opnieuw.",//tokenrequest failed
+        419: "Backend error.",//eduID not present in the ARP
+        422: "Er is een administratieve reden waarom je niet kon worden ingeschreven.",
         reference: "Je referentienummer is {{reference}}.",
         unknown: "",
         supportLink: "https://eduxchange.nl/nl/all/help",
         generic: "Probeer het nogmaals. Als het probleem zich voor blijft doen, " +
-            " neem <a href=\"{{supportLink}}\" target=\"_blank\">contact op met de student administratie</a> voor meer informatie",
-        noRetry: "Je kan <a href=\"{{supportLink}}\" target=\"_blank\">contact opnemen met de student administratie</a> voor meer informatie"
+            " neem <a href=\"{{supportLink}}\" target=\"_blank\">contact op met de student administratie</a> voor meer informatie.",
+        noRetry: "Je kan <a href=\"{{supportLink}}\" target=\"_blank\">contact opnemen met de student administratie</a> voor meer informatie."
     },
     explanation: {
         title: "Hoe werkt aanmelden?",

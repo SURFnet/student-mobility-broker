@@ -1,22 +1,28 @@
 <script>
-  import {offering} from "../stores/offering";
-  import {playground} from "../stores/playground";
-  import pressPlay from "../icons/icons-studmob/undraw_press_play_bx2d.svg";
-  import Select from 'svelte-select';
-  import {broker} from "../api";
-  import {config} from "../stores/config";
+    import {offering} from "../stores/offering";
+    import {playground} from "../stores/playground";
+    import pressPlay from "../icons/icons-studmob/undraw_press_play_bx2d.svg";
+    import Select from 'svelte-select';
+    import {broker} from "../api";
+    import {config} from "../stores/config";
 
-  export let institutions = [];
+    export let institutions = [];
 
   const responses = [
-    {value: 200, label: "200 - All is good"},
-    {value: 500, label: "500 - Not so good"}
+      {value: 200, label: "200 - All is good"},
+      {value: 400, label: "400 - Backend error"},
+      {value: 404, label: "404 - Person endpoint not found"},
+      {value: 409, label: "409 - Queue-session validation failed"},
+      {value: 412, label: "412 - Invalid enrollmentRequest"},
+      {value: 417, label: "417 - Token request failed"},
+      {value: 419, label: "419 - eduID not present in the ARP"},
+      {value: 422, label: "422 - Administrative error (already enrolled)"},
+      {value: 500, label: "500 - Not so good"}
   ];
 
   let redirect;
   let message;
   let response = responses[0];
-
   const start = () => {
     let code = response.value;
     playground.start(code, code === 200 ? redirect : null, code === 500 ? message : null);
@@ -145,17 +151,17 @@
     <input bind:value={$config.offeringId} on:change={offeringIdChanged}/>
 
     <p>Response code</p>
-    <span class="info">It's either good or bad</span>
+    <span class="info">Choose the response code from the server</span>
     <Select items={responses} isSearchable={false} showIndicator={true} isClearable={false}
             selectedValue={response} on:select={handleSelect}/>
 
     <p>Redirect</p>
     <span class="info">Optional and only for a 200 response</span>
-    <input bind:value={redirect} disabled={response.value === 500} on:keyup={e=>e.key==="Enter" && start()}/>
+    <input bind:value={redirect} disabled={response.value !== 200} on:keyup={e=>e.key==="Enter" && start()}/>
 
     <p>Message</p>
-    <span class="info">For a 500 response</span>
-    <input bind:value={message} disabled={response.value !== 500} on:keyup={e=>e.key==="Enter" && start()}/>
+    <span class="info">For non 200 responses (e.g. 4xx or 5xx)</span>
+    <input bind:value={message} disabled={response.value === 200} on:keyup={e=>e.key==="Enter" && start()}/>
     <div class="play" on:click={start}>
         {@html pressPlay}
     </div>
