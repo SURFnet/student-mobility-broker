@@ -172,7 +172,7 @@ public class BrokerController {
         BrokerRequest brokerRequest = getBrokerRequest(request, false);
         Institution institution = this.getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         if (!queueService.validateQueueToken(institution, queueItToken)) {
-            return new RedirectView(clientUrl + "?error=409");
+            return new RedirectView(clientUrl + "?error=407");
         }
         brokerRequest.setQueueItSucceeded(true);
         request.getSession().setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
