@@ -51,7 +51,7 @@ I18n.translations.en = {
         questionsWhere: "You will have to answer these questions within the LMS of {{abbreviation}}",
         goToLMS: "Answer the questions",
         next: "What will happen next?",
-        receiveMail: "You will receive mail from {{abbreviation}} what the next steps will be.",
+        receiveMail: "You have been successfully registered. You will receive mail from {{abbreviation}} what the next steps will be.",
         homeInstitution: "Your home institution",
         personal: "To proceed with this enrollment, <b>{{guest}}</b> needs to contact <b>{{home}}</b> to request your information.",
         personalBullet1sub1: "Learn what ",

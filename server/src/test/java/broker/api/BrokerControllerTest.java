@@ -111,7 +111,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("queueittoken", queueItToken)
                 .get("/api/queue/redirect")
                 .then()
-                .header("Location", "http://localhost:3003?error=409");
+                .header("Location", "http://localhost:3003?error=407");
         //If we now try to get the offering it will fail
         Map<String, Object> result = given()
                 .filter(cookieFilter)

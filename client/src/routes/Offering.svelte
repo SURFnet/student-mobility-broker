@@ -588,13 +588,15 @@
                     }
 
                     :global(svg) {
-                        margin-right: 12px;
+                        margin: 0 12px auto 0;
                         width: 66px;
                         height: auto;
                     }
 
                     span.final-action-msg {
                         margin: auto 0;
+                        font-size: 16px;
+                        line-height: 22px;
                     }
 
                     span.error-message {
@@ -834,7 +836,6 @@
                                 <div class="hero">
                                     {@html highFive}
                                 </div>
-                                <h3>{I18n.t("offering.next")}</h3>
                                 <div class="final-action">
                                     {@html lightBulb}
                                     {#if result.message}
