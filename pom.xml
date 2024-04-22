@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.surfnet</groupId>
     <artifactId>student-mobility-broker</artifactId>
-    <version>0.2.13</version>
+    <version>0.2.14</version>
     <name>student-mobility-broker</name>
     <description>student-mobility-broker-app</description>
     <packaging>pom</packaging>
@@ -40,7 +40,7 @@
                         <configuration>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>[1.8.0-0,1.8.0-402]</version>
+                                    <version>[1.8.0-0,1.8.0-500]</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
