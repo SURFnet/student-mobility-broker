@@ -798,7 +798,6 @@
                                         {@html moody}
                                     {/if}
                                 </div>
-                                <h3>{I18n.t("offering.errorTitle", {abbreviation: $offering.guestInstitution.abbreviation})}</h3>
                                 <div class="final-action error-result">
                                     {#if result.message}
                                         <span class="error-message">{DOMPurify.sanitize(result.message)}</span>
@@ -822,7 +821,6 @@
                                 <div class="hero">
                                     {@html questions}
                                 </div>
-                                <h3 class="desktop">{I18n.t("offering.almost")}</h3>
                                 <div class="redirect">
                                     <p>{I18n.t("offering.questions")}</p>
                                     <span>{I18n.t("offering.questionsDetail")}</span>
