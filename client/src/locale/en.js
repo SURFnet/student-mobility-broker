@@ -89,7 +89,7 @@ I18n.translations.en = {
         400: "Backend error.",//Invalid guest or home schachome
         404: "Your personal information could not be found from {{homeInstitution}}.",//404 person endpoint
         407: "The queue-session validation failed",//queue-it validation error
-        408: "Institution {{guestInstitution}} t ok too long to respond. Please check if you received a confirmation of your registration via email within 10 minutes. If not, please try registering again later. If the problem persists, please check the information on your university's minor website on what to do.",
+        408: "Institution {{guestInstitution}} took too long to respond. Please check if you received a confirmation of your registration via email within 10 minutes. If not, please try registering again later. If the problem persists, please check the information on your university's minor website on what to do.",
         409: "Your session was lost. Please try again.",//conflict
         412: "Your session was lost. Please try again.",//invalid enrollmentRequest
         417: "Your session was lost (Token error). Please try again",//tokenrequest failed
