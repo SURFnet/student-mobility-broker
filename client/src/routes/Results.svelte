@@ -144,7 +144,9 @@
                             selectedValue={$offering.homeInstitution}
                             isDisabled={true}/>
                 </div>
-                <img src={$offering.homeInstitution.logoURI} alt=""/>
+                {#if $offering.homeInstitution.logoURI}
+                    <img src={$offering.homeInstitution.logoURI} alt=""/>
+                {/if}
             </div>
             <div class="institution">
                 <div class="institution-detail">
@@ -157,7 +159,9 @@
                             selectedValue={$offering.guestInstitution}
                             isDisabled={true}/>
                 </div>
-                <img src={$offering.guestInstitution.logoURI} alt=""/>
+                {#if $offering.guestInstitution.logoURI}
+                    <img src={$offering.guestInstitution.logoURI} alt=""/>
+                {/if}
             </div>
             {#if !$offering.associationId}
                 <p>Association</p>
