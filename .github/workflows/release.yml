@@ -68,7 +68,7 @@ jobs:
       - name: install node
         uses: dcodeIO/setup-node-nvm@master
         with:
-          node-version: 14
+          node-version: 23
 
       - name: Deploy with Maven
         run: mvn --batch-mode deploy -DskipTests
