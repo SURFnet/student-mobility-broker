@@ -49,5 +49,5 @@ jobs:
         working-directory: ./client
       - run: yarn build
         working-directory: ./client
-#      - run: CI=true yarn test
-#        working-directory: ./client
+      - run: yarn test
+        working-directory: ./client
