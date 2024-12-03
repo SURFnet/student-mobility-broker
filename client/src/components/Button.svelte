@@ -20,7 +20,7 @@
         text-decoration: none;
         cursor: pointer;
         text-align: center;
-        font-weight: bold;
+        font-weight: 600;
         width: 280px;
 
         @media (max-width: 780px) {

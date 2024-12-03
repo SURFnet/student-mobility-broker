@@ -1,10 +1,10 @@
 <script>
     import I18n from "i18n-js";
-    import calendar from "../icons/icons-studmob/calendar-1.svg";
-    import launches from "../icons/icons-studmob/startup-launch.svg";
-    import pin from "../icons/icons-studmob/pin.svg";
-    import ects from "../icons/icons-studmob/school-book-trophy.svg";
-    import lang from "../icons/icons-studmob/messages-bubble-square-text.svg";
+    import calendar from "../icons/icons-studmob/calendar-1.svg?raw";
+    import launches from "../icons/icons-studmob/startup-launch.svg?raw";
+    import pin from "../icons/icons-studmob/pin.svg?raw";
+    import ects from "../icons/icons-studmob/school-book-trophy.svg?raw";
+    import lang from "../icons/icons-studmob/messages-bubble-square-text.svg?raw";
     import {offering} from "../stores/offering";
     import {getValue} from "../utils/multiLanguageAttributes";
     import {onMount} from "svelte";
@@ -31,13 +31,14 @@
         min-width: 50%;
         max-width: 50%;
 
+        padding: 25px;
+        border: 2px solid var(--color-primary-grey);
+
         @media (max-width: 780px) {
             min-width: 100%;
             max-width: 100%;
         }
 
-        padding: 25px;
-        border: 2px solid var(--color-primary-grey);
 
         table {
             width: 100%;
@@ -96,6 +97,7 @@
 {#if $offering.offering}
     <div class={`course ${className}`}>
         <table>
+            <tbody>
             <tr>
                 {#if $offering.offering[offeringType] && $offering.offering[offeringType].name}
                     <th class="name">{getValue($offering.offering[offeringType].name)}</th>
@@ -104,8 +106,10 @@
                     <th class="logo"><img src={$offering.guestInstitution.logoURI} alt=""/></th>
                 {/if}
             </tr>
+            </tbody>
         </table>
         <table class="values">
+            <tbody>
             {#if $offering.offering[offeringType] && $offering.offering[offeringType].studyLoad}
                 <tr>
                     <td class="icon">{@html ects}</td>
@@ -129,13 +133,17 @@
                         $offering.offering.teachingLanguage}</td>
                 </tr>
             {/if}
+            </tbody>
         </table>
         <table>
+            <tbody>
             <tr>
                 <th class="name">{I18n.t("offering.dateTime")}</th>
             </tr>
+            </tbody>
         </table>
         <table class="values">
+            <tbody>
             {#if $offering.offering.academicSession && $offering.offering.academicSession.name}
                 <tr>
                     <td class="icon">{@html calendar}</td>
@@ -149,6 +157,7 @@
                         .toLocaleString(I18n.locale === "nl" ? "nl-NL" : "en-GB", formatOptions) }</td>
                 </tr>
             {/if}
+            </tbody>
         </table>
     </div>
 {/if}

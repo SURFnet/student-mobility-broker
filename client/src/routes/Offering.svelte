@@ -1,22 +1,22 @@
 <script>
     import I18n from "i18n-js";
-    import check from "../icons/icons-studmob/Check-narrow.svg";
-    import transfer from "../icons/icons-studmob/data-transfer-check.svg";
-    import transferWhite from "../icons/icons-studmob/data-transfer-check-white.svg";
-    import enroll from "../icons/icons-studmob/official-building-3.svg";
-    import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg";
-    import chevronLeft from "../icons/chevron-left.svg";
-    import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg";
-    import eduID from "../icons/logo_eduID.svg";
-    import balancer from "../icons/balancer.svg";
+    import check from "../icons/icons-studmob/Check-narrow.svg?raw";
+    import transfer from "../icons/icons-studmob/data-transfer-check.svg?raw";
+    import transferWhite from "../icons/icons-studmob/data-transfer-check-white.svg?raw";
+    import enroll from "../icons/icons-studmob/official-building-3.svg?raw";
+    import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg?raw";
+    import chevronLeft from "../icons/chevron-left.svg?raw";
+    import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg?raw";
+    import eduID from "../icons/logo_eduID.svg?raw";
+    import balancer from "../icons/balancer.svg?raw";
     import DOMPurify from "dompurify";
     import Cookies from "js-cookie";
-    import relax from "../icons/icons-studmob/cocktail-glass.svg";
-    import highFive from "../icons/icons-studmob/undraw_High_five.svg";
-    import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg";
-    import accessDenied from "../icons/undraw_access_denied_422.svg";
-    import lightBulb from "../icons/icons-studmob/Lightbulb.svg";
-    import questions from "../icons/icons-studmob/undraw_faq_rjoy.svg";
+    import relax from "../icons/icons-studmob/cocktail-glass.svg?raw";
+    import highFive from "../icons/icons-studmob/undraw_High_five.svg?raw";
+    import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg?raw";
+    import accessDenied from "../icons/undraw_access_denied_422.svg?raw";
+    import lightBulb from "../icons/icons-studmob/Lightbulb.svg?raw";
+    import questions from "../icons/icons-studmob/undraw_faq_rjoy.svg?raw";
     import {offering} from "../stores/offering";
     import {config} from "../stores/config";
     import {playground} from "../stores/playground";
@@ -277,7 +277,7 @@
         }
 
         p.error-msg {
-            font-weight: bold;
+            font-weight: 600;
         }
 
         :global(span.balancing svg #rotate-container-left ) {
@@ -313,7 +313,7 @@
         h3 {
             font-size: 32px;
             line-height: 34px;
-            font-weight: bold;
+            font-weight: 600;
         }
     }
 
@@ -342,7 +342,7 @@
             }
 
             p {
-                font-weight: bold;
+                font-weight: 600;
                 margin: 10px 0 4px 0;
             }
 
@@ -452,7 +452,7 @@
             }
 
             li.active a {
-                font-weight: bold;
+                font-weight: 600;
                 color: black;
                 cursor: default;
             }
@@ -609,7 +609,7 @@
                     flex-direction: column;
 
                     p {
-                        font-weight: bold;
+                        font-weight: 600;
                     }
 
                     span {

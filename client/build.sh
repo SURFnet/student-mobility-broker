@@ -3,4 +3,5 @@ rm -Rf public/bundle*
 rm -Rf target/*
 source $NVM_DIR/nvm.sh
 nvm use
-yarn install && yarn test && yarn build
+#export NODE_OPTIONS=--openssl-legacy-provider
+yarn install --force && yarn test && yarn build

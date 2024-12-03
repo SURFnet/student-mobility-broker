@@ -99,7 +99,20 @@
 </script>
 
 <style global lang="scss">
-    @import "stylesheets/main";
+    :global(:root) {
+        /*Colors*/
+        --color-primary-blue: #225fb1;
+        --color-secondary-blue: #eaf1f6;
+        --color-button-blue: #1279c5;
+
+        --color-primary-grey: #bfbfbf;
+        --color-secondary-grey: #cecccc;
+        --color-tertiary-grey: #8e8a8a;
+        --color-grey-background: #f5f7f8;
+        --color-primary-green: #008738;
+        --color-primary-red: #bd0202;
+
+    }
 
     .broker {
         display: flex;

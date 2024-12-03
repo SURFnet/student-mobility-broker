@@ -50,7 +50,7 @@
     p {
         margin-top: 25px;
         margin-bottom: 2px;
-        font-weight: bold;
+        font-weight: 600;
 
         &.note {
             font-weight: normal;

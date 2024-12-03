@@ -1,7 +1,7 @@
 <script>
     import {offering} from "../stores/offering";
     import {playground} from "../stores/playground";
-    import pressPlay from "../icons/icons-studmob/undraw_press_play_bx2d.svg";
+    import pressPlay from "../icons/icons-studmob/undraw_press_play_bx2d.svg?raw";
     import Select from 'svelte-select';
     import {broker} from "../api";
     import {config} from "../stores/config";
@@ -62,7 +62,7 @@
   }
 
   p {
-    font-weight: bold;
+    font-weight: 600;
     margin-top: 25px;
     margin-bottom: 2px;
   }
