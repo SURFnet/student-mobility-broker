@@ -143,3 +143,5 @@ I18n.translations.nl = {
         }
     },
 };
+
+export default I18n.translations.nl;

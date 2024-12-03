@@ -1,4 +1,4 @@
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 
 export function replaceQueryParameter(name, value, windowLocationSearch = window.location.search) {
     const urlSearchParams = new URLSearchParams(windowLocationSearch);

@@ -9,7 +9,7 @@
     import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg?raw";
     import eduID from "../icons/logo_eduID.svg?raw";
     import balancer from "../icons/balancer.svg?raw";
-    import DOMPurify from "dompurify";
+ import DOMPurify from "isomorphic-dompurify";
     import Cookies from "js-cookie";
     import relax from "../icons/icons-studmob/cocktail-glass.svg?raw";
     import highFive from "../icons/icons-studmob/undraw_High_five.svg?raw";

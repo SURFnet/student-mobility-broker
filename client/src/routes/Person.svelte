@@ -5,7 +5,7 @@
     import Loading from "../components/Loading.svelte";
     import {prettyPrintJson} from "pretty-print-json";
     import "../stylesheets/pretty-print-json.min.css";
-    import DOMPurify from "dompurify";
+ import DOMPurify from "isomorphic-dompurify";
 
     let loading = true;
     let personHtml = {};

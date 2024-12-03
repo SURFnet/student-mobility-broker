@@ -6,7 +6,7 @@
   import relaxGrey from "../icons/icons-studmob/cocktail-glass-grey.svg?raw";
   import {offering} from "../stores/offering";
   import hand from "../icons/icons-studmob/noun_Up hand drawn arrow_1563367.svg?raw";
-  import DOMPurify from "dompurify";
+  import DOMPurify from "isomorphic-dompurify";
 
   const explanations = [
     {name: "eduID", icon: eduIDGrey},

@@ -144,3 +144,5 @@ I18n.translations.en = {
     },
 
 };
+
+export default I18n.translations.en;
