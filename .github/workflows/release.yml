@@ -81,7 +81,7 @@ jobs:
         with:
           name: brokerbuilds
           path: |
-            client/public/
+            client/dist/
             server/target/*.jar
           retention-days: 1
 
