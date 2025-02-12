@@ -7,9 +7,9 @@
         <version>0.3.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>student-mobility-broker-client</artifactId>
+    <artifactId>student-mobility-broker-client-eu</artifactId>
     <packaging>pom</packaging>
-    <name>student-mobility-broker-client</name>
+    <name>student-mobility-broker-client-eu</name>
     <build>
         <plugins>
             <plugin>
