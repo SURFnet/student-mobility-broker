@@ -7,9 +7,10 @@
     import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg?raw";
     import chevronLeft from "../icons/chevron-left.svg?raw";
     import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg?raw";
-    import eduID from "../icons/logo_eduID.svg?raw";
+    import myAcademicID from "../icons/logo_myAcademicID.svg?raw";
     import balancer from "../icons/balancer.svg?raw";
- import DOMPurify from "isomorphic-dompurify";
+    import euroteq from "../icons/euroteq.png";
+    import DOMPurify from "isomorphic-dompurify";
     import Cookies from "js-cookie";
     import relax from "../icons/icons-studmob/cocktail-glass.svg?raw";
     import highFive from "../icons/icons-studmob/undraw_High_five.svg?raw";
@@ -276,6 +277,15 @@
             }
         }
 
+        img.euroteq {
+          width: 100px;
+          position: absolute;
+          right: 0;
+        }
+      
+        button.myacademicid {
+            width: 140px;
+        }
         p.error-msg {
             font-weight: 600;
         }
@@ -433,6 +443,7 @@
 
     div.language-switcher {
         margin: 15px 0 0 auto;
+        display: none;
 
         ul {
             list-style: none;
@@ -663,6 +674,7 @@
                         </li>
                     </ul>
                 </div>
+                <img alt="euroteq" class="euroteq" src={euroteq} />
             </div>
             {#if !landing && !error && !offeringError}
                 {#if $config.allowPlayground}
@@ -786,7 +798,7 @@
                                     </li>
                                 </ul>
                                 <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
-                                <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
+                                <Button href="/authentication" class="myacademicid" label={I18n.t("offering.approveButton")} icon={myAcademicID}
                                         onClick={startAuthentication}/>
                             </div>
                         {:else if result && result.code >= 400}
