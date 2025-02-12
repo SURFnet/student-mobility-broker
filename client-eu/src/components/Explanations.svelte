@@ -2,14 +2,14 @@
   import I18n from "i18n-js";
   import transferGrey from "../icons/icons-studmob/data-transfer-check-grey.svg?raw";
   import enrollGrey from "../icons/icons-studmob/official-building-3-grey.svg?raw";
-  import eduIDGrey from "../icons/logo_eduID_grey.svg?raw";
+  import myAcademicIDGrey from "../icons/logo_myAcademicID_grey.svg?raw";
   import relaxGrey from "../icons/icons-studmob/cocktail-glass-grey.svg?raw";
   import {offering} from "../stores/offering";
   import hand from "../icons/icons-studmob/noun_Up hand drawn arrow_1563367.svg?raw";
   import DOMPurify from "isomorphic-dompurify";
 
   const explanations = [
-    {name: "eduID", icon: eduIDGrey},
+    {name: "myAcademicID", icon: myAcademicIDGrey},
     {name: "transfer", icon: transferGrey},
     {name: "enrollment", icon: enrollGrey},
     {name: "relax", icon: relaxGrey},

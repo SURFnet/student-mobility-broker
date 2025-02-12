@@ -61,7 +61,7 @@ I18n.translations.nl = {
         permission: "Geef <b>{{guest}}</b> toestemming om overdracht te starten.",
         subPersonal: "{{abbreviation}} vraagt alle nodige informatie voor je inschrijving bij je thuisinstelling.",
         subPersonalGrant: "Hiervoor moet je  {{abbreviation}} toestemming geven.",
-        approveButton: "Goedkeuren met eduID",
+        approveButton: "Goedkeuren met MyAcademicID",
         studyLoad: "{{value}} {{studyLoadUnit}}",
         lang: {
             "nl-NL": "Dutch",
@@ -104,9 +104,9 @@ I18n.translations.nl = {
     },
     explanation: {
         title: "Hoe werkt aanmelden?",
-        eduID: {
-            title: "Je meldt je aan met je eduID (<a class=\"link\" href=\"https://eduid.nl\" target=\"_blank\">lees waarom</a>)",
-            subTitle: "Maak je geen zorgen als je nog geen eduID hebt, het aanmaken ervan kost minder dan 30 seconden.",
+        myAcademicID: {
+            title: "Je meldt je aan met je MyAcademicID (<a class=\"link\" href=\"https://myacademic-id.eu/\" target=\"_blank\">lees waarom</a>)",
+            subTitle: "Log in met je eigen instellingsaccount.",
         },
         transfer: {
             title: "Overdracht goedkeuren",

@@ -61,7 +61,7 @@ I18n.translations.en = {
         permission: "<b>{{guest}}</b> needs your permission to start this transfer.",
         subPersonal: "{{abbreviation}} will request all necessary information for your enrolment at your home institution.",
         subPersonalGrant: "For this you need to grant {{abbreviation}} permission to do so.",
-        approveButton: "Approve with eduID",
+        approveButton: "Approve with MyAcademicID",
         studyLoad: "{{value}} {{studyLoadUnit}}",
         lang: {
             "nl-NL": "Dutch",
@@ -104,9 +104,9 @@ I18n.translations.en = {
     },
     explanation: {
         title: "How does enrolling work?",
-        eduID: {
-            title: "You will enrol with your eduID (<a class=\"link\" href=\"https://eduid.nl\" target=\"_blank\">read why</a>)",
-            subTitle: "Don't worry if you don't have an eduID yet, we'll help you get one in less than 30 seconds.",
+        myAcademicID: {
+            title: "You will enrol with MyAcademicID (<a class=\"link\" href=\"https://myacademic-id.eu/\" target=\"_blank\">read why</a>)",
+            subTitle: "Log in with your own institution account.",
         },
         transfer: {
             title: "Approve transfer",
