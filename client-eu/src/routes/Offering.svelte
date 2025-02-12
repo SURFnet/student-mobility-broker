@@ -287,7 +287,7 @@
           right: 0;
         }
 
-        button.myacademicid {
+        span.myAcademicID {
             width: 140px;
         }
         p.error-msg {
