@@ -12,6 +12,7 @@
     import {getParameterByName, replaceQueryParameter} from "./utils/queryParameters";
     import data from "./data/offering.json";
     import Loading from "./components/Loading.svelte";
+    import TestPage from "./routes/TestPage.svelte";
 
     export let url = "";
     let loaded = false;
@@ -40,6 +41,12 @@
 
     const doOnMount = () => {
         features().then(json => {
+            $config = json;
+            const isTesting = window.location.pathname.indexOf("test") > -1;
+            if (isTesting) {
+                loaded = true;
+                return;
+            }
             const redirect = getParameterByName("q");
             if (redirect) {
                 const decodedRedirect = decodeURIComponent(redirect);
@@ -50,7 +57,6 @@
                     throw new Error("Invalid queue");
                 }
             }
-            $config = json;
             const step = getParameterByName("step");
             const playGround = window.location.pathname.indexOf("play") > -1;
             const error = getParameterByName("error");
@@ -128,7 +134,11 @@
             <Route path="/">
                 <Offering offeringError={offeringError}/>
             </Route>
+            <Route path="/test">
+                <TestPage/>
+            </Route>
             {#if $config.allowPlayground}
+
                 <Route path="/intake">
                     <PlayGround bookmark="intake"/>
                 </Route>

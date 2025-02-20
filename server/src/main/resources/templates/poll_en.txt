@@ -1,0 +1,8 @@
+The poll results from {{pollRequest.name}} are submitted. Results
+
+Score: {{pollRequest.poll.displayName}}
+Motivation: {{pollRequest.motivation}}
+
+Kind regards, SURF mobility
+
+{{> footer_en.txt}}

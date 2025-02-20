@@ -142,6 +142,21 @@ I18n.translations.en = {
             identifier: "Unique identifier"
         }
     },
+    poll: {
+        registerQuestion: "How was it to register?",
+        scores: {
+            veryEasy: "Very easy",
+            easy: "Easy",
+            neutral: "Neutral",
+            hard: "Hard",
+            veryHard: "Very hard"
+        },
+        why: "Why was that?",
+        join: "Join a short follow-up study and get a <strong>€35 voucher</strong> for your time!",
+        submit: "Submit & done",
+        submitAppointment: "Submit & make an appointment",
+        thanks: "Thanks"
+    }
 
 };
 

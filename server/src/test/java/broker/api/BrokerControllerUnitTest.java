@@ -32,6 +32,7 @@ public class BrokerControllerUnitTest {
             "secret", "sisUser", "sisPassword", "sisResultsEndpoint",
             false,
             false,
+            true,
             "utrecht.nl",
             "eindhoven.nl",
             "1",

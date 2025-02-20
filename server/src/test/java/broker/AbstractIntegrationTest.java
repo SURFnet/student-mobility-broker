@@ -28,9 +28,6 @@ public abstract class AbstractIntegrationTest {
     @Autowired
     protected InstitutionRegistry institutionRegistry;
 
-    @Autowired
-    protected QueueService queueService;
-
     @BeforeEach
     public void before() {
         RestAssured.port = port;

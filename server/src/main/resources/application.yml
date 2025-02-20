@@ -25,6 +25,9 @@ spring:
     jdbc:
       initialize-schema: always
     store-type: jdbc
+  mail:
+    host: localhost
+    port: 1025
 
 # If enabled there must be a database according to the datasource properties below
 database-session-enabled: true
@@ -35,6 +38,11 @@ datasource:
   username: student_mobility
   password: secret
 
+email:
+  from: "no-reply@surf.nl"
+  contactEmail: "support@surf.nl"
+  environment: "local"
+
 config:
   # Endpoint called by catalog. For testing purposes the client can call it as well
   start_broker_endpoint: http://localhost:8091/api/broker
@@ -42,6 +50,8 @@ config:
   local: True
   # Do we allow to mock the different scenario's - only allow on test
   allow_playground: True
+  # Do we ask the user to submit a poll response
+  poll_enabled: True
   # Default home institution if playground is enabled
   play_home_institution_schacHome: "utrecht.nl"
   # Default guest institution if playground is enabled
@@ -61,6 +71,7 @@ config:
     secret: secret
   edu_hub:
     gateway_url: http://localhost:8081
+    poll_survey: "https://surf.yellenge.nl/nogiets"
     user: eduhub
     password: secret
   queueit:

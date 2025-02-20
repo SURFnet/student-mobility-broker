@@ -9,7 +9,7 @@
     import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg?raw";
     import eduID from "../icons/logo_eduID.svg?raw";
     import balancer from "../icons/balancer.svg?raw";
- import DOMPurify from "isomorphic-dompurify";
+    import DOMPurify from "isomorphic-dompurify";
     import Cookies from "js-cookie";
     import relax from "../icons/icons-studmob/cocktail-glass.svg?raw";
     import highFive from "../icons/icons-studmob/undraw_High_five.svg?raw";
@@ -34,6 +34,7 @@
     import Loading from "../components/Loading.svelte";
     import Modal from "../components/Modal.svelte";
     import {isEmpty} from "../utils/forms";
+    import Poll from "../components/Poll.svelte";
 
     const timeoutStep = 1500;
     const STEPS = {
@@ -56,6 +57,8 @@
     let loaded = false;
     let balancing = false;
     let showModal = false;
+    let name;
+    let showPoll = false;
 
     onMount(() => {
         step = getParameterByName("step");
@@ -80,7 +83,7 @@
         const reload = urlSearchParams.has("reload");
         if (step === STEPS.enroll && !reload) {
             document.title = I18n.t("pages.registration", {abbreviation: $offering.guestInstitution.abbreviation});
-            const name = getParameterByName("name");
+            name = getParameterByName("name");
             title = subTitle = I18n.t("offering.wait", {name});
             changeActivity(1);
             setTimeout(() => start = true, 75);
@@ -132,6 +135,7 @@
             } else if (result.code === 200) {
                 document.title = I18n.t("pages.registrationSent");
                 title = subTitle = I18n.t("offering.done");
+                setTimeout(() => showPoll = true, 500);
             } else {
                 document.title = I18n.t("pages.error");
                 title = subTitle = I18n.t("offering.error");
@@ -528,6 +532,7 @@
             .result {
                 display: flex;
                 flex-direction: column;
+                position: relative;
 
                 h3 {
                     margin-bottom: 20px;
@@ -834,6 +839,11 @@
                                 <div class="hero">
                                     {@html highFive}
                                 </div>
+                                <Poll cancel={() => showPoll = !showPoll}
+                                      name={name}
+                                      visible={showPoll}
+                                      finish={() => showPoll = !showPoll}
+                                />
                                 <div class="final-action">
                                     {@html lightBulb}
                                     {#if result.message}

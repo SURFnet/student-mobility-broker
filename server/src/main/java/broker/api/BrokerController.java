@@ -76,12 +76,14 @@ public class BrokerController {
                             @Value("${config.sis_results_endpoint}") String sisResultsEndpoint,
                             @Value("${config.local}") boolean local,
                             @Value("${config.allow_playground}") boolean allowPlayground,
+                            @Value("${config.poll_enabled}") boolean pollEnabled,
                             @Value("${config.play_home_institution_schacHome}") String playHomeInstitutionSchacHome,
                             @Value("${config.play_guest_institution_schacHome}") String playGuestInstitutionSchacHome,
                             @Value("${config.play_offering_id}") String playOfferingID,
                             @Value("${config.catalog_url}") String catalogUrl,
                             @Value("${config.connection_timeout_millis}") int connectionTimeoutMillis,
                             @Value("${config.edu_hub.gateway_url}") URI eduHubGatewayUrl,
+                            @Value("${config.edu_hub.poll_survey}") URI pollSurvey,
                             @Value("${config.edu_hub.user}") String eduHubUser,
                             @Value("${config.edu_hub.password}") String eduHubPassword,
                             InstitutionRegistry institutionRegistry,
@@ -103,6 +105,8 @@ public class BrokerController {
         this.featureToggles.put("allowPlayground", allowPlayground);
         this.featureToggles.put("catalogUrl", catalogUrl);
         this.featureToggles.put("queue", queueService.getBaseUrl());
+        this.featureToggles.put("pollEnabled", pollEnabled);
+        this.featureToggles.put("pollSurvey", pollSurvey);
 
         if (allowPlayground) {
             this.featureToggles.put("playHomeInstitutionSchacHome", playHomeInstitutionSchacHome);
@@ -273,7 +277,7 @@ public class BrokerController {
     }
 
     /*
-     * Only allowed in playground modus. Proxy and mimic the call that normally the SIS issues to get person information.
+     * Only allowed in playground mode. Proxy and mimic the call that normally the SIS issues to get person information.
      */
     @PostMapping("/api/me")
     public ResponseEntity<Map<String, Object>> me(@RequestBody Map<String, Object> message) {
