@@ -16,15 +16,20 @@
         text-decoration: none;
         cursor: pointer;
         text-align: center;
-
+        font-size: 14px;
 
         &:hover {
             background-color: whitesmoke;
+            color: black;
         }
 
         &.active {
             background-color: #7a5c00;
             color: white;
+
+            &:hover {
+                background-color: #614c01;
+            }
         }
     }
 

@@ -45,9 +45,13 @@
         }
 
         &.cancel {
-            background-color: whitesmoke;
+            background-color: white;
             color: #5d6872;
             border: 1px solid #5d6872;
+            &:hover {
+                background-color: #f8f8f8;
+                color: black;
+            }
 
         }
 

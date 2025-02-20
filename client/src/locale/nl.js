@@ -142,6 +142,22 @@ I18n.translations.nl = {
             identifier: "Unieke identificatie"
         }
     },
+    poll: {
+        registerQuestion: "Hoe ging het registreren?",
+        scores: {
+            veryEasy: "Heel gemakkelijk",
+            easy: "Gemakkelijk",
+            neutral: "Neutraal",
+            hard: "Moeilijk",
+            veryHard: "Heel moeilijk"
+        },
+        why: "Hoe kwam dat?",
+        join: "Doe mee aan een korte vervolgstudie en ontvang een voucher van <strong>€ 35</strong> voor je tijd!",
+        submit: "Verzenden & klaar",
+        submitAppointment: "Verzenden & afspraak maken",
+        thanks: "Bedankt"
+    }
+
 };
 
 export default I18n.translations.nl;

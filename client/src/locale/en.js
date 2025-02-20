@@ -157,7 +157,6 @@ I18n.translations.en = {
         submitAppointment: "Submit & make an appointment",
         thanks: "Thanks"
     }
-
 };
 
 export default I18n.translations.en;
