@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BrokerControllerUnitTest {
 
-    private BrokerController brokerController = new BrokerController(
+    private final BrokerController brokerController = new BrokerController(
             "http://localhost",
             "http://localhost",
             new URI("http://localhost"),
@@ -38,6 +38,7 @@ public class BrokerControllerUnitTest {
             "1",
             "https://educhange.nl/",
             20_000,
+            new URI("https://eduhub.nl"),
             new URI("https://eduhub.nl"),
             "eduhub",
             "secret",
