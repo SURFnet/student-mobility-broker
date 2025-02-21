@@ -11,8 +11,8 @@
         padding: 10px 16px;
         background-color: white;
         border-radius: 6px;
-        border: 1px solid var(--color-tertiary-grey);
-        color: var(--color-tertiary-grey);
+        border: 1px solid #595959;
+        color: #595959;;
         text-decoration: none;
         cursor: pointer;
         text-align: center;
