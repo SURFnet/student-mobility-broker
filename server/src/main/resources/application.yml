@@ -84,6 +84,9 @@ service_registry:
   path: classpath:/service-registry.yml
 
 management:
+  health:
+    mail:
+      enabled: false
   endpoints:
     enabled-by-default: false
     web:
