@@ -143,7 +143,7 @@ I18n.translations.en = {
         }
     },
     poll: {
-        registerQuestion: "How was it to register?",
+        registerQuestion: "How easy or hard was it for you to register?",
         scores: {
             veryEasy: "Very easy",
             easy: "Easy",
@@ -151,11 +151,11 @@ I18n.translations.en = {
             hard: "Hard",
             veryHard: "Very hard"
         },
-        why: "Why was that?",
-        join: "Join a short follow-up study and get a <strong>€35 voucher</strong> for your time!",
+        why: "Please explain",
+        join: "Participate in an interview about your experience? Make an appointment and earn <strong>€35</strong>.",
         submit: "Submit & done",
-        submitAppointment: "Submit & make an appointment",
-        thanks: "Thanks"
+        submitAppointment: "Submit & Make an appointment",
+        thanks: "Thank you for your feedback!"
     }
 };
 
