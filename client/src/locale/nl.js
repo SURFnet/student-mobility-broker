@@ -143,19 +143,19 @@ I18n.translations.nl = {
         }
     },
     poll: {
-        registerQuestion: "Hoe ging het registreren?",
+        registerQuestion: "Hoe makkelijk of moeilijk vond je het aanmelden?",
         scores: {
-            veryEasy: "Heel gemakkelijk",
-            easy: "Gemakkelijk",
+            veryEasy: "Erg makkelijk",
+            easy: "Makkelijk",
             neutral: "Neutraal",
             hard: "Moeilijk",
-            veryHard: "Heel moeilijk"
+            veryHard: "Erg moeilijk"
         },
-        why: "Hoe kwam dat?",
-        join: "Doe mee aan een korte vervolgstudie en ontvang een voucher van <strong>€ 35</strong> voor je tijd!",
-        submit: "Verzenden & klaar",
-        submitAppointment: "Verzenden & afspraak maken",
-        thanks: "Bedankt"
+        why: "Toelichting",
+        join: "Meedoen aan een interview over je ervaring? Plan een afspraak en verdien <strong>€35</strong>.",
+        submit: "Verstuur & klaar",
+        submitAppointment: "Verstuur & Plan een afsrpaak",
+        thanks: "Dankjewel voor je feedback!"
     }
 
 };
