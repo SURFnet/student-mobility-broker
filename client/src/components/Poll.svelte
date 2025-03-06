@@ -9,21 +9,21 @@
 
     export let visible;
     export let name;
+    export let crossInstitutionRequest = false;
 
     let poll;
     let motivation;
     let done = false;
     let hidden = false;
+    let makeAppointment = false;
 
     const doSendPoll = (showAppointment) => {
+        makeAppointment = showAppointment;
         postPollResponse({poll, name, motivation});
         if (showAppointment) {
-            setTimeout(() => window.open($config.pollSurvey, "_blank").focus(), 1250);
+            setTimeout(() => window.open($config.pollSurvey, "_blank").focus(), 650);
         }
         done = true;
-        setTimeout(() => {
-            hidden = true;
-        }, 2750);
     };
 
     const init = el => {
@@ -74,7 +74,6 @@
             }
         }
 
-
         .poll-header {
             display: flex;
             width: 100%;
@@ -93,6 +92,10 @@
                 margin-left: auto;
                 cursor: pointer;
             }
+        }
+
+        p.missing-out {
+            margin-top: 20px;
         }
 
         .poll-options {
@@ -147,6 +150,10 @@
         div.actions {
             display: flex;
             gap: 15px;
+
+            &.reverse {
+                flex-direction: row-reverse;
+            }
         }
     }
 </style>
@@ -155,11 +162,14 @@
 
     <div class="poll-header" class:done>
         {@html lightBulb}
-        <h3>{I18n.t(`poll.${done ? "thanks" : "registerQuestion"}`)}</h3>
+        <h3>{I18n.t(`poll.${done ? "thanksFeedback" : "registerQuestion"}`)}</h3>
         <span class="close" on:click={() => hidden = true}>
             {@html close}
         </span>
     </div>
+    {#if done && !makeAppointment && crossInstitutionRequest}
+        <p class="missing-out"> {@html I18n.t("poll.missingOut", {href: $config.pollSurvey})}</p>
+    {/if}
     {#if !done}
         <div class="poll-options">
             {#each Object.keys(I18n.translations[I18n.locale].poll.scores) as score}
@@ -172,17 +182,19 @@
             <div class="motivation">
                 <p class="top">{I18n.t("poll.why")}</p>
                 <textarea bind:value={motivation} use:init></textarea>
-                <p class="voucher">{@html I18n.t("poll.join")}</p>
+                <p class="voucher">{@html crossInstitutionRequest ? I18n.t("poll.join") : ""}</p>
             </div>
         {/if}
         {#if poll}
-            <div class="actions">
+            <div class="actions" class:reverse={!crossInstitutionRequest}>
                 <Button onClick={() => doSendPoll()}
                         cancel={true}
                         label={I18n.t("poll.submit")}/>
-                <Button
-                        onClick={() => doSendPoll(true)}
-                        label={I18n.t("poll.submitAppointment")}/>
+                {#if crossInstitutionRequest}
+                    <Button
+                            onClick={() => doSendPoll(true)}
+                            label={I18n.t("poll.submitAppointment")}/>
+                {/if}
             </div>
         {/if}
     {/if}

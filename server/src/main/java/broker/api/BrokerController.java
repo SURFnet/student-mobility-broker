@@ -122,8 +122,8 @@ public class BrokerController {
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
-        String[] denylist = new String[]{"class.*", "Class.*", "*.class.*", "*.Class.*"};
-        dataBinder.setDisallowedFields(denylist);
+        String[] denyList = new String[]{"class.*", "Class.*", "*.class.*", "*.Class.*"};
+        dataBinder.setDisallowedFields(denyList);
     }
 
     /*
@@ -294,11 +294,14 @@ public class BrokerController {
      */
     @PostMapping("/api/start")
     public Map<String, Object> start(HttpServletRequest request, @RequestBody Map<String, String> correlationMap) {
+        BrokerRequest brokerRequest = getBrokerRequest(request, true);
+        boolean crossInstitutionRequest = !brokerRequest.getHomeInstitutionSchacHome().equals(brokerRequest.getGuestInstitutionSchacHome());
         if ((boolean) this.featureToggles.get("allowPlayground") && correlationMap.keySet().stream().anyMatch(s -> s.equals("code"))) {
             LOG.debug("Returning playground request with parameters: " + correlationMap);
-            return new HashMap<>(correlationMap);
+            HashMap<String, Object> results = new HashMap<>(correlationMap);
+            results.put("crossInstitutionRequest", crossInstitutionRequest);
+            return results;
         }
-        BrokerRequest brokerRequest = getBrokerRequest(request, true);
         Map<String, Object> offering = (Map<String, Object>) request.getSession().getAttribute(OFFERING_SESSION_KEY);
 
         LOG.debug(String.format("Received start registration request for brokerRequest: %s and session: %s",
@@ -310,7 +313,9 @@ public class BrokerController {
 
             LOG.debug(String.format("Returning start registration response %s for brokerRequest: %s and session: %s",
                     body, brokerRequest, request.getSession().getId()));
-
+            //Might be an immutable Map
+            body = new HashMap<>(body);
+            body .put("crossInstitutionRequest", crossInstitutionRequest);
             return body;
         } catch (HttpStatusCodeException | ResourceAccessException e) {
             HttpStatus statusCode = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException)e).getStatusCode() : HttpStatus.REQUEST_TIMEOUT;

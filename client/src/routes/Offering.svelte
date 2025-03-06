@@ -839,10 +839,9 @@
                                 <div class="hero">
                                     {@html highFive}
                                 </div>
-                                <Poll cancel={() => showPoll = !showPoll}
-                                      name={name}
+                                <Poll name={name}
+                                      crossInstitutionRequest={result.crossInstitutionRequest}
                                       visible={showPoll}
-                                      finish={() => showPoll = !showPoll}
                                 />
                                 <div class="final-action">
                                     {@html lightBulb}

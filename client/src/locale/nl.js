@@ -155,9 +155,9 @@ I18n.translations.nl = {
         join: "Meedoen aan een interview over je ervaring? Plan een afspraak en verdien <strong>€35</strong>.",
         submit: "Verstuur & klaar",
         submitAppointment: "Verstuur & Plan een afsrpaak",
-        thanks: "Dankjewel voor je feedback!"
+        thanksFeedback: "Dankjewel voor je feedback!",
+        missingOut: "Je mist de €35 euro bonus! Wil je toch meedoen aan een interview? <a href='{{href}}' target='_blank'>Maak een afspraak</a>."
     }
-
 };
 
 export default I18n.translations.nl;
