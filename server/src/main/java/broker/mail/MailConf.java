@@ -12,10 +12,10 @@ public class MailConf {
 
     @Bean
     public MailBox mailBox(@Value("${email.from}") String emailFrom,
-                           @Value("${email.contactEmail}") String contactEmail,
+                           @Value("${config.poll_email}") String pollEmail,
                            @Value("${email.environment}") String env,
                            JavaMailSender mailSender) throws IOException {
-        return new MailBox(mailSender, emailFrom, contactEmail, env);
+        return new MailBox(mailSender, emailFrom, pollEmail, env);
     }
 
 

@@ -18,18 +18,18 @@ public class MailBox {
 
     private final JavaMailSender mailSender;
     private final String emailFrom;
-    private final String contactEmail;
+    private final String pollEmail;
     private final String environment;
 
     private final MustacheFactory mustacheFactory = new DefaultMustacheFactory("templates");
 
     public MailBox(JavaMailSender mailSender,
                    String emailFrom,
-                   String contactEmail,
+                   String pollEmail,
                    String environment)  {
         this.mailSender = mailSender;
         this.emailFrom = emailFrom;
-        this.contactEmail = contactEmail;
+        this.pollEmail = pollEmail;
         this.environment = environment;
     }
 
@@ -40,7 +40,7 @@ public class MailBox {
             variables.put("environment", environment);
         }
         variables.put("pollRequest", pollRequest);
-        sendMail("poll_en", "Poll result", variables, contactEmail);
+        sendMail("poll_en", "Poll result", variables, pollEmail);
     }
 
     @SneakyThrows
