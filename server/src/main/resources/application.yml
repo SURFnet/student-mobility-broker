@@ -40,7 +40,6 @@ datasource:
 
 email:
   from: "no-reply@surf.nl"
-  contactEmail: "support@surf.nl"
   environment: "local"
 
 config:
@@ -52,6 +51,8 @@ config:
   allow_playground: True
   # Do we ask the user to submit a poll response
   poll_enabled: True
+  poll_survey: "https://surf.yellenge.nl/nogiets"
+  poll_email: "support@surf.nl"
   # Default home institution if playground is enabled
   play_home_institution_schacHome: "utrecht.nl"
   # Default guest institution if playground is enabled
@@ -71,7 +72,6 @@ config:
     secret: secret
   edu_hub:
     gateway_url: http://localhost:8081
-    poll_survey: "https://surf.yellenge.nl/nogiets"
     user: eduhub
     password: secret
   queueit:
