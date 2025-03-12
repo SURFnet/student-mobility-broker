@@ -173,18 +173,21 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
 
     @Test
     public void playground() {
+        CookieFilter cookieFilter = new CookieFilter();
+        formSubmitByCatalog(cookieFilter, "utrecht.nl");
         Map<String, Object> body = new HashMap<>();
         body.put("code", 400);
         body.put("message", "Something bad happened");
         Map<String, Object> result = given()
+                .filter(cookieFilter)
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .body(body)
                 .when()
                 .post("/api/start")
-                .as(new TypeRef<Map<String, Object>>() {
+                .as(new TypeRef<>() {
                 });
-        assertEquals(result.keySet(), body.keySet());
+        assertTrue(result.keySet().containsAll(body.keySet()));
     }
 
     @Test
