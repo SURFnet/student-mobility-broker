@@ -23,7 +23,7 @@ public class InstitutionRegistryControllerTest extends AbstractIntegrationTest {
                 .contentType(ContentType.JSON)
                 .when()
                 .get("/api/service-registry")
-                .as(new TypeRef<>() {
+                .as(new TypeRef<List<Institution>>() {
                 });
         assertEquals(4, institutions.size());
         institutions.stream().forEach(institution -> {
@@ -58,7 +58,7 @@ public class InstitutionRegistryControllerTest extends AbstractIntegrationTest {
                         "scope"))
                 .when()
                 .post("/api/validate-service-registry-endpoints")
-                .as(new TypeRef<>() {
+                .as(new TypeRef<Map<String, Boolean>>() {
                 });
         assertTrue(validate.get("valid"));
     }

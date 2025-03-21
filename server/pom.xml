@@ -4,14 +4,14 @@
     <parent>
         <groupId>org.surfnet</groupId>
         <artifactId>student-mobility-broker</artifactId>
-        <version>0.3.1-SNAPSHOT</version>
+        <version>0.3.2-JAVA-8-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>student-mobility-broker-server</artifactId>
     <packaging>jar</packaging>
     <name>student-mobility-broker-server</name>
     <properties>
-        <java.version>21</java.version>
+        <java.version>1.8</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -137,7 +137,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <release>21</release>
+                    <release>8</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -156,7 +156,7 @@
                                     <version>3.8.4</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>21</version>
+                                    <version>[1.8.0-0,1.8.0-500]</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>

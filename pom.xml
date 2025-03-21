@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.surfnet</groupId>
     <artifactId>student-mobility-broker</artifactId>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.3.2-JAVA-8-SNAPSHOT</version>
     <name>student-mobility-broker</name>
     <description>student-mobility-broker-app</description>
     <packaging>pom</packaging>
@@ -32,7 +32,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <release>21</release>
+                    <release>1.8</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -51,7 +51,7 @@
                                     <version>3.8.4</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>21</version>
+                                    <version>[1.8.0-0,1.8.0-500]</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
