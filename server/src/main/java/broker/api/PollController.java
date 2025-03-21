@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -31,8 +32,9 @@ public class PollController {
         LOG.debug("Received poll submit: " + pollRequest);
 
         mailBox.sendPollMail(pollRequest);
-
-        return ResponseEntity.ok(Map.of("status", HttpStatus.OK.value()));
+        Map<String, Integer> res = new HashMap<>();
+        res.put("status", HttpStatus.OK.value());
+        return ResponseEntity.ok(res);
     }
 
 }
