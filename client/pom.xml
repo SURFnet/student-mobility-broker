@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.surfnet</groupId>
         <artifactId>student-mobility-broker</artifactId>
-        <version>0.3.2-JAVA-8-SNAPSHOT</version>
+        <version>0.3.2-JAVA-8</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>student-mobility-broker-client</artifactId>
