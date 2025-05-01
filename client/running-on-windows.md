@@ -12,6 +12,7 @@ To run a fully local enrolment test you will need the following five services ru
 Default: **http://localhost:3003**
 
 https://github.com/SURFnet/student-mobility-broker (/client)
+
 Start as a Node.js application using yarn.
 
 1) Install node.js on windows
