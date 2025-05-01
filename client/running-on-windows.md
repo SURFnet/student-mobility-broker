@@ -57,7 +57,7 @@ a web browser (use Firefox incognito to avoid the browser side session id set by
 eventually be redirected to your institutions login page. After login, you will be redirected to \<Redirect URL\>. Be 
 sure to have your browsers network inspect panel open and copy the full path that the browser is trying to redirect to 
 (this will not show up in the address bar) - this pageload will eventually time out because no service is running at 
-<Redirect URL>, this is fine.  
+\<Redirect URL\>, this is fine.  
 
 If you registered ``https://ait-dwebeut01.win.dtu.dk/redirect_uri/`` as your redirect, the url you copy will look like 
 this:
