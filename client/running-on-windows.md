@@ -54,7 +54,7 @@ don't set it to https://example.com/redirect_uri/ :)
 
 Once you have all your local service running, and you start the enrolment test by calling GET:http://localhost:3003 in 
 a web browser (use Firefox incognito to avoid the browser side session id set by the broker client), then you will 
-eventually be redirected to your institutions login page. After login, you will be redirected to <Redirect URL>. Be 
+eventually be redirected to your institutions login page. After login, you will be redirected to \<Redirect URL\>. Be 
 sure to have your browsers network inspect panel open and copy the full path that the browser is trying to redirect to 
 (this will not show up in the address bar) - this pageload will eventually time out because no service is running at 
 <Redirect URL>, this is fine.  
