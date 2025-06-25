@@ -8,7 +8,7 @@ Broker for educational cross-institution registrations.
 
 ### [System Requirements](#system-requirements)
 
-- Java 8
+- Java 21
 - Maven 3
 - Yarn 1.x
 - NodeJS 14+
