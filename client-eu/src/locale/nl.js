@@ -152,11 +152,11 @@ I18n.translations.nl = {
             veryHard: "Erg moeilijk"
         },
         why: "Toelichting",
-        join: "Meedoen aan een interview over je ervaring? Plan een afspraak en verdien <strong>€35</strong>.",
+        join: "Wil je contact opnemen over je ervaring?",
         submit: "Verstuur & klaar",
-        submitAppointment: "Verstuur & Plan een afsrpaak",
+        submitAppointment: "Verstuur & Contact opnemen",
         thanksFeedback: "Dankjewel voor je feedback!",
-        missingOut: "Je mist de €35 euro bonus! Wil je toch meedoen aan een interview? <a href='{{href}}' target='_blank'>Maak een afspraak</a>."
+        missingOut: "Wil je toch alsnog <a href='{{href}}' target='_blank'>contact openemen?</a>."
     }
 };
 

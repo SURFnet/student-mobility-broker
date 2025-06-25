@@ -152,11 +152,11 @@ I18n.translations.en = {
             veryHard: "Very hard"
         },
         why: "Please explain",
-        join: "Participate in an interview about your experience? Make an appointment and earn <strong>€35</strong>.",
+        join: "Contact us about your experience?.",
         submit: "Submit & done",
-        submitAppointment: "Submit & Make an appointment",
+        submitAppointment: "Submit & Contact us",
         thanksFeedback: "Thank you for your feedback",
-        missingOut: "You are missing out on the €35 euro bonus! Still like to participate in an interview? <a href='{{href}}' target='_blank'>Make an appointment</a>."
+        missingOut: "Still want to <a href='{{href}}' target='_blank'>contact us?</a>."
     }
 };
 
