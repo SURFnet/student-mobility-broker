@@ -36,13 +36,13 @@ jobs:
       run: mvn -B package --file pom.xml
       working-directory: ./server
     - name: Codecov
-      uses: codecov/codecov-action@v1.3.1
+      uses: codecov/codecov-action@v5.4.3
 
   client:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '23'
       - run: yarn install
