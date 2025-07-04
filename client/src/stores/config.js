@@ -4,5 +4,6 @@ export const config = writable({
   local: false,
   allowPlayground: false,
   pollEnabled: false,
+  surveyEnabled: false,
   pollSurvey: null
 });

@@ -152,6 +152,7 @@
             gap: 15px;
 
             &.reverse {
+                margin-top: 20px;
                 flex-direction: row-reverse;
             }
         }
@@ -167,7 +168,7 @@
             {@html close}
         </span>
     </div>
-    {#if done && !makeAppointment && crossInstitutionRequest}
+    {#if done && !makeAppointment && crossInstitutionRequest && $config.surveyEnabled}
         <p class="missing-out"> {@html I18n.t("poll.missingOut", {href: $config.pollSurvey})}</p>
     {/if}
     {#if !done}
@@ -182,15 +183,17 @@
             <div class="motivation">
                 <p class="top">{I18n.t("poll.why")}</p>
                 <textarea bind:value={motivation} use:init></textarea>
-                <p class="voucher">{@html crossInstitutionRequest ? I18n.t("poll.join") : ""}</p>
+                {#if crossInstitutionRequest && $config.surveyEnabled}
+                    <p class="voucher">{@html crossInstitutionRequest ? I18n.t("poll.join") : ""}</p>
+                {/if}
             </div>
         {/if}
         {#if poll}
-            <div class="actions" class:reverse={!crossInstitutionRequest}>
+            <div class="actions" class:reverse={!crossInstitutionRequest || !$config.surveyEnabled}>
                 <Button onClick={() => doSendPoll()}
-                        cancel={true}
+                        cancel={crossInstitutionRequest && $config.surveyEnabled}
                         label={I18n.t("poll.submit")}/>
-                {#if crossInstitutionRequest}
+                {#if crossInstitutionRequest && $config.surveyEnabled}
                     <Button
                             onClick={() => doSendPoll(true)}
                             label={I18n.t("poll.submitAppointment")}/>
