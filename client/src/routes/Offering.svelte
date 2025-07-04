@@ -839,10 +839,12 @@
                                 <div class="hero">
                                     {@html highFive}
                                 </div>
-                                <Poll name={name}
-                                      crossInstitutionRequest={result.crossInstitutionRequest}
-                                      visible={showPoll}
-                                />
+                                {#if $config.pollEnabled}
+                                    <Poll name={name}
+                                          crossInstitutionRequest={result.crossInstitutionRequest}
+                                          visible={showPoll}
+                                    />
+                                {/if}
                                 <div class="final-action">
                                     {@html lightBulb}
                                     {#if result.message}
