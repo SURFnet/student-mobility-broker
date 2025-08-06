@@ -86,7 +86,7 @@ jobs:
           retention-days: 1
 
       - name: Codecov
-        uses: codecov/codecov-action@v3.1.1
+        uses: codecov/codecov-action@v5.4.3
 
       - name: Create release
         uses: actions/create-release@v1
@@ -117,7 +117,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Download the previous produced artefacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: brokerbuilds
 
@@ -146,7 +146,7 @@ jobs:
             type=sha
 
       - name: Build and push the ${{ matrix.app }} image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.app }}
           file: ${{ matrix.app }}/docker/Dockerfile
