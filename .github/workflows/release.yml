@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: 21
           distribution: "temurin"
@@ -44,7 +44,7 @@ jobs:
         if: github.event_name != 'workflow_dispatch' && steps.versioncheck.outputs.version != github.ref_name
 
       - name: Set up JDK 21 for snapshots
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: 21
           distribution: "temurin"
@@ -55,7 +55,7 @@ jobs:
         if: ( endsWith(steps.versioncheck.outputs.version, '-SNAPSHOT'))
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: 21
           distribution: "temurin"
@@ -86,7 +86,7 @@ jobs:
           retention-days: 1
 
       - name: Codecov
-        uses: codecov/codecov-action@v5.4.3
+        uses: codecov/codecov-action@v5.5.0
 
       - name: Create release
         uses: actions/create-release@v1
