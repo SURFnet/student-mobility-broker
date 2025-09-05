@@ -36,7 +36,7 @@ jobs:
       run: mvn -B package --file pom.xml
       working-directory: ./server
     - name: Codecov
-      uses: codecov/codecov-action@v5.5.0
+      uses: codecov/codecov-action@v5.5.1
 
   client:
     runs-on: ubuntu-latest
