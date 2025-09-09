@@ -31,7 +31,7 @@
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2",
-    "vite": "^6.0.2",
+    "vite": "^6.3.6",
     "vite-plugin-svelte-svg-loader": "^1.0.1",
     "vite-plugin-svelte-svgr": "^1.0.4"
   },
