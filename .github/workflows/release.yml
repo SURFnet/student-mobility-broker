@@ -82,6 +82,7 @@ jobs:
           name: brokerbuilds
           path: |
             client/dist/
+            client-eu/dist/
             server/target/*.jar
           retention-days: 1
 
@@ -111,6 +112,8 @@ jobs:
         include:
           - image: ghcr.io/SURFnet/student-mobility-broker/brokerclient
             app: client
+          - image: ghcr.io/SURFnet/student-mobility-broker/brokerclienteu
+            app: client-eu
           - image: ghcr.io/SURFnet/student-mobility-broker/brokerserver
             app: server
     steps:
