@@ -128,7 +128,9 @@
 
             <!--                <span>{$offering.homeInstitution.name}</span>-->
         </div>
-        <img src={$offering.homeInstitution.logoURI} alt=""/>
+        {#if $offering.guestInstitution.logoURI}
+            <img src={$offering.homeInstitution.logoURI} alt=""/>
+        {/if}
     </div>
     <div class="institution">
         <div class="institution-detail">
@@ -144,7 +146,9 @@
 
             <!--                <span>{$offering.guestInstitution.name}</span>-->
         </div>
-        <img src={$offering.guestInstitution.logoURI} alt=""/>
+        {#if $offering.guestInstitution.logoURI}
+            <img src={$offering.guestInstitution.logoURI} alt=""/>
+        {/if}
     </div>
     <p>Offering ID</p>
     <span class="info">The unique identifier of the cours / offering</span>

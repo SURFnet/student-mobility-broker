@@ -54,10 +54,10 @@ I18n.translations.en = {
         receiveMail: "You have been successfully registered. You will receive mail from {{abbreviation}} what the next steps will be.",
         homeInstitution: "Your home institution",
         personal: "To proceed with this enrollment, <b>{{guest}}</b> needs to contact <b>{{home}}</b> to request your information.",
-        personalBullet1sub1: "Learn what ",
-        personalBullet1sub2: "personal information",
+        personalBullet1sub1: "Learn which ",
+        personalBullet1sub2: "personal data",
         personalBullet1sub3: " is requested.",
-        personalBullet2: "Both institutions are controllers of this processing of personal data (read the <a href='{{privacyEndpoint}}' target='_blank'>full privacy statement</a>).",
+        personalBullet2: "Both institutions are controllers in this processing of personal data (read the <a href='{{privacyEndpoint}}' target='_blank'>full privacy statement</a>).",
         permission: "<b>{{guest}}</b> needs your permission to start this transfer.",
         subPersonal: "{{abbreviation}} will request all necessary information for your enrolment at your home institution.",
         subPersonalGrant: "For this you need to grant {{abbreviation}} permission to do so.",
@@ -142,7 +142,22 @@ I18n.translations.en = {
             identifier: "Unique identifier"
         }
     },
-
+    poll: {
+        registerQuestion: "How easy or hard was it for you to register?",
+        scores: {
+            veryEasy: "Very easy",
+            easy: "Easy",
+            neutral: "Neutral",
+            hard: "Hard",
+            veryHard: "Very hard"
+        },
+        why: "Please explain",
+        join: "Contact us about your experience?.",
+        submit: "Submit & done",
+        submitAppointment: "Submit & Contact us",
+        thanksFeedback: "Thank you for your feedback",
+        missingOut: "Still want to <a href='{{href}}' target='_blank'>contact us?</a>."
+    }
 };
 
 export default I18n.translations.en;

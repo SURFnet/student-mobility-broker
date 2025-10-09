@@ -55,9 +55,9 @@ I18n.translations.nl = {
         homeInstitution: "Jouw thuisinstelling",
         personal: "Om de inschrijving te voltooien, moet <b>{{guest}}</b> contact opnemen met <b>{{home}}</b> en jouw persoonsgegevens opvragen.",
         personalBullet1sub1: "Bekijk welke ",
-        personalBullet1sub2: "persoons gegevens",
+        personalBullet1sub2: "persoonsgegevens",
         personalBullet1sub3: " worden uitgewisseld.",
-        personalBullet2: "Beide instellingen zijn verwerkingsverantwoordelijke van deze verwerking van persoonsgegevens (lees de <a href='{{privacyEndpoint}}' target='_blank'>volledige privacy statement</a>).",
+        personalBullet2: "Beide instellingen zijn verwerkingsverantwoordelijke van deze verwerking van persoonsgegevens (lees het <a href='{{privacyEndpoint}}' target='_blank'>volledige privacy statement</a>).",
         permission: "Geef <b>{{guest}}</b> toestemming om overdracht te starten.",
         subPersonal: "{{abbreviation}} vraagt alle nodige informatie voor je inschrijving bij je thuisinstelling.",
         subPersonalGrant: "Hiervoor moet je  {{abbreviation}} toestemming geven.",
@@ -142,6 +142,22 @@ I18n.translations.nl = {
             identifier: "Unieke identificatie"
         }
     },
+    poll: {
+        registerQuestion: "Hoe makkelijk of moeilijk vond je het aanmelden?",
+        scores: {
+            veryEasy: "Erg makkelijk",
+            easy: "Makkelijk",
+            neutral: "Neutraal",
+            hard: "Moeilijk",
+            veryHard: "Erg moeilijk"
+        },
+        why: "Toelichting",
+        join: "Wil je contact opnemen over je ervaring?",
+        submit: "Verstuur & klaar",
+        submitAppointment: "Verstuur & Contact opnemen",
+        thanksFeedback: "Dankjewel voor je feedback!",
+        missingOut: "Wil je toch alsnog <a href='{{href}}' target='_blank'>contact openemen?</a>."
+    }
 };
 
 export default I18n.translations.nl;

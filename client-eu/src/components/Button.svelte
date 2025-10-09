@@ -7,6 +7,7 @@
     export let onClick;
     export let icon;
     export let small = false;
+    export let cancel = false;
 
     const handleLinkClick = e => e.key === " " && e.target.click();
 
@@ -43,6 +44,17 @@
             color: whitesmoke;
         }
 
+        &.cancel {
+            background-color: white;
+            color: #5d6872;
+            border: 1px solid #5d6872;
+            &:hover {
+                background-color: #f8f8f8;
+                color: black;
+            }
+
+        }
+
         &.disabled {
             cursor: not-allowed;
             color: #ababab;
@@ -64,7 +76,9 @@
 
 </style>
 
-<a class={`button ${className} ${icon ? " icon" : ""}`} class:small
+<a class={`button ${className} ${icon ? " icon" : ""}`}
+   class:small
+   class:cancel
    class:active={active}
    href="{href}"
    class:disabled={disabled}
