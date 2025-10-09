@@ -19,10 +19,10 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: 21
           distribution: "temurin"
@@ -44,7 +44,7 @@ jobs:
         if: github.event_name != 'workflow_dispatch' && steps.versioncheck.outputs.version != github.ref_name
 
       - name: Set up JDK 21 for snapshots
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: 21
           distribution: "temurin"
@@ -55,7 +55,7 @@ jobs:
         if: ( endsWith(steps.versioncheck.outputs.version, '-SNAPSHOT'))
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: 21
           distribution: "temurin"
@@ -87,7 +87,7 @@ jobs:
           retention-days: 1
 
       - name: Codecov
-        uses: codecov/codecov-action@v3.1.1
+        uses: codecov/codecov-action@v5.5.1
 
       - name: Create release
         uses: actions/create-release@v1
@@ -117,10 +117,10 @@ jobs:
           - image: ghcr.io/SURFnet/student-mobility-broker/brokerserver
             app: server
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Download the previous produced artefacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: brokerbuilds
 
@@ -149,7 +149,7 @@ jobs:
             type=sha
 
       - name: Build and push the ${{ matrix.app }} image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.app }}
           file: ${{ matrix.app }}/docker/Dockerfile

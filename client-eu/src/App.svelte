@@ -40,7 +40,6 @@
 
     const doOnMount = () => {
         features().then(json => {
-            $config = json;
             const redirect = getParameterByName("q");
             if (redirect) {
                 const decodedRedirect = decodeURIComponent(redirect);
@@ -51,6 +50,7 @@
                     throw new Error("Invalid queue");
                 }
             }
+            $config = json;
             const step = getParameterByName("step");
             const playGround = window.location.pathname.indexOf("play") > -1;
             const error = getParameterByName("error");
@@ -75,7 +75,7 @@
                             let message = res.message;
                             if (message.indexOf("session")) {
                                 offeringError = I18n.t("error.412");
-                            } else {
+                            }else {
                                 offeringError = I18n.t("error.offering", {"name": res.message});
                             }
                             loaded = true;
@@ -129,7 +129,6 @@
                 <Offering offeringError={offeringError}/>
             </Route>
             {#if $config.allowPlayground}
-
                 <Route path="/intake">
                     <PlayGround bookmark="intake"/>
                 </Route>

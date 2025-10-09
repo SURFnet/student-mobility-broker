@@ -49,10 +49,12 @@ config:
   local: True
   # Do we allow to mock the different scenario's - only allow on test
   allow_playground: True
-  # Do we ask the user to submit a poll response
+  # Do we ask the user to submit a poll response?
   poll_enabled: True
   poll_survey: "https://surf.yellenge.nl/nogiets"
   poll_email: "support@surf.nl"
+  # Do we ask the user to participate in the survey?
+  survey_enabled: True
   # Default home institution if playground is enabled
   play_home_institution_schacHome: "utrecht.nl"
   # Default guest institution if playground is enabled

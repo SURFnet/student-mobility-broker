@@ -77,6 +77,7 @@ public class BrokerController {
                             @Value("${config.local}") boolean local,
                             @Value("${config.allow_playground}") boolean allowPlayground,
                             @Value("${config.poll_enabled}") boolean pollEnabled,
+                            @Value("${config.survey_enabled}") boolean surveyEnabled,
                             @Value("${config.poll_survey}") URI pollSurvey,
                             @Value("${config.play_home_institution_schacHome}") String playHomeInstitutionSchacHome,
                             @Value("${config.play_guest_institution_schacHome}") String playGuestInstitutionSchacHome,
@@ -106,6 +107,7 @@ public class BrokerController {
         this.featureToggles.put("catalogUrl", catalogUrl);
         this.featureToggles.put("queue", queueService.getBaseUrl());
         this.featureToggles.put("pollEnabled", pollEnabled);
+        this.featureToggles.put("surveyEnabled", surveyEnabled);
         this.featureToggles.put("pollSurvey", pollSurvey);
 
         if (allowPlayground) {

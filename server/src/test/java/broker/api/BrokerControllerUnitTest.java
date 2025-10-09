@@ -33,6 +33,7 @@ public class BrokerControllerUnitTest {
             false,
             false,
             true,
+            true,
             new URI("http://localhost/poll"),
             "utrecht.nl",
             "eindhoven.nl",
