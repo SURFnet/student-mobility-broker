@@ -20,6 +20,7 @@ public class BrokerRequest implements Serializable {
     private String guestInstitutionSchacHome;
     private String offeringId;
     private String offeringType;
+    private String alliance;
     private boolean useQueueIt;
     private boolean queueItSucceeded;
 

@@ -163,7 +163,11 @@ public class BrokerController {
         String queryParams = play ? "?step=enroll&name=Johanna&correlationID=1" : "?step=approve";
         if (guestInstitution.isUseQueueIt()) {
             queryParams += "&q=" + URLEncoder.encode(queueService.getRedirectUrl(guestInstitution),
-                    Charset.defaultCharset().name());
+                    Charset.defaultCharset());
+        }
+        if (StringUtils.hasText(brokerRequest.getAlliance())) {
+            queryParams += "&alliance="+ URLEncoder.encode(brokerRequest.getAlliance(),
+                    Charset.defaultCharset());
         }
         return new RedirectView(clientUrl + queryParams);
     }
