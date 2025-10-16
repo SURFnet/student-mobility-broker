@@ -1,18 +1,18 @@
 package broker;
 
-import broker.queue.QueueService;
 import broker.registry.InstitutionRegistry;
 import io.restassured.RestAssured;
-import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import wiremock.org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -34,6 +34,6 @@ public abstract class AbstractIntegrationTest {
     }
 
     public static String readFile(String path) throws IOException {
-        return IOUtils.toString(new ClassPathResource(path).getInputStream());
+        return IOUtils.toString(new ClassPathResource(path).getInputStream(), Charset.defaultCharset());
     }
 }

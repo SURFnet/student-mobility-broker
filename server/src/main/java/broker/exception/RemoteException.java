@@ -1,17 +1,18 @@
 package broker.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.web.server.ResponseStatusException;
 
 public class RemoteException extends ResponseStatusException {
 
     private final String reference;
 
-    public RemoteException(HttpStatus status, String reason) {
+    public RemoteException(HttpStatusCode status, String reason) {
         this(status, reason, null);
     }
 
-    public RemoteException(HttpStatus status, String reason, Throwable cause) {
+    public RemoteException(HttpStatusCode status, String reason, Throwable cause) {
         super(status, reason, cause);
         this.reference = String.valueOf(Math.round(Math.random() * 10000));
     }

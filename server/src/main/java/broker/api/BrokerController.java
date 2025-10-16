@@ -27,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.http.HttpHeaders.ACCEPT;
+import static org.springframework.http.HttpStatus.REQUEST_TIMEOUT;
 
 @RestController
 public class BrokerController {
@@ -149,7 +150,7 @@ public class BrokerController {
             return new RedirectView(clientUrl + "?error=400");
         } catch (RemoteException e) {
             LOG.warn("RemoteException error in the brokerRequest: " + brokerRequest, e);
-            return new RedirectView(clientUrl + "?error=" + e.getRawStatusCode());
+            return new RedirectView(clientUrl + "?error=" + e.getStatusCode().value());
         }
         //Store if we need to redirect to queue-it
         brokerRequest.setUseQueueIt(guestInstitution.isUseQueueIt());
@@ -214,13 +215,13 @@ public class BrokerController {
             offering = fetchOffering(guestInstitution, brokerRequest);
         } catch (RuntimeException e) {
             LOG.error("Error in fetching offering from " + guestInstitution.getName(), e);
-            HttpStatus status = HttpStatus.BAD_REQUEST;
+            HttpStatusCode statusCode = HttpStatus.BAD_REQUEST;
             if (e instanceof HttpClientErrorException) {
                 HttpClientErrorException ex = (HttpClientErrorException) e;
-                status = ex.getStatusCode();
+                statusCode = ex.getStatusCode();
                 LOG.error("Response error in fetching offering: " + ex.getResponseBodyAsString(), ex);
             }
-            RemoteException remoteException = new RemoteException(status, guestInstitution.getName(), e);
+            RemoteException remoteException = new RemoteException(statusCode, guestInstitution.getName(), e);
             LOG.error("Reference number for client error correlation: " + remoteException.getReference());
             throw remoteException;
         }
@@ -324,8 +325,8 @@ public class BrokerController {
             body .put("crossInstitutionRequest", crossInstitutionRequest);
             return body;
         } catch (HttpStatusCodeException | ResourceAccessException e) {
-            HttpStatus statusCode = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException)e).getStatusCode() : HttpStatus.REQUEST_TIMEOUT;
-            RemoteException remoteException = new RemoteException(statusCode, e.getMessage(), e);
+            HttpStatusCode httpStatusCode = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException) e).getStatusCode() : HttpStatusCode.valueOf(REQUEST_TIMEOUT.value());
+            RemoteException remoteException = new RemoteException(httpStatusCode, e.getMessage(), e);
 
             String body = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException)e).getResponseBodyAsString() : e.getMessage();
             LOG.error(String.format("Unexpected exception from /api/start: %s, reference number %s",
@@ -333,7 +334,7 @@ public class BrokerController {
 
             Map<String, Object> res = new HashMap<>();
             res.put("error", true);
-            res.put("code", statusCode.value());
+            res.put("code", httpStatusCode.value());
             res.put("reference", remoteException.getReference());
             return res;
         }
