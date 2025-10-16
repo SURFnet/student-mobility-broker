@@ -28,11 +28,12 @@
 
     .course {
 
-        min-width: 50%;
-        max-width: 50%;
-
-        padding: 25px;
-        border: 2px solid var(--color-primary-grey);
+        min-width: 40%;
+        max-width: 40%;
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        border: 0.93px solid #CBD0D5;
 
         @media (max-width: 780px) {
             min-width: 100%;

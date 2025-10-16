@@ -29,7 +29,7 @@ I18n.translations.nl = {
             enroll: "Aanmelden",
             relax: "Relax"
         },
-        approve: "Overdracht van persoonlijke gegevens goedkeuren",
+        approve: "Overdracht van je persoonlijke gegevens goedkeuren",
         enrolled: "Je meldt je aan voor",
         wait: "Even geduld. We melden je aan {{name}}",
         enrolling: "Enrolling', rolling', rolling... ",
@@ -57,11 +57,12 @@ I18n.translations.nl = {
         personalBullet1sub1: "Bekijk welke ",
         personalBullet1sub2: "persoonsgegevens",
         personalBullet1sub3: " worden uitgewisseld.",
-        personalBullet2: "Beide instellingen zijn verwerkingsverantwoordelijke van deze verwerking van persoonsgegevens (lees het <a href='{{privacyEndpoint}}' target='_blank'>volledige privacy statement</a>).",
+        personalBullet2: "Beide instellingen zijn verwerkingsverantwoordelijke van deze verwerking van persoonsgegevens",
+        personalBullet3: "Lees het <a href='{{privacyEndpoint}}' target='_blank'>volledige privacy statement</a>.",
         permission: "Geef <b>{{guest}}</b> toestemming om overdracht te starten.",
         subPersonal: "{{abbreviation}} vraagt alle nodige informatie voor je inschrijving bij je thuisinstelling.",
         subPersonalGrant: "Hiervoor moet je  {{abbreviation}} toestemming geven.",
-        approveButton: "Goedkeuren met MyAcademicID",
+        approveButton: "Goedkeuren & doorgaan",
         studyLoad: "{{value}} {{studyLoadUnit}}",
         lang: {
             "nl-NL": "Dutch",
@@ -73,7 +74,9 @@ I18n.translations.nl = {
         },
         dateTime: "Datum",
         places: "{{nbr}} plaatsen",
-        backToCatalog: "Terug"
+        backToCatalog: "Terug",
+        registration: "Registratie",
+        backToEduXchange: "← terug naar eduXchange"
     },
     landing: {
         info: "Je bent beland op de homepage van Student Mobility, waar je normaal gesproken pas terechtkomt na het selecteren van een vak of minor in de onderwijscatalogus.",

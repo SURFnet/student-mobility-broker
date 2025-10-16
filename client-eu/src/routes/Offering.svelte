@@ -1,15 +1,14 @@
 <script>
     import I18n from "i18n-js";
     import check from "../icons/icons-studmob/Check-narrow.svg?raw";
+    import arrowLeft from "../icons/arrow-left.svg?raw";
     import transfer from "../icons/icons-studmob/data-transfer-check.svg?raw";
     import transferWhite from "../icons/icons-studmob/data-transfer-check-white.svg?raw";
     import enroll from "../icons/icons-studmob/official-building-3.svg?raw";
     import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg?raw";
-    import chevronLeft from "../icons/chevron-left.svg?raw";
     import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg?raw";
     import myAcademicID from "../icons/logo_myAcademicID.svg?raw";
     import balancer from "../icons/balancer.svg?raw";
-    import euroteq from "../icons/euroteq.png";
     import DOMPurify from "isomorphic-dompurify";
     import Cookies from "js-cookie";
     import relax from "../icons/icons-studmob/cocktail-glass.svg?raw";
@@ -36,6 +35,7 @@
     import Modal from "../components/Modal.svelte";
     import {isEmpty} from "../utils/forms";
     import Poll from "../components/Poll.svelte";
+    import {getValue} from "../utils/multiLanguageAttributes";
 
     const timeoutStep = 1500;
     const STEPS = {
@@ -60,8 +60,10 @@
     let showModal = false;
     let name;
     let showPoll = false;
+    let offeringType = null;
 
     onMount(() => {
+        offeringType = $offering.offering.offeringType
         step = getParameterByName("step");
         error = getParameterByName("error");
         if (error || offeringError) {
@@ -220,9 +222,36 @@
 </script>
 
 <style lang="scss">
+    .eu-header {
+        width: 100%;
+        display: flex;
+        background-color: #004C97;
+        padding: 12px 0;
+
+        .eu-header-inner {
+            width: 1067px;
+            color: white;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+
+            .left {
+                font-size: 26px;
+                font-weight: 600;
+                margin: 0;
+            }
+
+            a.right {
+                margin-left:  auto;
+                color: white;
+                text-decoration: none;
+            }
+
+        }
+    }
 
     .container {
-        max-width: 820px;
+        max-width: 1067px;
         margin: 0 auto 40px auto;
         width: 100%;
         display: flex;
@@ -234,6 +263,11 @@
 
         .offering {
             position: relative;
+        }
+
+        h2.desktop, h2.mobile {
+            font-weight: bold;
+            font-size: 24px;
         }
 
         .lottie-error {
@@ -282,14 +316,15 @@
         }
 
         img.euroteq {
-          width: 100px;
-          position: absolute;
-          right: 0;
+            width: 100px;
+            position: absolute;
+            right: 0;
         }
 
         span.myAcademicID {
             width: 140px;
         }
+
         p.error-msg {
             font-weight: 600;
         }
@@ -410,8 +445,20 @@
 
     div.header {
         display: flex;
+        margin-top: 40px;
+        flex-direction: column;
         @media (max-width: 780px) {
             display: block;
+        }
+
+        h2.offering-title {
+            font-weight: 600;
+            font-size: 32px
+        }
+
+        p.offering-title {
+            font-weight: 400;
+            font-size: 18px
         }
 
         :global(.button) {
@@ -516,6 +563,18 @@
         }
     }
 
+    .course-container {
+        display: flex;
+        background-color: #EEEFF1;
+        border-radius: 10px;
+        padding:30px;
+        gap: 10px;
+
+        @media (max-width: 780px) {
+            flex-direction: column;
+        }
+    }
+
     .details {
         display: flex;
         @media (max-width: 780px) {
@@ -523,14 +582,14 @@
         }
 
         .status {
-            margin-left: auto;
+            padding: 0 25px;
             display: flex;
             flex-direction: column;
-            min-width: 40%;
-            max-width: 40%;
+            min-width: 60%;
+            max-width: 60%;
 
             @media (max-width: 780px) {
-                margin-left: 0;
+                padding: 15px 0 0 0;
                 min-width: 100%;
                 max-width: 100%;
             }
@@ -660,56 +719,45 @@
 
 </style>
 {#if loaded }
+    <div class="eu-header">
+        <div class="eu-header-inner">
+            <h2 class="left">
+                {I18n.t("offering.registration")}
+            </h2>
+                <a class="right" href="{$config.catalogUrl}">{I18n.t("offering.backToEduXchange")}</a>
+        </div>
+    </div>
     <div class="container">
         <div class="offering">
-            <div class="header">
-                <div class="link-back" on:click={() => window.location.href = $config.catalogUrl}>
-                    <span>{@html chevronLeft}</span>
-                    <a href={`${$config.catalogUrl}`}>
-                        {I18n.t("offering.backToCatalog")}
-                    </a>
-                </div>
-                <div class="language-switcher">
-                    <ul>
-                        <li class="{I18n.locale === 'en' ? 'active' : 'non_active'}">
-                            <a href="/en" on:click|preventDefault|stopPropagation={changeLanguage("en")}>EN</a>
-                        </li>
-                        <li class="{I18n.locale === 'nl' ? 'active' : 'non_active'}">
-                            <a href="/nl" on:click|preventDefault|stopPropagation={changeLanguage("nl")}>NL</a>
-                        </li>
-                    </ul>
-                </div>
-                <img alt="euroteq" class="euroteq" src={euroteq} />
-            </div>
+            <!--            <div class="header">-->
+            <!--                <div class="language-switcher">-->
+            <!--                    <ul>-->
+            <!--                        <li class="{I18n.locale === 'en' ? 'active' : 'non_active'}">-->
+            <!--                            <a href="/en" on:click|preventDefault|stopPropagation={changeLanguage("en")}>EN</a>-->
+            <!--                        </li>-->
+            <!--                        <li class="{I18n.locale === 'nl' ? 'active' : 'non_active'}">-->
+            <!--                            <a href="/nl" on:click|preventDefault|stopPropagation={changeLanguage("nl")}>NL</a>-->
+            <!--                        </li>-->
+            <!--                    </ul>-->
+            <!--                </div>-->
+            <!--            </div>-->
             {#if !landing && !error && !offeringError}
                 {#if $config.allowPlayground}
                         <span id="balancer" class="balancer" class:balancing={balancing}
                               on:click={gotoPlay}>{@html balancer}</span>
                 {/if}
                 <div class="header">
-                    <h2>{I18n.t("offering.title", {
+                    <p class="offering-title">{I18n.t("offering.title", {
                         type: I18n.t(`offering.types.${$offering.offering.offeringType}`),
                         abbreviation: $offering.guestInstitution.abbreviation
-                    })}</h2>
-                </div>
-                <div class="lines">
-                    {#each statuses as status}
-                        <div class={`line ${status}`}></div>
-                    {/each}
-                    <div class="icons">
-                        {#each icons as {name, icon, className, action}}
-                            <div class={`icon-container ${className}`} on:click={() => action & action()}>
-                                <div class={`icon ${className}`}>
-                                    <span>{@html icon}</span>
-                                </div>
-                                <p>{name}</p>
-                            </div>
-                        {/each}
-                    </div>
+                    })}
+                    </p>
+                    {#if $offering.offering[offeringType] && $offering.offering[offeringType].name}
+                        <h2 class="offering-title">{getValue($offering.offering[offeringType].name)}</h2>
+                    {/if}
+
                 </div>
             {/if}
-            <h2 class="desktop">{title}</h2>
-            <h2 class="mobile">{subTitle}</h2>
             <div class="details">
                 {#if landing}
                     <div class="landing">
@@ -761,110 +809,118 @@
                         </div>
                     </div>
                 {:else}
-                    <Course className={step === STEPS.approve ? "mobile" : "desktop"}/>
-                    <div class="status">
-                        {#if step === STEPS.enroll}
-                            <div class="result">
-                                <div class="lottie-container">
-                                    <LottiePlayer
-                                            src={scooter}
-                                            autoplay="{true}"
-                                            loop="{true}"
-                                            controls="{false}"
-                                            renderer="svg"
-                                            background="transparent"
-                                            height="100%"
-                                            width="100%"
-                                            controlsLayout={null}
-                                    />
+                    <div class="course-container">
+                        <Course className={step === STEPS.approve ? "mobile" : "desktop"}/>
+                        <div class="status">
+                            <h2 class="desktop">{title}</h2>
+                            <h2 class="mobile">{subTitle}</h2>
+                            {#if step === STEPS.enroll}
+                                <div class="result">
+                                    <div class="lottie-container">
+                                        <LottiePlayer
+                                                src={scooter}
+                                                autoplay="{true}"
+                                                loop="{true}"
+                                                controls="{false}"
+                                                renderer="svg"
+                                                background="transparent"
+                                                height="100%"
+                                                width="100%"
+                                                controlsLayout={null}
+                                        />
+                                    </div>
+                                    <span class:start class="progress">{I18n.t("offering.enrolling")}</span>
+                                    {#if activity}
+                                        <span class="activity">{activity}</span>
+                                    {/if}
                                 </div>
-                                <span class:start class="progress">{I18n.t("offering.enrolling")}</span>
-                                {#if activity}
-                                    <span class="activity">{activity}</span>
-                                {/if}
-                            </div>
-                        {:else if pendingApproval(step)}
-                            <h2 class="mobile">{title}</h2>
-                            <div class="no-results">
+                            {:else if pendingApproval(step)}
+                                <h2 class="mobile">{title}</h2>
+                                <div class="no-results">
                                 <span>{@html I18n.t("offering.personal", {
                                     guest: $offering.guestInstitution.abbreviation,
                                     home: $offering.homeInstitution.name
                                 })}</span>
-                                <ul class="personals">
-                                    <li>
-                                        {@html I18n.t("offering.personalBullet1sub1")}
-                                        <a href="/"
-                                           on:click|preventDefault|stopPropagation={() => showModal=true}>{I18n.t("offering.personalBullet1sub2")}</a>
-                                        {@html I18n.t("offering.personalBullet1sub3")}
-                                    </li>
-                                    <li>
-                                        {@html DOMPurify.sanitize(I18n.t("offering.personalBullet2", {privacyEndpoint: $offering.guestInstitution.privacyEndpoint}),
-                                            {ADD_ATTR: ["target"]})}
-                                    </li>
-                                </ul>
-                                <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
-                                <Button href="/authentication" class="myacademicid" label={I18n.t("offering.approveButton")} icon={myAcademicID}
-                                        onClick={startAuthentication}/>
-                            </div>
-                        {:else if result && result.code >= 400}
-                            <div class="result">
-                                <div class="hero">
-                                    {#if result.code === 422}
-                                        {@html accessDenied}
-                                    {:else}
-                                        {@html moody}
-                                    {/if}
+                                    <ul class="personals">
+                                        <li>
+                                            {@html I18n.t("offering.personalBullet1sub1")}
+                                            <a href="/"
+                                               on:click|preventDefault|stopPropagation={() => showModal=true}>{I18n.t("offering.personalBullet1sub2")}</a>
+                                            {@html I18n.t("offering.personalBullet1sub3")}
+                                        </li>
+                                        <li>
+                                            {I18n.t("offering.personalBullet2")}
+                                        </li>
+                                        <li>
+                                            {@html DOMPurify.sanitize(I18n.t("offering.personalBullet3", {privacyEndpoint: $offering.guestInstitution.privacyEndpoint}),
+                                                {ADD_ATTR: ["target"]})}
+                                        </li>
+                                    </ul>
+                                    <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
+                                    <Button href="/authentication" class="myacademicid"
+                                            label={I18n.t("offering.approveButton")} icon={myAcademicID}
+                                            onClick={startAuthentication}/>
                                 </div>
-                                <div class="final-action error-result">
-                                    {#if result.message}
-                                        <span class="error-message">{DOMPurify.sanitize(result.message)}</span>
-                                    {:else if translationPresent(result.code)}
+                            {:else if result && result.code >= 400}
+                                <div class="result">
+                                    <div class="hero">
+                                        {#if result.code === 422}
+                                            {@html accessDenied}
+                                        {:else}
+                                            {@html moody}
+                                        {/if}
+                                    </div>
+                                    <div class="final-action error-result">
+                                        {#if result.message}
+                                            <span class="error-message">{DOMPurify.sanitize(result.message)}</span>
+                                        {:else if translationPresent(result.code)}
                                         <span class="error-message">{@html DOMPurify.sanitize(I18n.t(`error.${result.code.toString()}`,
                                             {
                                                 guestInstitution: $offering.guestInstitution.name,
                                                 homeInstitution: $offering.homeInstitution.name
                                             }))}</span>
-                                    {:else}
-                                        <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
-                                    {/if}
-                                    <span class="error-message">{@html genericErrorMessage(result.code)}</span>
-                                    {#if result.reference}
-                                        <span class="error-message">{@html I18n.t("error.reference", {reference: result.reference})}</span>
-                                    {/if}
+                                        {:else}
+                                            <span class="error-message">{@html I18n.t("offering.noResultErrorMessage")}</span>
+                                        {/if}
+                                        <span class="error-message">{@html genericErrorMessage(result.code)}</span>
+                                        {#if result.reference}
+                                            <span class="error-message">{@html I18n.t("error.reference", {reference: result.reference})}</span>
+                                        {/if}
+                                    </div>
                                 </div>
-                            </div>
-                        {:else if result && result.redirect}
-                            <div class="result">
-                                <div class="hero">
-                                    {@html questions}
+                            {:else if result && result.redirect}
+                                <div class="result">
+                                    <div class="hero">
+                                        {@html questions}
+                                    </div>
+                                    <div class="redirect">
+                                        <p>{I18n.t("offering.questions")}</p>
+                                        <span>{I18n.t("offering.questionsDetail")}</span>
+                                        <span>{I18n.t("offering.questionsWhere", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
+                                        <Button onClick={() => window.open(result.redirect, "_blank")}
+                                                label={I18n.t("offering.goToLMS")}/>
+                                    </div>
                                 </div>
-                                <div class="redirect">
-                                    <p>{I18n.t("offering.questions")}</p>
-                                    <span>{I18n.t("offering.questionsDetail")}</span>
-                                    <span>{I18n.t("offering.questionsWhere", {abbreviation: $offering.guestInstitution.abbreviation})}</span>
-                                    <Button onClick={() => window.open(result.redirect, "_blank")}
-                                            label={I18n.t("offering.goToLMS")}/>
+                            {:else if registrationSuccessful(result, finished)}
+                                <div class="result">
+                                    <div class="hero">
+                                        {@html highFive}
+                                    </div>
+                                    <Poll name={name}
+                                          crossInstitutionRequest={result.crossInstitutionRequest}
+                                          visible={showPoll}
+                                    />
+                                    <div class="final-action">
+                                        {@html lightBulb}
+                                        {#if result.message}
+                                            <span class="final-action-msg">{@html DOMPurify.sanitize(result.message)}</span>
+                                        {:else}
+                                            <span class="final-action-msg">{DOMPurify.sanitize(I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation}))}</span>
+                                        {/if}
+                                    </div>
                                 </div>
-                            </div>
-                        {:else if registrationSuccessful(result, finished)}
-                            <div class="result">
-                                <div class="hero">
-                                    {@html highFive}
-                                </div>
-                                <Poll name={name}
-                                      crossInstitutionRequest={result.crossInstitutionRequest}
-                                      visible={showPoll}
-                                />
-                                <div class="final-action">
-                                    {@html lightBulb}
-                                    {#if result.message}
-                                        <span class="final-action-msg">{@html DOMPurify.sanitize(result.message)}</span>
-                                    {:else}
-                                        <span class="final-action-msg">{DOMPurify.sanitize(I18n.t("offering.receiveMail", {abbreviation: $offering.guestInstitution.abbreviation}))}</span>
-                                    {/if}
-                                </div>
-                            </div>
-                        {/if}
+                            {/if}
+                        </div>
                     </div>
                 {/if}
             </div>
