@@ -7,5 +7,6 @@ export const offering = writable({
   },
   offering: {},
   correlationID: "",
-  associationId: null
+  associationId: null,
+  alliance: null
 });

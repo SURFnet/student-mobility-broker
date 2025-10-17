@@ -29,6 +29,7 @@ I18n.translations.nl = {
             enroll: "Aanmelden",
             relax: "Relax"
         },
+        endDate: "Eindigt {{date}}",
         approve: "Overdracht van je persoonlijke gegevens goedkeuren",
         enrolled: "Je meldt je aan voor",
         wait: "Even geduld. We melden je aan {{name}}",

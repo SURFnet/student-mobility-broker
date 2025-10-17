@@ -29,6 +29,7 @@ I18n.translations.en = {
             enroll: "Register",
             relax: "Relax"
         },
+        endDate: "Ends {{date}}",
         approve: "Approve the transfer of your personal information",
         enrolled: "You are enrolling for",
         wait: "Please wait while we enrol you {{name}}",
@@ -60,6 +61,7 @@ I18n.translations.en = {
         personalBullet2: "Both institutions are controllers in this processing of personal data",
         personalBullet3: "Read the <a href='{{privacyEndpoint}}' target='_blank'>full privacy statement</a>.",
         permission: "<b>{{guest}}</b> needs your permission to start this transfer.",
+        proceed: "Proceed with MyAcademicID",
         subPersonal: "{{abbreviation}} will request all necessary information for your enrolment at your home institution.",
         subPersonalGrant: "For this you need to grant {{abbreviation}} permission to do so.",
         approveButton: "Approve & continue",

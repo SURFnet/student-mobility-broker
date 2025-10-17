@@ -59,10 +59,12 @@
                 loaded = true;
             } else if (!step && !playGround && json.allowPlayground) {
                 //Mock the call from catalog to broker to ensure there is a selected offering
-                broker($config.playHomeInstitutionSchacHome,
+                broker(
+                    $config.playHomeInstitutionSchacHome,
                     $config.playGuestInstitutionSchacHome,
                     $config.offeringId,
                     "course",
+                    $config.alliance,
                     $config.startBrokerEndpoint);
             } else if (!playGround && step) {
                 selectedOffering()

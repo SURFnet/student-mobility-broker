@@ -702,10 +702,9 @@
                     margin-top: 0;
                 }
 
-
                 span.last {
                     display: inline-block;
-                    margin-bottom: 20px;
+                    margin: 8px 0 25px 0;
                 }
             }
 
@@ -856,6 +855,7 @@
                                                 {ADD_ATTR: ["target"]})}
                                         </li>
                                     </ul>
+                                    <p>{I18n.t("offering.proceed")}</p>
                                     <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
                                     <Button href="/authentication" class="myacademicid"
                                             label={I18n.t("offering.approveButton")} icon={myAcademicID}

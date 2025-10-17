@@ -82,6 +82,7 @@ public class BrokerController {
                             @Value("${config.poll_survey}") URI pollSurvey,
                             @Value("${config.play_home_institution_schacHome}") String playHomeInstitutionSchacHome,
                             @Value("${config.play_guest_institution_schacHome}") String playGuestInstitutionSchacHome,
+                            @Value("${config.play_alliance}") String playAlliance,
                             @Value("${config.play_offering_id}") String playOfferingID,
                             @Value("${config.catalog_url}") String catalogUrl,
                             @Value("${config.connection_timeout_millis}") int connectionTimeoutMillis,
@@ -115,6 +116,7 @@ public class BrokerController {
             this.featureToggles.put("playHomeInstitutionSchacHome", playHomeInstitutionSchacHome);
             this.featureToggles.put("playGuestInstitutionSchacHome", playGuestInstitutionSchacHome);
             this.featureToggles.put("offeringId", playOfferingID);
+            this.featureToggles.put("alliance", playAlliance);
         }
         this.restTemplate = new RestTemplate(getClientHttpRequestFactory(connectionTimeoutMillis));
         this.restTemplate.setInterceptors(Collections.singletonList((request, body, execution) -> {
@@ -164,10 +166,6 @@ public class BrokerController {
         String queryParams = play ? "?step=enroll&name=Johanna&correlationID=1" : "?step=approve";
         if (guestInstitution.isUseQueueIt()) {
             queryParams += "&q=" + URLEncoder.encode(queueService.getRedirectUrl(guestInstitution),
-                    Charset.defaultCharset());
-        }
-        if (StringUtils.hasText(brokerRequest.getAlliance())) {
-            queryParams += "&alliance="+ URLEncoder.encode(brokerRequest.getAlliance(),
                     Charset.defaultCharset());
         }
         return new RedirectView(clientUrl + queryParams);
@@ -234,6 +232,7 @@ public class BrokerController {
                 homeInstitution.getPersonAuthentication(),
                 homeInstitution.getAssociationsEndpoint(),
                 homeInstitution.getSchacHome(),
+                brokerRequest.getAlliance(),
                 homeInstitution.getScopes());
 
         Map<String, Object> result = new HashMap<>();

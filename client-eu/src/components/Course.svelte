@@ -13,6 +13,7 @@
     const formatOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
 
     let offeringType = null;
+
     onMount(() => {
         offeringType = $offering.offering.offeringType
     })
@@ -40,6 +41,23 @@
             max-width: 100%;
         }
 
+        .course-header {
+                      display: flex;
+            align-items: center;
+            .dates {
+                display: flex;
+                flex-direction: column;
+                .start-date {
+                    color: #008741;
+                    font-size: 22px;
+                    font-weight: 600;
+                }
+                .end-date {
+                    color: #353535;
+                    font-size: 14px;
+                }
+            }
+        }
 
         table {
             width: 100%;
@@ -97,15 +115,26 @@
 </style>
 {#if $offering.offering}
     <div class={`course ${className}`}>
+        <div class="course-header">
+            <div class="dates">
+                {#if $offering.offering.startDate}
+                    <span class="start-date">{$offering.offering.startDate}</span>
+                {/if}
+                {#if $offering.offering.endDate}
+                    <span class="end-date">{I18n.t("offering.endDate", {date: $offering.offering.endDate})}</span>
+                {/if}
+            </div>
+            {#if $offering.guestInstitution.logoURI}
+                <img class="logo" src={$offering.guestInstitution.logoURI} alt=""/>
+            {/if}
+        </div>
         <table>
             <tbody>
             <tr>
                 {#if $offering.offering[offeringType] && $offering.offering[offeringType].name}
                     <th class="name">{getValue($offering.offering[offeringType].name)}</th>
                 {/if}
-                {#if $offering.guestInstitution.logoURI}
-                    <th class="logo"><img src={$offering.guestInstitution.logoURI} alt=""/></th>
-                {/if}
+
             </tr>
             </tbody>
         </table>
