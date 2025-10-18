@@ -61,6 +61,7 @@ I18n.translations.nl = {
         personalBullet2: "Beide instellingen zijn verwerkingsverantwoordelijke van deze verwerking van persoonsgegevens",
         personalBullet3: "Lees het <a href='{{privacyEndpoint}}' target='_blank'>volledige privacy statement</a>.",
         permission: "Geef <b>{{guest}}</b> toestemming om overdracht te starten.",
+        proceed: "Ga door met    MyAcademicID",
         subPersonal: "{{abbreviation}} vraagt alle nodige informatie voor je inschrijving bij je thuisinstelling.",
         subPersonalGrant: "Hiervoor moet je  {{abbreviation}} toestemming geven.",
         approveButton: "Goedkeuren & doorgaan",

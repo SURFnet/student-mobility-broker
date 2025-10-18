@@ -37,6 +37,7 @@ public class BrokerControllerUnitTest {
             new URI("http://localhost/poll"),
             "utrecht.nl",
             "eindhoven.nl",
+            "euroteq",
             "1",
             "https://educhange.nl/",
             20_000,

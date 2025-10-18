@@ -55,6 +55,7 @@ public class InstitutionRegistryControllerTest extends AbstractIntegrationTest {
                         PersonAuthentication.HEADER,
                         "http://localhost:8081/associations",
                         "utrecht.nl",
+                        "euroteq",
                         "scope"))
                 .when()
                 .post("/api/validate-service-registry-endpoints")
@@ -73,6 +74,7 @@ public class InstitutionRegistryControllerTest extends AbstractIntegrationTest {
                         PersonAuthentication.HEADER,
                         "http://localhost:8081/associations",
                         null,
+                        "euroteq",
                         "scope"))
                 .when()
                 .post("/api/validate-service-registry-endpoints")
@@ -91,6 +93,7 @@ public class InstitutionRegistryControllerTest extends AbstractIntegrationTest {
                         PersonAuthentication.HEADER,
                         null,
                         "utrecht.nl",
+                        "euroteq",
                         "scope"))
                 .when()
                 .post("/api/validate-service-registry-endpoints")
@@ -108,6 +111,7 @@ public class InstitutionRegistryControllerTest extends AbstractIntegrationTest {
                         PersonAuthentication.FORM,
                         "http://localhost:8081/associations/me",
                         "nope",
+                        "euroteq",
                         "scope"))
                 .when()
                 .post("/api/validate-service-registry-endpoints")
@@ -125,6 +129,7 @@ public class InstitutionRegistryControllerTest extends AbstractIntegrationTest {
                         PersonAuthentication.HEADER,
                         null,
                         "utrecht.nl",
+                        "euroteq",
                         "scope"))
                 .when()
                 .post("/api/validate-service-registry-endpoints")
