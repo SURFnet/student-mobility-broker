@@ -66,11 +66,11 @@
             }
         }
         @media (max-width: 780px) {
-            top: -360px;
+            top: -130px;
             width: 100vw;
 
             &.visible {
-                right: -20px;
+                right: -50px;
             }
         }
 

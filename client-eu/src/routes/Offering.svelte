@@ -288,8 +288,9 @@
             .lottie-error {
                 width: 95%;
             }
-            :global(div.lottie-container div) {
-                width: 100%;
+            :global(div.lottie-container svg) {
+                width: 320px;
+                height: auto;
             }
         }
 
@@ -568,7 +569,7 @@
         background-color: #EEEFF1;
         border-radius: 10px;
         padding:30px;
-        gap: 10px;
+        gap: 25px;
 
         @media (max-width: 780px) {
             flex-direction: column;
@@ -774,8 +775,8 @@
                                     controls="{false}"
                                     renderer="svg"
                                     background="transparent"
-                                    height="100%"
-                                    width="100%"
+                                    height="320px"
+                                    width="auto"
                                     controlsLayout={null}
                             />
                         </div>
@@ -823,8 +824,8 @@
                                                 controls="{false}"
                                                 renderer="svg"
                                                 background="transparent"
-                                                height="100%"
-                                                width="100%"
+                                                height="320"
+                                                width="320"
                                                 controlsLayout={null}
                                         />
                                     </div>

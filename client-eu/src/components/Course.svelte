@@ -2,9 +2,9 @@
     import I18n from "i18n-js";
     import calendar from "../icons/icons-studmob/calendar-1.svg?raw";
     import launches from "../icons/icons-studmob/startup-launch.svg?raw";
-    import pin from "../icons/icons-studmob/pin.svg?raw";
-    import ects from "../icons/icons-studmob/school-book-trophy.svg?raw";
-    import lang from "../icons/icons-studmob/messages-bubble-square-text.svg?raw";
+    import euroteq from "../icons/eu-logos/logo_alli_euroteq.png";
+    import ewuu from "../icons/eu-logos/logo_alli_ewuu.png";
+    import lde from "../icons/eu-logos/logo_alli_lde.png";
     import {offering} from "../stores/offering";
     import {getValue} from "../utils/multiLanguageAttributes";
     import {onMount} from "svelte";
@@ -13,6 +13,12 @@
     const formatOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
 
     let offeringType = null;
+
+    const alliances = {
+        euroteq: euroteq,
+        ewuu: ewuu,
+        lde: lde,
+    }
 
     onMount(() => {
         offeringType = $offering.offering.offeringType
@@ -42,54 +48,50 @@
         }
 
         .course-header {
-                      display: flex;
+            display: flex;
             align-items: center;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #EEEFF1;
             .dates {
                 display: flex;
                 flex-direction: column;
+
                 .start-date {
                     color: #008741;
                     font-size: 22px;
                     font-weight: 600;
                 }
+
                 .end-date {
                     color: #353535;
                     font-size: 14px;
                 }
+            }
+
+            img {
+                margin-left: auto;
             }
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-
-            th.name {
-                text-align: left;
-                width: 70%;
-            }
-
-            th.logo {
-                width: 82px;
-
-                img {
-                    max-height: 100px;
-                    max-width: 100px;
+            td {
+                &.attribute {
+                    padding: 10px;
+                    width: 40%;
                 }
 
-            }
-
-            td.icon {
-                padding: 10px 0 0 0;
-
-                :global(svg) {
-                    width: 28px;
-                    height: auto;
+                &.value {
+                    width: 60%;
+                    font-weight: 600;
+                    img {
+                        width: 150px;
+                        height: auto;
+                    }
                 }
-            }
 
-            td.value {
-                width: 90%;
-                padding-left: 30px;
             }
 
             @media (max-width: 780px) {
@@ -98,17 +100,6 @@
                 }
             }
 
-            &.values {
-                margin: 10px 0 20px 0;
-
-                tr {
-                    border-top: 1px solid var(--color-primary-grey);
-
-                    &:last-child {
-                        border-bottom: 1px solid var(--color-primary-grey);
-                    }
-                }
-            }
         }
     }
 
@@ -128,63 +119,43 @@
                 <img class="logo" src={$offering.guestInstitution.logoURI} alt=""/>
             {/if}
         </div>
-        <table>
-            <tbody>
-            <tr>
-                {#if $offering.offering[offeringType] && $offering.offering[offeringType].name}
-                    <th class="name">{getValue($offering.offering[offeringType].name)}</th>
-                {/if}
-
-            </tr>
-            </tbody>
-        </table>
         <table class="values">
             <tbody>
+            {#if $offering.guestInstitution.name}
+                <tr>
+                    <td class="attribute">{I18n.t("course.location")}</td>
+                    <td class="value">{$offering.guestInstitution.name}</td>
+                </tr>
+            {/if}
+            {#if $offering.offering.teachingLanguage}
+                <tr>
+                    <td class="attribute">{I18n.t("course.language")}</td>
+                    <td class="value">{I18n.translations[I18n.locale].offering.lang[$offering.offering.teachingLanguage] ?
+                        I18n.t(`offering.lang.${$offering.offering.teachingLanguage}`) :
+                        $offering.offering.teachingLanguage}</td>
+                </tr>
+            {/if}
             {#if $offering.offering[offeringType] && $offering.offering[offeringType].studyLoad}
                 <tr>
-                    <td class="icon">{@html ects}</td>
+                    <td class="attribute">{I18n.t("course.points")}</td>
                     <td class="value">{I18n.t("offering.studyLoad", {
                         value: $offering.offering[offeringType].studyLoad.value,
                         studyLoadUnit: $offering.offering[offeringType].studyLoad.studyLoadUnit.toUpperCase()
                     })}</td>
                 </tr>
             {/if}
-            {#if $offering.guestInstitution.name}
+            {#if $offering.enrollmentRequest.alliance}
                 <tr>
-                    <td class="icon">{@html pin}</td>
-                    <td class="value">{$offering.guestInstitution.name}</td>
+                    <td class="attribute">{I18n.t("course.alliance")}</td>
+                    <td class="value">{$offering.enrollmentRequest.alliance}</td>
                 </tr>
             {/if}
-            {#if $offering.offering.teachingLanguage}
+            {#if $offering.enrollmentRequest.alliance && alliances[$offering.enrollmentRequest.alliance.toLowerCase()]}
                 <tr>
-                    <td class="icon">{@html lang}</td>
-                    <td class="value">{I18n.translations[I18n.locale].offering.lang[$offering.offering.teachingLanguage] ?
-                        I18n.t(`offering.lang.${$offering.offering.teachingLanguage}`) :
-                        $offering.offering.teachingLanguage}</td>
-                </tr>
-            {/if}
-            </tbody>
-        </table>
-        <table>
-            <tbody>
-            <tr>
-                <th class="name">{I18n.t("offering.dateTime")}</th>
-            </tr>
-            </tbody>
-        </table>
-        <table class="values">
-            <tbody>
-            {#if $offering.offering.academicSession && $offering.offering.academicSession.name}
-                <tr>
-                    <td class="icon">{@html calendar}</td>
-                    <td class="value"><strong>{getValue($offering.offering.academicSession.name)}</strong></td>
-                </tr>
-            {/if}
-            {#if $offering.offering.academicSession && $offering.offering.academicSession.startDate}
-                <tr>
-                    <td class="icon">{@html launches}</td>
-                    <td class="value">{new Date($offering.offering.academicSession.startDate)
-                        .toLocaleString(I18n.locale === "nl" ? "nl-NL" : "en-GB", formatOptions) }</td>
+                    <td class="attribute"></td>
+                    <td class="value">
+                        <img alt="Alliance" src={alliances[$offering.enrollmentRequest.alliance.toLowerCase()]} />
+                    </td>
                 </tr>
             {/if}
             </tbody>

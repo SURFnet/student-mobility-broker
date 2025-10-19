@@ -147,6 +147,12 @@ I18n.translations.en = {
             identifier: "Unique identifier"
         }
     },
+    course: {
+        location: "Location",
+        language: "Language",
+        points: "Points",
+        alliance: "Alliance"
+    },
     poll: {
         registerQuestion: "How easy or hard was it for you to register?",
         scores: {
