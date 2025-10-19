@@ -50,7 +50,7 @@
         }
 
         &.visible {
-            right: -100%;
+            right: 0;
             z-index: 999;
         }
 
@@ -60,11 +60,6 @@
             }
         }
 
-        @media (max-width: 870px) {
-            &.visible {
-                right: 140px;
-            }
-        }
         @media (max-width: 780px) {
             top: -130px;
             width: 100vw;

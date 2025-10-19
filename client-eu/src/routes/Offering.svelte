@@ -1,17 +1,10 @@
 <script>
     import I18n from "i18n-js";
-    import check from "../icons/icons-studmob/Check-narrow.svg?raw";
-    import arrowLeft from "../icons/arrow-left.svg?raw";
-    import transfer from "../icons/icons-studmob/data-transfer-check.svg?raw";
-    import transferWhite from "../icons/icons-studmob/data-transfer-check-white.svg?raw";
     import enroll from "../icons/icons-studmob/official-building-3.svg?raw";
-    import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg?raw";
-    import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg?raw";
     import myAcademicID from "../icons/logo_myAcademicID.svg?raw";
     import balancer from "../icons/balancer.svg?raw";
     import DOMPurify from "isomorphic-dompurify";
     import Cookies from "js-cookie";
-    import relax from "../icons/icons-studmob/cocktail-glass.svg?raw";
     import highFive from "../icons/icons-studmob/undraw_High_five.svg?raw";
     import moody from "../icons/icons-studmob/undraw_feeling_blue_4b7q.svg?raw";
     import accessDenied from "../icons/undraw_access_denied_422.svg?raw";
@@ -188,37 +181,6 @@
     const registrationSuccessful = (currentResult, isFinished) => currentResult && currentResult.code === 200 && !result.redirect && isFinished;
     const pendingApproval = currentStep => currentStep === STEPS.approve;
 
-    $: icons = [
-        {
-            name: I18n.t("offering.wizard.course"),
-            icon: check,
-            className: "done",
-            action: () => balancing = !balancing
-        },
-        {
-            name: I18n.t("offering.wizard.transfer"),
-            icon: pendingApproval(step) ? transfer : transferWhite,
-            className: pendingApproval(step) ? "current" : "done"
-        },
-        {
-            name: I18n.t("offering.wizard.enroll"),
-            icon: pendingApproval(step) ? enroll : registrationSuccessful(result, finished) ? enrollWhite : enrollBlue,
-            className: pendingApproval(step) ? "todo" : registrationSuccessful(result, finished) ? "done" : "current",
-        },
-        {
-            name: I18n.t("offering.wizard.relax"),
-            icon: relax,
-            className: registrationSuccessful(result, finished) ? "current" : "todo"
-        }
-    ];
-
-    $: statuses = [
-        "transparent",
-        "done",
-        pendingApproval(step) ? "todo" : "done",
-        registrationSuccessful(result, finished) ? "done" : "todo"
-    ];
-
 </script>
 
 <style lang="scss">
@@ -242,7 +204,7 @@
             }
 
             a.right {
-                margin-left:  auto;
+                margin-left: auto;
                 color: white;
                 text-decoration: none;
             }
@@ -357,6 +319,10 @@
 
     h2 {
         margin: 20px 0 20px 0;
+
+        &.mobile, &.desktop {
+            margin: 0;
+        }
     }
 
     @media (max-width: 780px) {
@@ -367,82 +333,6 @@
         }
     }
 
-    div.icons {
-        display: flex;
-        justify-content: space-between;
-        position: absolute;
-        top: -39px;
-        left: 1px;
-        width: 100%;
-
-        @media (max-width: 780px) {
-            top: -30px;
-        }
-
-        div.icon-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 2;
-            background-color: transparent;
-
-            @media (max-width: 780px) {
-                max-width: 80px;
-                text-align: center;
-            }
-
-            p {
-                font-weight: 600;
-                margin: 10px 0 4px 0;
-            }
-
-            &.done, &.current {
-                p {
-                    color: var(--color-primary-blue);
-                }
-            }
-        }
-
-        div.icon {
-            border-radius: 50%;
-            width: 90px;
-            height: 90px;
-            display: flex;
-            z-index: 2;
-            position: relative;
-
-            @media (max-width: 780px) {
-                width: 75px;
-                height: 75px;
-            }
-
-            span {
-                margin: auto;
-
-                :global(svg) {
-                    width: 45px;
-                    height: auto;
-                }
-            }
-
-            &.done {
-                background-color: var(--color-primary-blue);
-            }
-
-            &.current {
-                background-color: white;
-                border: 3px solid var(--color-primary-blue);
-                color: var(--color-primary-blue);
-                fill: var(--color-primary-blue);
-            }
-
-            &.todo {
-                background-color: var(--color-secondary-blue);
-            }
-
-        }
-
-    }
 
     div.header {
         display: flex;
@@ -473,23 +363,6 @@
         :global(svg) {
             width: auto;
             height: 30px;
-        }
-    }
-
-    div.link-back {
-        color: #0077c8;
-        display: flex;
-        cursor: pointer;
-        margin-top: 15px;
-        align-items: center;
-
-        :global(svg) {
-            height: 20px;
-            margin-right: 10px;
-        }
-
-        a {
-            margin-top: -5px;
         }
     }
 
@@ -532,47 +405,19 @@
         }
     }
 
-    div.lines {
-        display: flex;
-        height: 12px;
-        width: 100%;
-        padding: 0 10px;
-        position: relative;
-        background-color: transparent;
-        margin: 70px 0 95px 0;
-
-        @media (max-width: 780px) {
-            padding: 0;
-            margin: 40px 0 120px 0;
-        }
-
-        div.line {
-            height: 12px;
-            width: calc(100% / 3 - 2px);
-
-            &.transparent {
-                width: 6px;
-            }
-
-            &.todo {
-                background-color: var(--color-secondary-blue);
-            }
-
-            &.done {
-                background-color: var(--color-primary-blue);
-            }
-        }
-    }
-
     .course-container {
         display: flex;
         background-color: #EEEFF1;
         border-radius: 10px;
-        padding:30px;
+        padding: 30px;
         gap: 25px;
 
         @media (max-width: 780px) {
             flex-direction: column;
+            &:not(.with-course) {
+                padding: 0 30px 30px 30px;
+            }
+
         }
     }
 
@@ -627,9 +472,7 @@
                     margin-top: 10px;
                     font-size: 15px;
                     font-style: italic;
-                    max-width: 240px;
                     word-break: break-word;
-                    text-align: center;
 
                     @media (max-width: 780px) {
                         max-width: 100%;
@@ -699,10 +542,6 @@
                 display: flex;
                 flex-direction: column;
 
-                @media (max-width: 780px) {
-                    margin-top: 0;
-                }
-
                 span.last {
                     display: inline-block;
                     margin: 8px 0 25px 0;
@@ -724,7 +563,7 @@
             <h2 class="left">
                 {I18n.t("offering.registration")}
             </h2>
-                <a class="right" href="{$config.catalogUrl}">{I18n.t("offering.backToEduXchange")}</a>
+            <a class="right" href="{$config.catalogUrl}">{I18n.t("offering.backToEduXchange")}</a>
         </div>
     </div>
     <div class="container">
@@ -809,11 +648,13 @@
                         </div>
                     </div>
                 {:else}
-                    <div class="course-container">
+                    <div class={`course-container ${pendingApproval(step) ? "with-course" : ""}`}>
                         <Course className={step === STEPS.approve ? "mobile" : "desktop"}/>
                         <div class="status">
                             <h2 class="desktop">{title}</h2>
-                            <h2 class="mobile">{subTitle}</h2>
+                            {#if !pendingApproval(step)}
+                                <h2 class="mobile">{subTitle}</h2>
+                            {/if}
                             {#if step === STEPS.enroll}
                                 <div class="result">
                                     <div class="lottie-container">

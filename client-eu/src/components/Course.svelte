@@ -80,11 +80,11 @@
             td {
                 &.attribute {
                     padding: 10px;
-                    width: 40%;
+                    width: 35%;
                 }
 
                 &.value {
-                    width: 60%;
+                    width: 65%;
                     font-weight: 600;
                     img {
                         width: 150px;
