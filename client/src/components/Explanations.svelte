@@ -2,7 +2,7 @@
   import I18n from "i18n-js";
   import transferGrey from "../icons/icons-studmob/data-transfer-check-grey.svg?raw";
   import enrollGrey from "../icons/icons-studmob/official-building-3-grey.svg?raw";
-  import eduIDGrey from "../icons/logo_eduID_grey.svg?raw";
+  import eduIDGrey from "../icons/eduID_footer.svg?raw";
   import relaxGrey from "../icons/icons-studmob/cocktail-glass-grey.svg?raw";
   import {offering} from "../stores/offering";
   import hand from "../icons/icons-studmob/noun_Up hand drawn arrow_1563367.svg?raw";

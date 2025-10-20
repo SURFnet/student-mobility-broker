@@ -16,7 +16,7 @@
     .button {
         padding: 10px 20px;
         background-color: var(--color-button-blue);
-        border-radius: 8px;
+        border-radius: 4px;
         color: white;
         text-decoration: none;
         cursor: pointer;
@@ -33,7 +33,7 @@
         }
 
         &.icon {
-            padding: 2px 16px 2px 16px;
+            padding: 4px 16px 4px 4px;
             display: flex;
             align-content: center;
             align-items: center;
@@ -48,6 +48,7 @@
             background-color: white;
             color: #5d6872;
             border: 1px solid #5d6872;
+
             &:hover {
                 background-color: #f8f8f8;
                 color: black;
@@ -71,6 +72,12 @@
             margin-right: 12px;
         }
 
+        :global(svg.eduid) {
+            width: 32px;
+            height: auto;
+            border-radius: 4px;
+        }
+
     }
 
 
@@ -85,7 +92,7 @@
    on:click|preventDefault|stopPropagation={() => !disabled && onClick()}
    on:keydown={handleLinkClick}>
     {#if icon}
-        <span class="html-icon">{@html icon}</span>
+        {@html icon}
     {/if}
     <span>{label}</span>
 </a>

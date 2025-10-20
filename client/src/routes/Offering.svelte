@@ -7,7 +7,7 @@
     import enrollBlue from "../icons/icons-studmob/official-building-3-blue.svg?raw";
     import chevronLeft from "../icons/chevron-left.svg?raw";
     import enrollWhite from "../icons/icons-studmob/official-building-3-white.svg?raw";
-    import eduID from "../icons/logo_eduID.svg?raw";
+    import eduID from "../icons/eduID_square.svg?raw";
     import balancer from "../icons/balancer.svg?raw";
     import DOMPurify from "isomorphic-dompurify";
     import Cookies from "js-cookie";
@@ -791,7 +791,9 @@
                                     </li>
                                 </ul>
                                 <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
-                                <Button href="/authentication" label={I18n.t("offering.approveButton")} icon={eduID}
+                                <Button href="/authentication"
+                                        label={I18n.t("offering.approveButton")}
+                                        icon={eduID}
                                         onClick={startAuthentication}/>
                             </div>
                         {:else if result && result.code >= 400}

@@ -1,7 +1,7 @@
 <script>
     import I18n from "i18n-js";
     import enroll from "../icons/icons-studmob/official-building-3.svg?raw";
-    import myAcademicID from "../icons/logo_myAcademicID.svg?raw";
+    import myAcademicID from "../icons/eu-logos/MyAID_square.svg?raw";
     import balancer from "../icons/balancer.svg?raw";
     import DOMPurify from "isomorphic-dompurify";
     import Cookies from "js-cookie";
@@ -450,6 +450,7 @@
                 flex-direction: column;
                 position: relative;
                 margin-top: 20px;
+
                 h3 {
                     margin-bottom: 20px;
                 }
