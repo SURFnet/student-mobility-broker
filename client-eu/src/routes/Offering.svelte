@@ -699,8 +699,10 @@
                                     </ul>
                                     <p>{I18n.t("offering.proceed")}</p>
                                     <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
-                                    <Button href="/authentication" class="myacademicid"
-                                            label={I18n.t("offering.approveButton")} icon={myAcademicID}
+                                    <Button href="/authentication"
+                                            class="myacademicid"
+                                            label={I18n.t("offering.approveButton")}
+                                            icon={myAcademicID}
                                             onClick={startAuthentication}/>
                                 </div>
                             {:else if result && result.code >= 400}
