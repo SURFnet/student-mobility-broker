@@ -147,6 +147,14 @@ I18n.translations.nl = {
             identifier: "Unieke identificatie"
         }
     },
+    course: {
+        location: "Locatie",
+        language: "Taal",
+        points: "Punten",
+        period: "Periode",
+        level: "Niveau",
+        alliance: "Alliantie"
+    },
     poll: {
         registerQuestion: "Hoe makkelijk of moeilijk vond je het aanmelden?",
         scores: {

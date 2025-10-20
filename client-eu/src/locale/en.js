@@ -151,6 +151,8 @@ I18n.translations.en = {
         location: "Location",
         language: "Language",
         points: "Points",
+        period: "Period",
+        level: "Level",
         alliance: "Alliance"
     },
     poll: {

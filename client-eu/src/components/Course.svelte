@@ -1,16 +1,13 @@
 <script>
     import I18n from "i18n-js";
-    import calendar from "../icons/icons-studmob/calendar-1.svg?raw";
-    import launches from "../icons/icons-studmob/startup-launch.svg?raw";
     import euroteq from "../icons/eu-logos/logo_alli_euroteq.png";
     import ewuu from "../icons/eu-logos/logo_alli_ewuu.png";
     import lde from "../icons/eu-logos/logo_alli_lde.png";
     import {offering} from "../stores/offering";
-    import {getValue} from "../utils/multiLanguageAttributes";
     import {onMount} from "svelte";
+    import {capitalize, getValue} from "../utils/multiLanguageAttributes.js";
 
     export let className = "desktop";
-    const formatOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
 
     let offeringType = null;
 
@@ -21,7 +18,7 @@
     }
 
     onMount(() => {
-        offeringType = $offering.offering.offeringType
+        offeringType = $offering.offering.offeringType;
     })
 </script>
 
@@ -53,6 +50,7 @@
             padding-bottom: 20px;
             margin-bottom: 20px;
             border-bottom: 1px solid #EEEFF1;
+
             .dates {
                 display: flex;
                 flex-direction: column;
@@ -71,21 +69,27 @@
 
             img {
                 margin-left: auto;
+                width: auto;
+                height: 48px;
+                border-radius: 4px;
+                border: 0.48px solid #CED1D7
             }
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+
             td {
                 &.attribute {
-                    padding: 10px;
+                    padding: 4px 0;
                     width: 35%;
                 }
 
                 &.value {
                     width: 65%;
                     font-weight: 600;
+
                     img {
                         width: 150px;
                         height: auto;
@@ -121,10 +125,10 @@
         </div>
         <table class="values">
             <tbody>
-            {#if $offering.guestInstitution.name}
+            {#if $offering.offering.addresses && $offering.offering.addresses[0]?.city}
                 <tr>
                     <td class="attribute">{I18n.t("course.location")}</td>
-                    <td class="value">{$offering.guestInstitution.name}</td>
+                    <td class="value">{$offering.offering.addresses[0]?.city}</td>
                 </tr>
             {/if}
             {#if $offering.offering.teachingLanguage}
@@ -135,6 +139,12 @@
                         $offering.offering.teachingLanguage}</td>
                 </tr>
             {/if}
+            {#if $offering.offering[offeringType] && $offering.offering[offeringType].level}
+                <tr>
+                    <td class="attribute">{I18n.t("course.level")}</td>
+                    <td class="value">{capitalize($offering.offering[offeringType].level)}</td>
+                </tr>
+            {/if}
             {#if $offering.offering[offeringType] && $offering.offering[offeringType].studyLoad}
                 <tr>
                     <td class="attribute">{I18n.t("course.points")}</td>
@@ -142,6 +152,12 @@
                         value: $offering.offering[offeringType].studyLoad.value,
                         studyLoadUnit: $offering.offering[offeringType].studyLoad.studyLoadUnit.toUpperCase()
                     })}</td>
+                </tr>
+            {/if}
+            {#if $offering.offering.academicSession && $offering.offering.academicSession?.name?.length > 0}
+                <tr>
+                    <td class="attribute">{I18n.t("course.period")}</td>
+                    <td class="value">{getValue($offering.offering.academicSession.name)}</td>
                 </tr>
             {/if}
             {#if $offering.enrollmentRequest.alliance}
@@ -154,7 +170,7 @@
                 <tr>
                     <td class="attribute"></td>
                     <td class="value">
-                        <img alt="Alliance" src={alliances[$offering.enrollmentRequest.alliance.toLowerCase()]} />
+                        <img alt="Alliance" src={alliances[$offering.enrollmentRequest.alliance.toLowerCase()]}/>
                     </td>
                 </tr>
             {/if}

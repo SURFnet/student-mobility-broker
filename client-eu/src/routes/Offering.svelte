@@ -449,7 +449,7 @@
                 display: flex;
                 flex-direction: column;
                 position: relative;
-
+                margin-top: 20px;
                 h3 {
                     margin-bottom: 20px;
                 }
