@@ -89,6 +89,7 @@ public class BrokerController {
                             @Value("${config.edu_hub.gateway_url}") URI eduHubGatewayUrl,
                             @Value("${config.edu_hub.user}") String eduHubUser,
                             @Value("${config.edu_hub.password}") String eduHubPassword,
+                            @Value("${config.broker_instance}") BrokerInstance brokerInstance,
                             InstitutionRegistry institutionRegistry,
                             QueueService queueService) {
         this.clientUrl = clientUrl;
@@ -111,6 +112,7 @@ public class BrokerController {
         this.featureToggles.put("pollEnabled", pollEnabled);
         this.featureToggles.put("surveyEnabled", surveyEnabled);
         this.featureToggles.put("pollSurvey", pollSurvey);
+        this.featureToggles.put("brokerInstance", brokerInstance);
 
         if (allowPlayground) {
             this.featureToggles.put("playHomeInstitutionSchacHome", playHomeInstitutionSchacHome);
@@ -138,7 +140,8 @@ public class BrokerController {
     @PostMapping(value = "/api/broker", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public View brokerRequest(HttpServletRequest request,
                               @ModelAttribute BrokerRequest brokerRequest,
-                              @RequestParam(value = "play", required = false, defaultValue = "false") boolean play)
+                              @RequestParam(value = "play", required = false, defaultValue = "false") boolean play,
+                              @RequestParam(value = "lang", required = false, defaultValue = "en") String lang)
             throws UnsupportedEncodingException {
         LOG.debug("Called by the external catalog form submit with BrokerRequest " + brokerRequest);
         Institution guestInstitution;
@@ -164,11 +167,12 @@ public class BrokerController {
         LOG.debug(String.format("Started session %s for brokerRequest: %s", request.getSession().getId(), brokerRequest));
 
         String queryParams = play ? "?step=enroll&name=Johanna&correlationID=1" : "?step=approve";
+        String languageParam =  "&" + ("en".equals(lang) ? lang : "nl");
         if (guestInstitution.isUseQueueIt()) {
             queryParams += "&q=" + URLEncoder.encode(queueService.getRedirectUrl(guestInstitution),
                     Charset.defaultCharset());
         }
-        return new RedirectView(clientUrl + queryParams);
+        return new RedirectView(clientUrl + queryParams + languageParam);
     }
 
     /*

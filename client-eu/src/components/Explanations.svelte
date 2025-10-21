@@ -1,16 +1,22 @@
 <script>
     import I18n from "i18n-js";
-    import transferGrey from "../icons/icons-studmob/data-transfer-check-grey.svg?raw";
+    import transferGrey from "../icons/data-transfer-square-horizontal.svg?raw";
     import enrollGrey from "../icons/icons-studmob/official-building-3-grey.svg?raw";
     import myAcademicIDGrey from "../icons/eu-logos/MyAID_footer.svg?raw";
-    import {offering} from "../stores/offering";
+    import eduIDGrey from "../icons/eduID_footer.svg?raw";
     import hand from "../icons/icons-studmob/noun_Up hand drawn arrow_1563367.svg?raw";
     import DOMPurify from "isomorphic-dompurify";
+    import {config,} from "../stores/config";
+    import {offering} from "../stores/offering";
 
+    const isEUInstance = $config.brokerInstance === "euroteq";
     const explanations = [
-        {name: "myAcademicID", icon: myAcademicIDGrey},
+        {
+            name: isEUInstance ? "myAcademicID" : "eduID",
+            icon: isEUInstance ? myAcademicIDGrey : eduIDGrey
+        },
         {name: "transfer", icon: transferGrey},
-        {name: "enrollment", icon: enrollGrey},
+        {name: "enrollment", icon: enrollGrey}
     ];
 
 </script>
@@ -25,14 +31,14 @@
         }
 
         .explanations {
-            max-width: 990px;
+            max-width: 913px;
             margin: auto;
             display: flex;
             flex-direction: column;
             position: relative;
 
-            @media (max-width: 780px) {
-                margin-left: 50px;
+            @media (max-width: 1000px) {
+                margin-left: 60px;
                 span.hand {
                     display: none;
                 }
@@ -53,7 +59,7 @@
                 color: var(--color-tertiary-grey);
 
                 &.title {
-                    font-weight: 600;
+                    font-weight: 500;
                     margin-bottom: 3px;
                 }
 
@@ -76,7 +82,7 @@
                 border-radius: 4px;
                 margin-bottom: 30px;
 
-                @media (max-width: 780px) {
+                @media (max-width: 1000px) {
                     max-width: 420px;
                 }
 
@@ -100,6 +106,7 @@
                         :global(svg) {
                             width: 45px;
                             height: auto;
+                            fill: #807c7c;
                         }
                     }
 
@@ -129,7 +136,8 @@
                     </div>
                     <div class="text">
                         <p class="title">{@html I18n.t(`explanation.${name}.title`)}</p>
-                        <p>{@html DOMPurify.sanitize(I18n.t(`explanation.${name}.subTitle`, {abbreviation: $offering.guestInstitution.abbreviation}))}</p>
+                        <p>{@html DOMPurify.sanitize(I18n.t(`explanation.${name}.subTitle`,
+                            {abbreviation: $offering.guestInstitution.abbreviation}))}</p>
                     </div>
                 </div>
             {/each}

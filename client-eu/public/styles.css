@@ -11,33 +11,6 @@ html {
 }
 
 @font-face {
-    font-family: Nunito;
-    src: url("/fonts/Nunito/Nunito-Regular.woff2") format("woff2"),
-    url("/fonts/Nunito/Nunito-Regular.ttf") format("truetype");
-    font-weight: 400;
-    font-style: normal;
-    font-display: fallback
-}
-
-@font-face {
-    font-family: Nunito;
-    src: url("/fonts/Nunito/Nunito-SemiBold.woff2") format("woff2"),
-    url("/fonts/Nunito/Nunito-SemiBold.ttf") format("truetype");
-    font-weight: 600;
-    font-style: normal;
-    font-display: fallback
-}
-
-@font-face {
-    font-family: Nunito;
-    src: url("/fonts/Nunito/Nunito-Bold.woff2") format("woff2"),
-    url("/fonts/Nunito/Nunito-Bold.ttf") format("truetype");
-    font-weight: 700;
-    font-style: normal;
-    font-display: fallback
-}
-
-@font-face {
     font-family: 'Source Sans Pro';
     src: url("/fonts/Source_Sans_Pro/SourceSansPro-Regular.woff2") format("woff2"),
     url("/fonts/Source_Sans_Pro/SourceSansPro-Regular.ttf") format("truetype");
@@ -50,7 +23,7 @@ html {
     font-family: 'Source Sans Pro';
     src: url("/fonts/Source_Sans_Pro/SourceSansPro-SemiBold.woff2") format("woff2"),
     url("/fonts/Source_Sans_Pro/SourceSansPro-SemiBold.ttf") format("truetype");
-    font-weight: 600;
+    font-weight: 500;
     font-style: normal;
     font-display: fallback
 }
@@ -59,7 +32,7 @@ html {
     font-family: 'Source Sans Pro';
     src: url("/fonts/Source_Sans_Pro/SourceSansPro-Bold.woff2") format("woff2"),
     url("/fonts/Source_Sans_Pro/SourceSansPro-Bold.ttf") format("truetype");
-    font-weight: 700;
+    font-weight: 600;
     font-style: normal;
     font-display: fallback
 }
@@ -89,7 +62,7 @@ a, a:visited {
 }
 
 h1, h2, h3, h4 {
-    font-family: Nunito, sans-serif;
+    font-family: "Source Sans Pro", sans-serif;
 }
 
 h1 {
@@ -101,7 +74,7 @@ h1 {
 h2 {
     font-size: 24px;
     line-height: 34px;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 h2.green {
@@ -114,7 +87,7 @@ h2.top {
     margin: 0 0 15px 0;
     word-break: break-word;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 h2.top span {
@@ -126,7 +99,7 @@ h2.top span {
 h3 {
     font-size: 18px;
     line-height: 26px;
-    font-weight: 700;
+    font-weight: 500;
 }
 
 h4 {

@@ -153,6 +153,7 @@ I18n.translations.nl = {
         },
         why: "Toelichting",
         join: "Meedoen aan een interview over je ervaring? Plan een afspraak en verdien <strong>€35</strong>.",
+        joinEU: "Meedoen aan een interview over je ervaring? Plan een afspraak en verdien <strong>€35</strong>.",
         submit: "Verstuur & klaar",
         submitAppointment: "Verstuur & Plan een afsrpaak",
         thanksFeedback: "Dankjewel voor je feedback!",

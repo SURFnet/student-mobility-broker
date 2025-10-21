@@ -2,6 +2,7 @@
     import I18n from "i18n-js";
     import enroll from "../icons/icons-studmob/official-building-3.svg?raw";
     import myAcademicID from "../icons/eu-logos/MyAID_square.svg?raw";
+    import eduID from "../icons/eduID_square.svg?raw";
     import balancer from "../icons/balancer.svg?raw";
     import DOMPurify from "isomorphic-dompurify";
     import Cookies from "js-cookie";
@@ -39,6 +40,8 @@
 
     export let offeringError = null;
 
+    const isEUInstance = $config.brokerInstance === "euroteq";
+
     let title = I18n.t("offering.approve");
     let subTitle = I18n.t("offering.enrolled");
     let activity = null;
@@ -56,7 +59,7 @@
     let offeringType = null;
 
     onMount(() => {
-        offeringType = $offering.offering.offeringType
+        offeringType = $offering.offering.offeringType;
         step = getParameterByName("step");
         error = getParameterByName("error");
         if (error || offeringError) {
@@ -181,6 +184,13 @@
     const registrationSuccessful = (currentResult, isFinished) => currentResult && currentResult.code === 200 && !result.redirect && isFinished;
     const pendingApproval = currentStep => currentStep === STEPS.approve;
 
+    const changeTheme = () => {
+        //change query parameter and reload, in App.svelte look for override theme
+        const newBrokerInstance = $config.brokerInstance = isEUInstance ? "nl" : "euroteq";
+        $config.brokerInstance = newBrokerInstance;
+        debugger;
+    };
+
 </script>
 
 <style lang="scss">
@@ -190,8 +200,12 @@
         background-color: #004C97;
         padding: 12px 0;
 
+        @media (max-width: 1000px) {
+            padding: 12px 20px;
+        }
+
         .eu-header-inner {
-            width: 1067px;
+            width: 990px;
             color: white;
             margin: 0 auto;
             display: flex;
@@ -199,7 +213,7 @@
 
             .left {
                 font-size: 26px;
-                font-weight: 600;
+                font-weight: 500;
                 margin: 0;
             }
 
@@ -213,7 +227,7 @@
     }
 
     .container {
-        max-width: 1067px;
+        max-width: 990px;
         margin: 0 auto 40px auto;
         width: 100%;
         display: flex;
@@ -228,13 +242,18 @@
         }
 
         h2.desktop, h2.mobile {
-            font-weight: bold;
+            font-weight: 500;
             font-size: 24px;
         }
 
         .lottie-error {
             margin: auto;
             width: 70%;
+        }
+
+        div.lottie-container {
+            display: flex;
+            max-width: 240px;
         }
 
         @media (max-width: 780px) {
@@ -251,13 +270,17 @@
                 width: 95%;
             }
             :global(div.lottie-container svg) {
-                width: 320px;
+                width: 240px;
                 height: auto;
             }
         }
 
-        @media (max-width: 780px) {
+        @media (max-width: 1000px) {
             padding: 0 20px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 780px) {
             .desktop {
                 display: none;
             }
@@ -266,11 +289,14 @@
             }
         }
 
-        span.balancer {
+        div.playground {
             position: absolute;
             top: 0;
-            right: 50%;
+            right: 35%;
+            display: flex;
+            gap: 20px;
             cursor: pointer;
+            align-items: center;
 
             :global(svg) {
                 width: auto;
@@ -289,7 +315,7 @@
         }
 
         p.error-msg {
-            font-weight: 600;
+            font-weight: 500;
         }
 
         :global(span.balancing svg #rotate-container-left ) {
@@ -329,21 +355,25 @@
         h3 {
             font-size: 32px;
             line-height: 34px;
-            font-weight: 600;
+            font-weight: 500;
         }
     }
 
 
     div.header {
         display: flex;
-        margin-top: 40px;
+        margin-top: 20px;
         flex-direction: column;
         @media (max-width: 780px) {
             display: block;
         }
 
+        .sub-header {
+            display: flex;
+        }
+
         h2.offering-title {
-            font-weight: 600;
+            font-weight: 500;
             font-size: 32px
         }
 
@@ -367,15 +397,14 @@
     }
 
     div.language-switcher {
-        margin: 15px 0 0 auto;
-        display: none;
+        margin-left: auto;
 
         ul {
             list-style: none;
 
             li {
                 display: inline-block;
-                padding: 0 10px;
+                padding: 0 6px;
             }
 
             li:last-child {
@@ -388,7 +417,6 @@
             }
 
             li.active a {
-                font-weight: 600;
                 color: black;
                 cursor: default;
             }
@@ -411,6 +439,7 @@
         border-radius: 10px;
         padding: 30px;
         gap: 25px;
+        width: 100%;
 
         @media (max-width: 780px) {
             flex-direction: column;
@@ -429,15 +458,9 @@
 
         .status {
             padding: 0 25px;
-            display: flex;
-            flex-direction: column;
-            min-width: 60%;
-            max-width: 60%;
 
             @media (max-width: 780px) {
                 padding: 15px 0 0 0;
-                min-width: 100%;
-                max-width: 100%;
             }
 
 
@@ -463,6 +486,8 @@
                     background: linear-gradient(to left, var(--color-primary-grey) 50%, var(--color-primary-blue) 50%) right;
                     background-size: 200%;
                     transition: 6.0s linear;
+                    align-self: start;
+                    max-width: 300px;
 
                     &.start {
                         background-position: left;
@@ -481,7 +506,7 @@
                 }
 
                 div.hero {
-                    margin-bottom: 20px;
+                    margin: 20px 0;
 
                     @media (max-width: 780px) {
                         display: flex;
@@ -529,7 +554,7 @@
                     flex-direction: column;
 
                     p {
-                        font-weight: 600;
+                        font-weight: 500;
                     }
 
                     span {
@@ -569,29 +594,35 @@
     </div>
     <div class="container">
         <div class="offering">
-            <!--            <div class="header">-->
-            <!--                <div class="language-switcher">-->
-            <!--                    <ul>-->
-            <!--                        <li class="{I18n.locale === 'en' ? 'active' : 'non_active'}">-->
-            <!--                            <a href="/en" on:click|preventDefault|stopPropagation={changeLanguage("en")}>EN</a>-->
-            <!--                        </li>-->
-            <!--                        <li class="{I18n.locale === 'nl' ? 'active' : 'non_active'}">-->
-            <!--                            <a href="/nl" on:click|preventDefault|stopPropagation={changeLanguage("nl")}>NL</a>-->
-            <!--                        </li>-->
-            <!--                    </ul>-->
-            <!--                </div>-->
-            <!--            </div>-->
             {#if !landing && !error && !offeringError}
                 {#if $config.allowPlayground}
-                        <span id="balancer" class="balancer" class:balancing={balancing}
-                              on:click={gotoPlay}>{@html balancer}</span>
+                    <div class="playground">
+                        <span on:click={gotoPlay}>{@html balancer}</span>
+                        <a href="/instance-change"
+                           on:click|preventDefault|stopPropagation={() => changeTheme()}>
+                            Change theme
+                        </a>
+                    </div>
                 {/if}
                 <div class="header">
-                    <p class="offering-title">{I18n.t("offering.title", {
-                        type: I18n.t(`offering.types.${$offering.offering.offeringType}`),
-                        abbreviation: $offering.guestInstitution.abbreviation
-                    })}
-                    </p>
+                    <div class="sub-header">
+                        <p class="offering-title">{I18n.t("offering.title", {
+                            type: I18n.t(`offering.types.${$offering.offering.offeringType}`),
+                            abbreviation: $offering.guestInstitution.abbreviation
+                        })}
+                        </p>
+                        <div class="language-switcher">
+                            <ul>
+                                <li class="{I18n.locale === 'en' ? 'active' : 'non_active'}">
+                                    <a href="/en" on:click|preventDefault|stopPropagation={changeLanguage("en")}>EN</a>
+                                </li>
+                                <li class="{I18n.locale === 'nl' ? 'active' : 'non_active'}">
+                                    <a href="/nl" on:click|preventDefault|stopPropagation={changeLanguage("nl")}>NL</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
                     {#if $offering.offering[offeringType] && $offering.offering[offeringType].name}
                         <h2 class="offering-title">{getValue($offering.offering[offeringType].name)}</h2>
                     {/if}
@@ -615,8 +646,7 @@
                                     controls="{false}"
                                     renderer="svg"
                                     background="transparent"
-                                    height="320px"
-                                    width="auto"
+                                    width="275"
                                     controlsLayout={null}
                             />
                         </div>
@@ -642,8 +672,7 @@
                                     controls="{false}"
                                     renderer="svg"
                                     background="transparent"
-                                    height="100%"
-                                    width="100%"
+                                    width="275"
                                     controlsLayout={null}
                             />
                         </div>
@@ -666,8 +695,7 @@
                                                 controls="{false}"
                                                 renderer="svg"
                                                 background="transparent"
-                                                height="320"
-                                                width="320"
+                                                width="275"
                                                 controlsLayout={null}
                                         />
                                     </div>
@@ -698,14 +726,15 @@
                                                 {ADD_ATTR: ["target"]})}
                                         </li>
                                     </ul>
-                                    <p>{I18n.t("offering.proceed")}</p>
+                                    <p>{I18n.t(`offering.proceed${isEUInstance ? "EU" : ""}`)}</p>
                                     <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
-                                    <Button href="/authentication"
-                                            class="myacademicid"
-                                            label={I18n.t("offering.approveButton")}
-                                            icon={myAcademicID}
-                                            onClick={startAuthentication}/>
                                 </div>
+                                <Button href="/authentication"
+                                        class="myacademicid"
+                                        label={I18n.t("offering.approveButton")}
+                                        icon={isEUInstance ? myAcademicID: eduID}
+                                        onClick={startAuthentication}/>
+
                             {:else if result && result.code >= 400}
                                 <div class="result">
                                     <div class="hero">

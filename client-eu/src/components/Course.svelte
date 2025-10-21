@@ -6,6 +6,7 @@
     import {offering} from "../stores/offering";
     import {onMount} from "svelte";
     import {capitalize, getValue} from "../utils/multiLanguageAttributes.js";
+    import {formatDate} from "../utils/date.js";
 
     export let className = "desktop";
 
@@ -31,9 +32,7 @@
     }
 
     .course {
-
-        min-width: 40%;
-        max-width: 40%;
+        min-width: 320px;
         background-color: white;
         border-radius: 10px;
         padding: 20px;
@@ -58,7 +57,7 @@
                 .start-date {
                     color: #008741;
                     font-size: 22px;
-                    font-weight: 600;
+                    font-weight: 500;
                 }
 
                 .end-date {
@@ -88,7 +87,7 @@
 
                 &.value {
                     width: 65%;
-                    font-weight: 600;
+                    font-weight: 500;
 
                     img {
                         width: 150px;
@@ -113,10 +112,10 @@
         <div class="course-header">
             <div class="dates">
                 {#if $offering.offering.startDate}
-                    <span class="start-date">{$offering.offering.startDate}</span>
+                    <span class="start-date">{formatDate($offering.offering.startDate)}</span>
                 {/if}
                 {#if $offering.offering.endDate}
-                    <span class="end-date">{I18n.t("offering.endDate", {date: $offering.offering.endDate})}</span>
+                    <span class="end-date">{I18n.t("offering.endDate", {date: formatDate($offering.offering.endDate)})}</span>
                 {/if}
             </div>
             {#if $offering.guestInstitution.logoURI}

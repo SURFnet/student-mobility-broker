@@ -11,6 +11,8 @@
     export let name;
     export let crossInstitutionRequest = false;
 
+    const isEUInstance = $config.brokerInstance === "euroteq";
+
     let poll;
     let motivation;
     let done = false;
@@ -123,7 +125,7 @@
             margin-top: 25px;
 
             p.top {
-                font-weight: 600;
+                font-weight: 500;
                 margin-bottom: 10px;
             }
 
@@ -163,7 +165,7 @@
         </span>
     </div>
     {#if done && !makeAppointment && crossInstitutionRequest}
-        <p class="missing-out"> {@html I18n.t("poll.missingOut", {href: $config.pollSurvey})}</p>
+        <p class="missing-out"> {@html I18n.t(`poll.missingOut${isEUInstance ? "EU" : ""}`, {href: $config.pollSurvey})}</p>
     {/if}
     {#if !done}
         <div class="poll-options">
@@ -177,7 +179,7 @@
             <div class="motivation">
                 <p class="top">{I18n.t("poll.why")}</p>
                 <textarea bind:value={motivation} use:init></textarea>
-                <p class="voucher">{@html crossInstitutionRequest ? I18n.t("poll.join") : ""}</p>
+                <p class="voucher">{@html crossInstitutionRequest ? I18n.t(`poll.join${isEUInstance ? "EU" : ""}`) : ""}</p>
             </div>
         {/if}
         {#if poll}
@@ -188,7 +190,7 @@
                 {#if crossInstitutionRequest}
                     <Button
                             onClick={() => doSendPoll(true)}
-                            label={I18n.t("poll.submitAppointment")}/>
+                            label={I18n.t(`poll.submitAppointment${isEUInstance ? "EU" : ""}`)}/>
                 {/if}
             </div>
         {/if}

@@ -16,7 +16,7 @@ I18n.translations.en = {
         person: "Person"
     },
     offering: {
-        title: "Register for a {{type}} at {{abbreviation}}",
+        title: "Register at {{abbreviation}} for {{type}}",
         types: {
             course: "course",
             program: "program",
@@ -29,7 +29,8 @@ I18n.translations.en = {
             enroll: "Register",
             relax: "Relax"
         },
-        approve: "Approve transfer of personal information",
+        endDate: "ends {{date}}",
+        approve: "Approve the transfer of your personal information",
         enrolled: "You are enrolling for",
         wait: "Please wait while we enrol you {{name}}",
         enrolling: "Enrolling', rolling', rolling... ",
@@ -57,11 +58,14 @@ I18n.translations.en = {
         personalBullet1sub1: "Learn which ",
         personalBullet1sub2: "personal data",
         personalBullet1sub3: " is requested.",
-        personalBullet2: "Both institutions are controllers in this processing of personal data (read the <a href='{{privacyEndpoint}}' target='_blank'>full privacy statement</a>).",
+        personalBullet2: "Both institutions are controllers in this processing of personal data",
+        personalBullet3: "Read the <a href='{{privacyEndpoint}}' target='_blank'>full privacy statement</a>.",
         permission: "<b>{{guest}}</b> needs your permission to start this transfer.",
+        proceed: "Proceed with eduID",
+        proceedEU: "Proceed with MyAcademicID",
         subPersonal: "{{abbreviation}} will request all necessary information for your enrolment at your home institution.",
         subPersonalGrant: "For this you need to grant {{abbreviation}} permission to do so.",
-        approveButton: "Approve with eduID",
+        approveButton: "Approve & continue",
         studyLoad: "{{value}} {{studyLoadUnit}}",
         lang: {
             "nl-NL": "Dutch",
@@ -73,7 +77,9 @@ I18n.translations.en = {
         },
         dateTime: "Date & Time",
         places: "{{nbr}} places",
-        backToCatalog: "Return"
+        backToCatalog: "Return",
+        registration: "Registration",
+        backToEduXchange: "← back to eduXchange"
     },
     landing: {
         info: "You have landed on the Student Mobility homepage, where you normally only would land after selecting a course in the education catalogue.",
@@ -141,6 +147,14 @@ I18n.translations.en = {
             ice: "ICE details",
             identifier: "Unique identifier"
         }
+    },
+    course: {
+        location: "Location",
+        language: "Language",
+        points: "Points",
+        period: "Period",
+        level: "Level",
+        alliance: "Alliance"
     },
     poll: {
         registerQuestion: "How easy or hard was it for you to register?",

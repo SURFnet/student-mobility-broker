@@ -93,7 +93,7 @@
 
                     h3 {
                         color: var(--color-primary-blue);
-                        font-weight: 600;
+                        font-weight: 500;
                     }
                 }
 

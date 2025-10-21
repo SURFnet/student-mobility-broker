@@ -61,7 +61,8 @@ I18n.translations.nl = {
         personalBullet2: "Beide instellingen zijn verwerkingsverantwoordelijke van deze verwerking van persoonsgegevens",
         personalBullet3: "Lees het <a href='{{privacyEndpoint}}' target='_blank'>volledige privacy statement</a>.",
         permission: "Geef <b>{{guest}}</b> toestemming om overdracht te starten.",
-        proceed: "Ga door met MyAcademicID",
+        proceed: "Ga door met eduID",
+        proceedEU: "Ga door met MyAcademicID",
         subPersonal: "{{abbreviation}} vraagt alle nodige informatie voor je inschrijving bij je thuisinstelling.",
         subPersonalGrant: "Hiervoor moet je  {{abbreviation}} toestemming geven.",
         approveButton: "Goedkeuren & doorgaan",
@@ -109,6 +110,10 @@ I18n.translations.nl = {
     },
     explanation: {
         title: "Hoe werkt aanmelden?",
+        eduID: {
+            title: "Je meldt je aan met je eduID (<a class=\"link\" href=\"https://eduid.nl\" target=\"_blank\">lees waarom</a>)",
+            subTitle: "Maak je geen zorgen als je nog geen eduID hebt, het aanmaken ervan kost minder dan 30 seconden.",
+        },
         myAcademicID: {
             title: "Je meldt je aan met je MyAcademicID (<a class=\"link\" href=\"https://myacademic-id.eu/\" target=\"_blank\">lees waarom</a>)",
             subTitle: "Log in met je eigen instellingsaccount.",
@@ -165,11 +170,14 @@ I18n.translations.nl = {
             veryHard: "Erg moeilijk"
         },
         why: "Toelichting",
-        join: "Wil je contact opnemen over je ervaring?",
+        join: "Meedoen aan een interview over je ervaring? Plan een afspraak en verdien <strong>€35</strong>.",
+        joinEU: "Wil je contact opnemen over je ervaring?",
         submit: "Verstuur & klaar",
-        submitAppointment: "Verstuur & Contact opnemen",
+        submitAppointment: "Verstuur & Plan een afsrpaak",
+        submitAppointmentEU: "Verstuur & Contact opnemen",
         thanksFeedback: "Dankjewel voor je feedback!",
-        missingOut: "Wil je toch alsnog <a href='{{href}}' target='_blank'>contact openemen?</a>."
+        missingOut: "Je mist de €35 euro bonus! Wil je toch meedoen aan een interview? <a href='{{href}}' target='_blank'>Maak een afspraak</a>.",
+        missingOutEU: "Wil je toch alsnog <a href='{{href}}' target='_blank'>contact openemen?</a>."
     }
 };
 

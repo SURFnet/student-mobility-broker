@@ -82,7 +82,8 @@ config:
     url: "https://edubrokersurf.queue-it.net"
     customer_id: "edubrokersurf"
     redirect_uri: "http://localhost:8091/api/queue/redirect"
-
+  # Either euroteq or nl, determines textual changes like logo and proceed to
+  broker_instance: euroteq
 
 service_registry:
   path: classpath:/service-registry.yml

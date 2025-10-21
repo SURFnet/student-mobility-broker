@@ -29,7 +29,7 @@ I18n.translations.en = {
             enroll: "Register",
             relax: "Relax"
         },
-        endDate: "Ends {{date}}",
+        endDate: "ends {{date}}",
         approve: "Approve the transfer of your personal information",
         enrolled: "You are enrolling for",
         wait: "Please wait while we enrol you {{name}}",
@@ -61,7 +61,8 @@ I18n.translations.en = {
         personalBullet2: "Both institutions are controllers in this processing of personal data",
         personalBullet3: "Read the <a href='{{privacyEndpoint}}' target='_blank'>full privacy statement</a>.",
         permission: "<b>{{guest}}</b> needs your permission to start this transfer.",
-        proceed: "Proceed with MyAcademicID",
+        proceed: "Proceed with eduID",
+        proceedEU: "Proceed with MyAcademicID",
         subPersonal: "{{abbreviation}} will request all necessary information for your enrolment at your home institution.",
         subPersonalGrant: "For this you need to grant {{abbreviation}} permission to do so.",
         approveButton: "Approve & continue",
@@ -109,6 +110,10 @@ I18n.translations.en = {
     },
     explanation: {
         title: "How does enrolling work?",
+        eduID: {
+            title: "You will enrol with your eduID (<a class=\"link\" href=\"https://eduid.nl\" target=\"_blank\">read why</a>)",
+            subTitle: "Don't worry if you don't have an eduID yet, we'll help you get one in less than 30 seconds.",
+        },
         myAcademicID: {
             title: "You will enrol with MyAcademicID (<a class=\"link\" href=\"https://myacademic-id.eu/\" target=\"_blank\">read why</a>)",
             subTitle: "Log in with your own institution account.",
@@ -165,11 +170,14 @@ I18n.translations.en = {
             veryHard: "Very hard"
         },
         why: "Please explain",
-        join: "Contact us about your experience?.",
+        join: "Participate in an interview about your experience? Make an appointment and earn <strong>€35</strong>.",
+        joinEU: "Contact us about your experience?",
         submit: "Submit & done",
-        submitAppointment: "Submit & Contact us",
+        submitAppointment: "Submit & Make an appointment",
+        submitAppointmentEU: "Submit & Contact us",
         thanksFeedback: "Thank you for your feedback",
-        missingOut: "Still want to <a href='{{href}}' target='_blank'>contact us?</a>."
+        missingOut: "You are missing out on the €35 euro bonus! Still like to participate in an interview? <a href='{{href}}' target='_blank'>Make an appointment</a>.",
+        missingOutEU: "Still want to <a href='{{href}}' target='_blank'>contact us?</a>."
     }
 };
 

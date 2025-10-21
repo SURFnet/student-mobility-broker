@@ -38,7 +38,7 @@
     p {
         margin-top: 25px;
         margin-bottom: 2px;
-        font-weight: 600;
+        font-weight: 500;
 
         &.note {
             font-weight: normal;

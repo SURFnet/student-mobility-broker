@@ -63,7 +63,7 @@
     }
 
     p {
-        font-weight: 600;
+        font-weight: 500;
         margin-top: 25px;
         margin-bottom: 2px;
     }

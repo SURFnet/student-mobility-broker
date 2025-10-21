@@ -14,26 +14,22 @@
 </script>
 <style lang="scss">
     .button {
-        padding: 10px 20px;
+        padding: 10px 20px 10px 20px;
         background-color: var(--color-button-blue);
         border-radius: 4px;
         color: white;
         text-decoration: none;
         cursor: pointer;
         text-align: center;
-        font-weight: 600;
-        width: 280px;
-
-        @media (max-width: 780px) {
-            width: 100%;
-        }
+        font-weight: 500;
+        width: fit-content;
 
         &.small {
             width: 140px;
         }
 
         &.icon {
-            padding: 4px 16px 4px 4px;
+            padding: 4px 20px 4px 4px;
             display: flex;
             align-content: center;
             align-items: center;
@@ -76,6 +72,13 @@
             height: auto;
             border-radius: 4px;
         }
+
+        :global(svg.eduid) {
+            width: 32px;
+            height: auto;
+            border-radius: 4px;
+        }
+
     }
 
 
