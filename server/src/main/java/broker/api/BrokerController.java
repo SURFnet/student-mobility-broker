@@ -8,6 +8,7 @@ import broker.domain.Institution;
 import broker.exception.RemoteException;
 import broker.queue.QueueService;
 import broker.registry.InstitutionRegistry;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -63,6 +63,7 @@ public class BrokerController {
     private final URI eduHubGatewayUrl;
     private final String eduHubUser;
     private final String eduHubPassword;
+    private final String brokerInstance;
 
     private final ParameterizedTypeReference<Map<String, Object>> mapRef = new ParameterizedTypeReference<Map<String, Object>>() {
     };
@@ -104,6 +105,7 @@ public class BrokerController {
         this.eduHubGatewayUrl = eduHubGatewayUrl;
         this.eduHubUser = eduHubUser;
         this.eduHubPassword = eduHubPassword;
+        this.brokerInstance = brokerInstance.name();
         this.featureToggles.put("startBrokerEndpoint", startBrokerEndpoint);
         this.featureToggles.put("local", local);
         this.featureToggles.put("allowPlayground", allowPlayground);
@@ -141,9 +143,13 @@ public class BrokerController {
     public View brokerRequest(HttpServletRequest request,
                               @ModelAttribute BrokerRequest brokerRequest,
                               @RequestParam(value = "play", required = false, defaultValue = "false") boolean play,
+                              @RequestParam(value = "theme", required = false, defaultValue = "") String theme,
                               @RequestParam(value = "lang", required = false, defaultValue = "en") String lang)
             throws UnsupportedEncodingException {
         LOG.debug("Called by the external catalog form submit with BrokerRequest " + brokerRequest);
+        if (!StringUtils.hasText(theme)) {
+            theme = brokerInstance;
+        }
         Institution guestInstitution;
         try {
             //we want to fail fast
@@ -166,8 +172,8 @@ public class BrokerController {
 
         LOG.debug(String.format("Started session %s for brokerRequest: %s", request.getSession().getId(), brokerRequest));
 
-        String queryParams = play ? "?step=enroll&name=Johanna&correlationID=1" : "?step=approve";
-        String languageParam =  "&" + ("en".equals(lang) ? lang : "nl");
+        String queryParams = play ? "?step=enroll&name=Johanna&correlationID=1&theme=" + theme : "?step=approve";
+        String languageParam = "&lang=" + ("en".equals(lang) ? lang : "nl");
         if (guestInstitution.isUseQueueIt()) {
             queryParams += "&q=" + URLEncoder.encode(queueService.getRedirectUrl(guestInstitution),
                     Charset.defaultCharset());
@@ -325,13 +331,13 @@ public class BrokerController {
                     body, brokerRequest, request.getSession().getId()));
             //Might be an immutable Map
             body = new HashMap<>(body);
-            body .put("crossInstitutionRequest", crossInstitutionRequest);
+            body.put("crossInstitutionRequest", crossInstitutionRequest);
             return body;
         } catch (HttpStatusCodeException | ResourceAccessException e) {
             HttpStatusCode httpStatusCode = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException) e).getStatusCode() : HttpStatusCode.valueOf(REQUEST_TIMEOUT.value());
             RemoteException remoteException = new RemoteException(httpStatusCode, e.getMessage(), e);
 
-            String body = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException)e).getResponseBodyAsString() : e.getMessage();
+            String body = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException) e).getResponseBodyAsString() : e.getMessage();
             LOG.error(String.format("Unexpected exception from /api/start: %s, reference number %s",
                     body, remoteException.getReference()));
 

@@ -12,6 +12,7 @@
     import {getParameterByName, replaceQueryParameter} from "./utils/queryParameters";
     import data from "./data/offering.json";
     import Loading from "./components/Loading.svelte";
+    import {isEmpty} from "./utils/forms";
 
     export let url = "";
     let loaded = false;
@@ -49,6 +50,10 @@
                 } else {
                     throw new Error("Invalid queue");
                 }
+            }
+            const theme = getParameterByName("theme");
+            if (!isEmpty(theme)) {
+                json.brokerInstance = theme;
             }
             $config = json;
             const step = getParameterByName("step");

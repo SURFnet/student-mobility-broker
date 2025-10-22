@@ -1,10 +1,10 @@
 <script>
     import {offering} from "../stores/offering";
     import {playground} from "../stores/playground";
-    import pressPlay from "../icons/icons-studmob/undraw_press_play_bx2d.svg?raw";
     import Select from 'svelte-select';
     import {broker} from "../api";
     import {config} from "../stores/config";
+    import Button from "../components/Button.svelte";
 
     export let institutions = [];
 
@@ -31,7 +31,7 @@
             $config.offeringId,
             "course",
             $config.alliance,
-            $config.startBrokerEndpoint + "?play=true");
+            $config.startBrokerEndpoint + "?play=true&theme=" + $config.brokerInstance);
     }
 
     const handleSelect = val => response = val.detail;
@@ -102,14 +102,8 @@
 
     .play {
         display: flex;
-
-        :global(svg) {
-            max-width: 150px;
-            max-height: 150px;
-            margin: 25px 0 50px auto;
-            cursor: pointer;
-
-        }
+        margin-top: 25px;
+        justify-content: flex-end;
     }
 
 
@@ -167,7 +161,7 @@
     <p>Message</p>
     <span class="info">For non 200 responses (e.g. 4xx or 5xx)</span>
     <input bind:value={message} disabled={response.value === 200} on:keyup={e=>e.key==="Enter" && start()}/>
-    <div class="play" on:click={start}>
-        {@html pressPlay}
+    <div class="play">
+        <Button onClick={start} label="Submit"/>
     </div>
 </div>

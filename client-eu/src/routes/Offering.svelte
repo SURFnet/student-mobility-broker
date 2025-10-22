@@ -185,10 +185,10 @@
     const pendingApproval = currentStep => currentStep === STEPS.approve;
 
     const changeTheme = () => {
-        //change query parameter and reload, in App.svelte look for override theme
         const newBrokerInstance = $config.brokerInstance = isEUInstance ? "nl" : "euroteq";
-        $config.brokerInstance = newBrokerInstance;
-        debugger;
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        urlSearchParams.set("theme", newBrokerInstance);
+        window.location.search = urlSearchParams.toString();
     };
 
 </script>
@@ -598,7 +598,7 @@
                 {#if $config.allowPlayground}
                     <div class="playground">
                         <span on:click={gotoPlay}>{@html balancer}</span>
-                        <a href="/instance-change"
+                        <a href="/change-theme"
                            on:click|preventDefault|stopPropagation={() => changeTheme()}>
                             Change theme
                         </a>
