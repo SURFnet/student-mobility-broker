@@ -81,7 +81,7 @@ jobs:
         with:
           name: brokerbuilds
           path: |
-            client-eu/dist/
+            client/dist/
             server/target/*.jar
           retention-days: 1
 
@@ -110,7 +110,7 @@ jobs:
       matrix:
         include:
           - image: ghcr.io/SURFnet/student-mobility-broker/brokerclienteu
-            app: client-eu
+            app: client
           - image: ghcr.io/SURFnet/student-mobility-broker/brokerserver
             app: server
     steps:

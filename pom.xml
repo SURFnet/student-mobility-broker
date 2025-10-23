@@ -16,7 +16,7 @@
     </parent>
     <modules>
         <module>server</module>
-        <module>client-eu</module>
+        <module>client</module>
     </modules>
     <build>
         <extensions>

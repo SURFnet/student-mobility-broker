@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "inteken-app-client-eu",
+  "name": "inteken-app-client",
   "version": "0.0.1",
   "license": "MIT",
   "type": "module",

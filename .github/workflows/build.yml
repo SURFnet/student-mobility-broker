@@ -46,8 +46,8 @@ jobs:
         with:
           node-version: '23'
       - run: yarn install
-        working-directory: ./client-eu
+        working-directory: ./client
       - run: yarn build
-        working-directory: ./client-eu
+        working-directory: ./client
       - run: yarn test
-        working-directory: ./client-eu
+        working-directory: ./client
