@@ -44,6 +44,7 @@ public class BrokerControllerUnitTest {
             new URI("https://eduhub.nl"),
             "eduhub",
             "secret",
+            BrokerInstance.nl,
             new InMemoryInstitutionRegistry(new ClassPathResource("service-registry-test.yml")),
             new QueueService("http://localhost:8082", "edubrokersurf", "http://localhost:8083/start"));
 

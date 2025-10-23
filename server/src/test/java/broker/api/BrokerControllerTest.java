@@ -63,7 +63,9 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("type", "course")
                 .post("/api/broker")
                 .then()
-                .header("Location", "http://localhost:3003?step=approve&q=https%3A%2F%2Fedubrokersurf.queue-it.net%3Fc%3Dedubrokersurf%26e%3Dedubroker%26t%3Dhttp%3A%2F%2Flocalhost%3A8091%2Fapi%2Fqueue%2Fredirect");
+                .header("Location", "http://localhost:3003?step=approve&" +
+                        "q=https%3A%2F%2Fedubrokersurf.queue-it.net%3Fc%3Dedubrokersurf%26e%3Dedubroker%26t%3Dhttp%3A%2F%2Flocalhost%3A8091%2Fapi%2Fqueue%2Fredirect" +
+                        "&lang=en");
         //Now do the call to the redirect queue endpoint in order to fetch the offering later
         String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
                 institution.getQueueItWaitingRoom(),
@@ -97,7 +99,9 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("type", "course")
                 .post("/api/broker")
                 .then()
-                .header("Location", "http://localhost:3003?step=approve&q=https%3A%2F%2Fedubrokersurf.queue-it.net%3Fc%3Dedubrokersurf%26e%3Dedubroker%26t%3Dhttp%3A%2F%2Flocalhost%3A8091%2Fapi%2Fqueue%2Fredirect");
+                .header("Location", "http://localhost:3003?step=approve&" +
+                        "q=https%3A%2F%2Fedubrokersurf.queue-it.net%3Fc%3Dedubrokersurf%26e%3Dedubroker%26t%3Dhttp%3A%2F%2Flocalhost%3A8091%2Fapi%2Fqueue%2Fredirect" +
+                        "&lang=en");
         //Now do the call to the redirect queue endpoint in order to fetch the offering later
         String token = String.format("e_%s~q_%s~ts_%s~ce_true~rt_queue",
                 institution.getQueueItWaitingRoom(),
@@ -214,7 +218,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .queryParam("play", true)
                 .post("/api/broker")
                 .then()
-                .header("Location", "http://localhost:3003?step=enroll&name=Johanna&correlationID=1");
+                .header("Location", "http://localhost:3003?step=enroll&name=Johanna&correlationID=1&theme=euroteq&lang=en");
     }
 
     @Test
@@ -289,7 +293,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("type", "course")
                 .post("/api/broker")
                 .then()
-                .header("Location", "http://localhost:3003?step=approve");
+                .header("Location", "http://localhost:3003?step=approve&lang=en");
     }
 
     private void guiGetOffering(CookieFilter cookieFilter, CourseAuthentication courseAuthentication, boolean useEduHubForOffering) throws IOException {
