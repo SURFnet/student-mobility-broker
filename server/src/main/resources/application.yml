@@ -59,7 +59,7 @@ config:
   play_home_institution_schacHome: "utrecht.nl"
   # Default guest institution if playground is enabled
   play_guest_institution_schacHome: "wageningen.nl"
-  # Default alliance if playground is enabled
+  # Default alliance if playground is enabled (choices are euroteq, LDE, EWUU
   play_alliance: "euroteq"
   # Default offeringId if playground is enabled
   play_offering_id: "6259518E-EF2A-4203-83C2-757E4FEACEDD"
