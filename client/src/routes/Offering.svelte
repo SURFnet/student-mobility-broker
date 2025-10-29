@@ -41,6 +41,7 @@
     export let offeringError = null;
 
     const isEUInstance = $config.brokerInstance === "euroteq";
+    const pollTimeOutFlyIn = 2250;
 
     let title = I18n.t("offering.approve");
     let subTitle = I18n.t("offering.enrolled");
@@ -134,7 +135,7 @@
             } else if (result.code === 200) {
                 document.title = I18n.t("pages.registrationSent");
                 title = subTitle = I18n.t("offering.done");
-                setTimeout(() => showPoll = true, 2250);
+                setTimeout(() => showPoll = true, pollTimeOutFlyIn);
             } else {
                 document.title = I18n.t("pages.error");
                 title = subTitle = I18n.t("offering.error");
