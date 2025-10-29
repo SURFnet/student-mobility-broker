@@ -109,7 +109,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - image: ghcr.io/SURFnet/student-mobility-broker/brokerclienteu
+          - image: ghcr.io/SURFnet/student-mobility-broker/brokerclient
             app: client
           - image: ghcr.io/SURFnet/student-mobility-broker/brokerserver
             app: server
