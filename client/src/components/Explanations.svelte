@@ -2,8 +2,7 @@
     import I18n from "i18n-js";
     import transferGrey from "../icons/data-transfer-square-horizontal.svg?raw";
     import enrollGrey from "../icons/icons-studmob/official-building-3-grey.svg?raw";
-    import myAcademicIDGrey from "../icons/eu-logos/MyAID_footer.svg?raw";
-    import eduIDGrey from "../icons/eduID_footer.svg?raw";
+    import proceedGrey from "../icons/access.svg?raw";
     import hand from "../icons/icons-studmob/noun_Up hand drawn arrow_1563367.svg?raw";
     import DOMPurify from "isomorphic-dompurify";
     import {config,} from "../stores/config";
@@ -13,7 +12,7 @@
     const explanations = [
         {
             name: isEUInstance ? "myAcademicID" : "eduID",
-            icon: isEUInstance ? myAcademicIDGrey : eduIDGrey
+            icon: proceedGrey
         },
         {name: "transfer", icon: transferGrey},
         {name: "enrollment", icon: enrollGrey}
@@ -102,10 +101,12 @@
 
                     span {
                         margin: auto;
+                        display: flex;
 
                         :global(svg) {
                             width: 45px;
                             height: auto;
+                            margin: auto;
                             fill: #807c7c;
                         }
                     }

@@ -54,9 +54,9 @@ I18n.translations.en = {
         next: "What will happen next?",
         receiveMail: "You have been successfully registered. You will receive mail from {{abbreviation}} what the next steps will be.",
         homeInstitution: "Your home institution",
-        personal: "To proceed with this enrollment, <b>{{guest}}</b> needs to contact <b>{{home}}</b> to request your information.",
-        personalBullet1sub1: "Learn which ",
-        personalBullet1sub2: "personal data",
+        personal: "To proceed, <b>{{guest}}</b> needs to contact <b>{{home}}</b> request your personal information.",
+        personalBullet1sub1: "Learn ",
+        personalBullet1sub2: "what information",
         personalBullet1sub3: " is requested.",
         personalBullet2: "Both institutions are controllers in this processing of personal data",
         personalBullet3: "Read the <a href='{{privacyEndpoint}}' target='_blank'>full privacy statement</a>.",
@@ -111,11 +111,11 @@ I18n.translations.en = {
     explanation: {
         title: "How does enrolling work?",
         eduID: {
-            title: "You will enrol with your eduID (<a class=\"link\" href=\"https://eduid.nl\" target=\"_blank\">read why</a>)",
+            title: "You will enrol with your eduID",
             subTitle: "Don't worry if you don't have an eduID yet, we'll help you get one in less than 30 seconds.",
         },
         myAcademicID: {
-            title: "You will enrol with MyAcademicID (<a class=\"link\" href=\"https://myacademic-id.eu/\" target=\"_blank\">read why</a>)",
+            title: "You will enrol with MyAcademicID",
             subTitle: "Log in with your own institution account.",
         },
         transfer: {

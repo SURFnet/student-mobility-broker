@@ -68,7 +68,7 @@
 
             img {
                 margin-left: auto;
-                width: auto;
+                width: 48px;
                 height: 48px;
                 border-radius: 4px;
                 border: 0.48px solid #CED1D7

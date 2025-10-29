@@ -134,7 +134,7 @@
             } else if (result.code === 200) {
                 document.title = I18n.t("pages.registrationSent");
                 title = subTitle = I18n.t("offering.done");
-                setTimeout(() => showPoll = true, 500);
+                setTimeout(() => showPoll = true, 2250);
             } else {
                 document.title = I18n.t("pages.error");
                 title = subTitle = I18n.t("offering.error");
@@ -582,6 +582,12 @@
         margin: 10px 0 20px 20px;
     }
 
+    p.pseudo-header {
+        font-size: 20px;
+        margin: 10px 0;
+        font-weight: 500;
+    }
+
 </style>
 {#if loaded }
     <div class="eu-header">
@@ -726,7 +732,7 @@
                                                 {ADD_ATTR: ["target"]})}
                                         </li>
                                     </ul>
-                                    <p>{I18n.t(`offering.proceed${isEUInstance ? "EU" : ""}`)}</p>
+                                    <p class="pseudo-header">{I18n.t(`offering.proceed${isEUInstance ? "EU" : ""}`)}</p>
                                     <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
                                 </div>
                                 <Button href="/authentication"
