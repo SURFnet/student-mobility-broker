@@ -110,13 +110,6 @@
                             fill: #807c7c;
                         }
                     }
-
-                    span.eduID {
-                        :global(svg) {
-                            width: 60px;
-                            height: auto;
-                        }
-                    }
                 }
             }
 

@@ -111,7 +111,7 @@ I18n.translations.nl = {
     explanation: {
         title: "Hoe werkt aanmelden?",
         eduID: {
-            title: "Je meldt je aan met je eduID (<a class=\"link\" href=\"https://eduid.nl\" target=\"_blank\">lees waarom</a>)",
+            title: "Je meldt je aan met je eduID",
             subTitle: "Maak je geen zorgen als je nog geen eduID hebt, het aanmaken ervan kost minder dan 30 seconden.",
         },
         myAcademicID: {

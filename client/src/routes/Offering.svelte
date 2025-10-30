@@ -41,7 +41,7 @@
     export let offeringError = null;
 
     const isEUInstance = $config.brokerInstance === "euroteq";
-    const pollTimeOutFlyIn = 2250;
+    const pollTimeOutFlyIn = 1500;
 
     let title = I18n.t("offering.approve");
     let subTitle = I18n.t("offering.enrolled");
