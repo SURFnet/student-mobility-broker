@@ -77,7 +77,7 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.BUILD_PASSWORD }}
 
       - name: Upload the produced artefacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: brokerbuilds
           path: |
@@ -117,7 +117,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Download the previous produced artefacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: brokerbuilds
 
