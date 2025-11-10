@@ -91,6 +91,7 @@ public class BrokerController {
                             @Value("${config.edu_hub.user}") String eduHubUser,
                             @Value("${config.edu_hub.password}") String eduHubPassword,
                             @Value("${config.broker_instance}") BrokerInstance brokerInstance,
+                            @Value("${config.support_link}") String supportLink,
                             InstitutionRegistry institutionRegistry,
                             QueueService queueService) {
         this.clientUrl = clientUrl;
@@ -115,6 +116,7 @@ public class BrokerController {
         this.featureToggles.put("surveyEnabled", surveyEnabled);
         this.featureToggles.put("pollSurvey", pollSurvey);
         this.featureToggles.put("brokerInstance", brokerInstance);
+        this.featureToggles.put("supportLink", supportLink);
 
         if (allowPlayground) {
             this.featureToggles.put("playHomeInstitutionSchacHome", playHomeInstitutionSchacHome);

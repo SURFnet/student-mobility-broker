@@ -175,7 +175,7 @@
 
     const genericErrorMessage = code => {
         const supportLink = ($offering.guestInstitution && $offering.guestInstitution.supportLink) ?
-            $offering.guestInstitution.supportLink : I18n.t("error.supportLink");
+            $offering.guestInstitution.supportLink : $config.supportLink;
         return I18n.t(`error.${code === 422 ? "noRetry" : "generic"}`, {
             supportDisplay: supportLink.replaceAll("mailto:", ""),
             supportLink: supportLink
