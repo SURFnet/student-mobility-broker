@@ -54,7 +54,7 @@ I18n.translations.en = {
         next: "What will happen next?",
         receiveMail: "You have been successfully registered. You will receive mail from {{abbreviation}} what the next steps will be.",
         homeInstitution: "Your home institution",
-        personal: "To proceed, <b>{{guest}}</b> needs to contact <b>{{home}}</b> request your personal information.",
+        personal: "To proceed, <b>{{guest}}</b> needs to contact <b>{{home}}</b> to request your personal information.",
         personalBullet1sub1: "Learn ",
         personalBullet1sub2: "what information",
         personalBullet1sub3: " is requested.",
