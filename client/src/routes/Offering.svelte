@@ -405,11 +405,7 @@
 
             li {
                 display: inline-block;
-                padding: 0 6px;
-            }
-
-            li:last-child {
-                border-left: 1px solid black;
+                padding: 0 4px;
             }
 
             li.non_active a {
@@ -419,6 +415,8 @@
 
             li.active a {
                 color: black;
+                text-decoration: none;
+                font-weight: 500;
                 cursor: default;
             }
         }
@@ -618,16 +616,20 @@
                             abbreviation: $offering.guestInstitution.abbreviation
                         })}
                         </p>
-                        <div class="language-switcher">
-                            <ul>
-                                <li class="{I18n.locale === 'en' ? 'active' : 'non_active'}">
-                                    <a href="/en" on:click|preventDefault|stopPropagation={changeLanguage("en")}>EN</a>
-                                </li>
-                                <li class="{I18n.locale === 'nl' ? 'active' : 'non_active'}">
-                                    <a href="/nl" on:click|preventDefault|stopPropagation={changeLanguage("nl")}>NL</a>
-                                </li>
-                            </ul>
-                        </div>
+                        {#if !isEUInstance}
+                            <div class="language-switcher">
+                                <ul>
+                                    <li class="{I18n.locale === 'nl' ? 'active' : 'non_active'}">
+                                        <a href="/nl"
+                                           on:click|preventDefault|stopPropagation={changeLanguage("nl")}>NL</a>
+                                    </li>
+                                    <li class="{I18n.locale === 'en' ? 'active' : 'non_active'}">
+                                        <a href="/en"
+                                           on:click|preventDefault|stopPropagation={changeLanguage("en")}>EN</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        {/if}
 
                     </div>
                     {#if $offering.offering[offeringType] && $offering.offering[offeringType].name}
@@ -733,12 +735,13 @@
                                                 {ADD_ATTR: ["target"]})}
                                         </li>
                                     </ul>
-                                    <p class="pseudo-header">{I18n.t(`offering.proceed${isEUInstance ? "EU" : ""}`)}</p>
-                                    <span class="last">{@html DOMPurify.sanitize(I18n.t("offering.permission", {guest: $offering.guestInstitution.abbreviation}))}</span>
+                                    <!--                                    <p class="pseudo-header">{I18n.t(`offering.proceed${isEUInstance ? "EU" : ""}`)}</p>-->
+                                    <span class="last">{@html DOMPurify.sanitize(I18n.t(`offering.permission${isEUInstance ? "EU" : ""}`,
+                                        {guest: $offering.guestInstitution.abbreviation}))}</span>
                                 </div>
                                 <Button href="/authentication"
                                         class="myacademicid"
-                                        label={I18n.t("offering.approveButton")}
+                                        label={I18n.t(`offering.approveButton${isEUInstance ? "EU" : ""}`)}
                                         icon={isEUInstance ? myAcademicID: eduID}
                                         onClick={startAuthentication}/>
 
