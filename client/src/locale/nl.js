@@ -95,7 +95,7 @@ I18n.translations.nl = {
         expired: "De aanmelding is verlopen.",
         offering: "De informatie kon niet opgehaald worden bij {{name}}.",
         400: "Backend error.",//Invalid guest or home schachome
-        404: "Je gegevens zijn niet gevonden worden bij {{homeInstitution}}.",//404 person endpoint
+        404: "Je gegevens zijn niet gevonden bij {{homeInstitution}}.",//404 person endpoint
         407: "De wachtrij sessie validatie is mislukt.",//queue-it validation error
         408: "De server van {{institution}} deed er te lang over om te reageren. Check of je binnen 10 minuten een bevestiging van je aanmelding via e-mail hebt ontvangen. Zo niet, probeer je dan later opnieuw aan te melden. Als het probleem aanhoudt, kijk dan op de minorwebsite van je universiteit wat je moet doen.",
         409: "Je sessie is verloren gegaan. Probeer het nogmaals.",
