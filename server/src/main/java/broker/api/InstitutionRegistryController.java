@@ -55,11 +55,11 @@ public class InstitutionRegistryController {
             }
         }
         boolean validAssociationURI = true;
-        String associationURI = enrollmentRequest.get("associationURI");
-        if (StringUtils.hasText(associationURI)) {
-            validAssociationURI = institutions.stream().anyMatch(institution -> institution.getAssociationsEndpoint().equals(associationURI));
+        String associationsURI = enrollmentRequest.get("associationsURI");
+        if (StringUtils.hasText(associationsURI)) {
+            validAssociationURI = institutions.stream().anyMatch(institution -> institution.getAssociationsEndpoint().equals(associationsURI));
             if (!validAssociationURI) {
-                LOG.info(String.format("Invalid associationURI '%s'. No institution with this associationsEndpoint", associationURI));
+                LOG.info(String.format("Invalid associationsURI '%s'. No institution with this associationsEndpoint", associationsURI));
             }
         }
         return Collections.singletonMap("valid", validPersonURI && validSchacHome && validAssociationURI);
