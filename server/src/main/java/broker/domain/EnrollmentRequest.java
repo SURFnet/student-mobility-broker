@@ -11,7 +11,7 @@ public class EnrollmentRequest implements Serializable {
 
     private String personURI;
     private PersonAuthentication personAuth;
-    private String associationURI;
+    private String associationsURI;
     private String homeInstitution;
     private String alliance;
     private String scope;
