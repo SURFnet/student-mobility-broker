@@ -9,9 +9,9 @@ import org.springframework.boot.sql.init.DatabaseInitializationMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
+import com.zaxxer.hikari.HikariDataSource;
 import javax.sql.DataSource;
 
 @Configuration
@@ -20,16 +20,21 @@ import javax.sql.DataSource;
 @EnableJdbcHttpSession(maxInactiveIntervalInSeconds = 60 * 60 * 8)
 public class HttpSessionConfig {
 
-    @Bean
+    @Bean(destroyMethod = "close")
     DataSource dataSource(@Value("${datasource.driver-class-name}") String driver,
                           @Value("${datasource.url}") String url,
                           @Value("${datasource.username}") String username,
-                          @Value("${datasource.password}") String password) {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+                          @Value("${datasource.password}") String password,
+                          @Value("${datasource.pool.maximum-pool-size:10}") int maximumPoolSize,
+                          @Value("${datasource.pool.minimum-idle:2}") int minimumIdle) {
+        HikariDataSource dataSource = new HikariDataSource();
+        dataSource.setPoolName("session-pool");
         dataSource.setDriverClassName(driver);
-        dataSource.setUrl(url);
+        dataSource.setJdbcUrl(url);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
+        dataSource.setMaximumPoolSize(maximumPoolSize);
+        dataSource.setMinimumIdle(minimumIdle);
 
         return dataSource;
     }
