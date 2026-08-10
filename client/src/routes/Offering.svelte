@@ -163,6 +163,7 @@
             $offering.enrollmentRequest.associationsURI,
             $offering.enrollmentRequest.homeInstitution,
             $offering.enrollmentRequest.scope,
+            $offering.enrollmentRequest.alliance,
             $offering.authenticationActionUrl
         );
     }
