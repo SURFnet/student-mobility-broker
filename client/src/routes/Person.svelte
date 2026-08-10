@@ -13,7 +13,8 @@
     onMount(() => {
         if ($offering.correlationID && $offering.correlationID !== "1") {
             me($offering.correlationID).then(res => {
-                personHtml = prettyPrintJson.toHtml(res);
+                const sanitized = {...res, givenName: "lerende", surname: ""};
+                personHtml = prettyPrintJson.toHtml(sanitized);
                 loading = false;
             })
         } else {
