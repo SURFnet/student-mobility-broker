@@ -32,7 +32,7 @@ I18n.translations.nl = {
         endDate: "Eindigt {{date}}",
         approve: "Overdracht van persoonlijke gegevens goedkeuren",
         enrolled: "Je meldt je aan voor",
-        wait: "Even geduld. We melden je aan {{name}}",
+        wait: "Even geduld. We melden je aan",
         enrolling: "Enrolling', rolling', rolling... ",
         progress: {
             "1": "Opvragen persoonlijke gegevens bij {{abbreviation}}",

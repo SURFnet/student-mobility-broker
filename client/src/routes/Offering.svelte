@@ -83,8 +83,8 @@
         const reload = urlSearchParams.has("reload");
         if (step === STEPS.enroll && !reload) {
             document.title = I18n.t("pages.registration", {abbreviation: $offering.guestInstitution.abbreviation});
-            name = getParameterByName("name");
-            title = subTitle = I18n.t("offering.wait", {name});
+            name = "student";
+            title = subTitle = I18n.t("offering.wait");
             changeActivity(1);
             setTimeout(() => start = true, 75);
             const correlationID = getParameterByName("correlationID");

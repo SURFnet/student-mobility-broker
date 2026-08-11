@@ -32,7 +32,7 @@ I18n.translations.en = {
         endDate: "ends {{date}}",
         approve: "Approve the transfer of your personal information",
         enrolled: "You are enrolling for",
-        wait: "Please wait while we enrol you {{name}}",
+        wait: "Please wait while we enrol you",
         enrolling: "Enrolling', rolling', rolling... ",
         progress: {
             "1": "Requesting your personal information at {{abbreviation}}",
