@@ -377,11 +377,14 @@ public class BrokerController {
     @SuppressWarnings("unchecked")
     private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
         if (guestInstitution.isUseEduHubForOffering()) {
-            String uri = String.format("%s/%s/%s?expand=academicSession,%s",
+            String uri = String.format("%s/%s/%s?expand=academicSession,%s&consumer=eduxchange",
                     this.eduHubGatewayUrl,
                     "offerings",
                     brokerRequest.getOfferingId(),
                     this.translateOfferingType(brokerRequest));
+            if (StringUtils.hasText(brokerRequest.getAlliance())) {
+                uri += "&alliances.name=" + brokerRequest.getAlliance();
+            }
             HttpHeaders headers = new HttpHeaders();
             headers.setBasicAuth(this.eduHubUser, this.eduHubPassword);
             headers.set(ACCEPT, "application/json;version=5");
