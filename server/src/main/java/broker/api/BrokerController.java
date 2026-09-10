@@ -394,10 +394,13 @@ public class BrokerController {
             Map<String, Object> body = this.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers));
             return (Map<String, Object>) ((Map<String, Object>) body.get("responses")).get(guestInstitution.getSchacHome());
         } else {
-            String uri = String.format("%s/%s?expand=academicSession,%s",
+            String uri = String.format("%s/%s?expand=academicSession,%s&consumer=eduxchange",
                     guestInstitution.getCourseEndpoint(),
                     brokerRequest.getOfferingId(),
                     this.translateOfferingType(brokerRequest));
+                    if (StringUtils.hasText(brokerRequest.getAlliance())) {
+                        uri += "&alliances.name=" + brokerRequest.getAlliance();
+                    }
             CourseAuthentication courseAuthentication = guestInstitution.getCourseAuthentication();
 
             LOG.debug(String.format("Fetching offering from %s with security %s", uri, courseAuthentication.name()));
