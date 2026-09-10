@@ -35,4 +35,6 @@ COPY ./dist/ /var/www/
 EXPOSE 8080
 STOPSIGNAL SIGWINCH
 
+USER 65532:65532
+
 ENTRYPOINT ["/usr/local/apache2/bin/httpd", "-f", "/etc/apache2/httpd.conf", "-DFOREGROUND"]
