@@ -25,7 +25,7 @@ RUN set -eux; \
           cp -L "$lib" "$dir/"; \
         done
 
-FROM gcr.io/distroless/cc-debian13:debug
+FROM gcr.io/distroless/cc-debian13:nonroot
 
 COPY --from=builder /out/ /
 COPY ./docker/httpd.conf /etc/apache2/httpd.conf
