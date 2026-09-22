@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.session.SessionAutoConfiguration;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 
-@SpringBootApplication(exclude = {SessionAutoConfiguration.class})
+@SpringBootApplication(exclude = {SessionAutoConfiguration.class, DataSourceAutoConfiguration.class})
 public class BrokerApplication {
 
     public static void main(String[] args) {
