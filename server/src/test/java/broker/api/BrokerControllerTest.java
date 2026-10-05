@@ -27,6 +27,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
 public class BrokerControllerTest extends AbstractIntegrationTest {
 
@@ -158,6 +159,57 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
         Map<String, Object> results = startRegistrationInvalid(cookieFilter);
         assertEquals(500, results.get("code"));
 
+    }
+
+    @Test
+    public void komFormEnrollment() throws IOException {
+        stubFor(get(urlPathMatching("/offerings/1")).willReturn(aResponse()
+                .withHeader("Content-Type", "application/json")
+                .withBody(readFile("data/offering.json"))));
+
+        String correlationID = "123456";
+        stubFor(post(urlPathMatching("/api/start/kom-form-enrollment"))
+                .withHeader("X-Correlation-ID", new EqualToPattern(correlationID))
+                .withBasicAuth("user", "secret")
+                .withRequestBody(matchingJsonPath("$.moduleNaam",
+                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("Psychology for a Better World")))
+                .withRequestBody(matchingJsonPath("$.moduleCode",
+                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("Test-INFOMQNM-20FS")))
+                .withRequestBody(matchingJsonPath("$.onderwijsperiodeStart",
+                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("2020-08-17")))
+                .withRequestBody(matchingJsonPath("$.onderwijsperiodeEind",
+                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("2020-12-18")))
+                .withRequestBody(matchingJsonPath("$.thuisinstellingNaam",
+                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("Eindhoven University of Technology")))
+                .withRequestBody(matchingJsonPath("$.gastinstellingNaam",
+                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("Utrecht University")))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("{\"redirect\":\"http://localhost:8094?correlationID=" + correlationID + "\"}")));
+
+        given().redirects().follow(false)
+                .when()
+                .header("Content-Type", APPLICATION_FORM_URLENCODED_VALUE)
+                .param("homeInstitutionSchacHome", "eindhoven.nl")
+                .param("guestInstitutionSchacHome", "utrecht.nl")
+                .param("offeringId", "1")
+                .param("offeringType", "course")
+                .param("correlationID", correlationID)
+                .post("/api/kom-form-enrollment")
+                .then()
+                .header("Location", "http://localhost:8094?correlationID=" + correlationID);
+    }
+
+    @Test
+    public void komFormEnrollmentInvalidBrokerRequest() {
+        given().redirects().follow(false)
+                .when()
+                .header("Content-Type", APPLICATION_FORM_URLENCODED_VALUE)
+                .param("guestInstitutionSchacHome", "utrecht.nl")
+                .param("correlationID", "123456")
+                .post("/api/kom-form-enrollment")
+                .then()
+                .header("Location", "http://localhost:3003?error=400");
     }
 
     private void happyFlow(String guestInstitutionSchacHome) throws IOException {

@@ -156,6 +156,40 @@
         }
     }
 
+    // Best-effort extraction of the module/institution data known at this point, so generiek can later
+    // generate the customAgreement PDF. Anything not confidently available is simply left out - the PDF
+    // renders that field blank rather than guessing.
+    const extractOfferingName = value => {
+        if (!value) {
+            return undefined;
+        }
+        if (Array.isArray(value)) {
+            try {
+                return getValue(value);
+            } catch (e) {
+                return undefined;
+            }
+        }
+        return typeof value === "string" ? value : undefined;
+    };
+
+    const toIsoDate = value => value && typeof value === "string" ? value.substring(0, 10) : undefined;
+
+    const buildCustomAgreementData = () => {
+        const anOffering = $offering.offering || {};
+        const typedOffering = offeringType && anOffering[offeringType];
+        const startDate = anOffering.startDate || (anOffering.academicSession && anOffering.academicSession.startDate);
+        const endDate = anOffering.endDate || (anOffering.academicSession && anOffering.academicSession.endDate);
+        return {
+            moduleNaam: extractOfferingName((typedOffering && typedOffering.name) || anOffering.name),
+            moduleCode: anOffering.abbreviation,
+            onderwijsperiodeStart: toIsoDate(startDate),
+            onderwijsperiodeEind: toIsoDate(endDate),
+            thuisinstellingNaam: $offering.homeInstitution && $offering.homeInstitution.name,
+            gastinstellingNaam: $offering.guestInstitution && $offering.guestInstitution.name
+        };
+    };
+
     const startAuthentication = () => {
         authentication(
             $offering.enrollmentRequest.personURI,
@@ -164,7 +198,8 @@
             $offering.enrollmentRequest.homeInstitution,
             $offering.enrollmentRequest.scope,
             $offering.enrollmentRequest.alliance,
-            $offering.authenticationActionUrl
+            $offering.authenticationActionUrl,
+            buildCustomAgreementData()
         );
     }
 

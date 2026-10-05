@@ -72,19 +72,24 @@ const formPost = (fields, path) => {
   const form = document.createElement("form");
   form.method = "POST";
   form.action = path;
-  Object.entries(fields).forEach(field => {
-    const hiddenField = document.createElement("input");
-    hiddenField.type = "hidden";
-    hiddenField.name = field[0];
-    hiddenField.value = field[1];
-    form.appendChild(hiddenField);
-  });
+  Object.entries(fields)
+    .filter(field => field[1] !== undefined && field[1] !== null && field[1] !== "")
+    .forEach(field => {
+      const hiddenField = document.createElement("input");
+      hiddenField.type = "hidden";
+      hiddenField.name = field[0];
+      hiddenField.value = field[1];
+      form.appendChild(hiddenField);
+    });
   document.body.appendChild(form);
   form.submit();
 }
 
-export function authentication(personURI, personAuth, associationsURI, homeInstitution, scope, alliance, path) {
-  formPost({personURI, personAuth, associationsURI, homeInstitution, scope, alliance}, path)
+// customAgreementData carries whatever module / institution data we already know (moduleNaam, moduleCode,
+// onderwijsperiodeStart, onderwijsperiodeEind, thuisinstellingNaam, gastinstellingNaam) through to generiek,
+// so it can later be used to generate the customAgreement PDF without the broker having to call back in.
+export function authentication(personURI, personAuth, associationsURI, homeInstitution, scope, alliance, path, customAgreementData = {}) {
+  formPost({personURI, personAuth, associationsURI, homeInstitution, scope, alliance, ...customAgreementData}, path)
 }
 
 // This is normally called by the Catalog, but for testing purposes we call it

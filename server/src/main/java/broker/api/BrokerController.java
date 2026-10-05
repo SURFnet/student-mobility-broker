@@ -35,6 +35,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.HttpHeaders.ACCEPT;
@@ -348,6 +349,136 @@ public class BrokerController {
             res.put("code", httpStatusCode.value());
             res.put("reference", remoteException.getReference());
             return res;
+        }
+    }
+
+    /*
+     * Stateless counterpart to /api/broker that forwards the data to the guest institution to generate the KOM form.
+     */
+    @PostMapping(value = "/api/kom-form-enrollment", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public View komFormEnrollment(@ModelAttribute BrokerRequest brokerRequest,
+                                  @RequestParam("correlationID") String correlationId) {
+        try {
+            brokerRequest.validate();
+        } catch (IllegalArgumentException e) {
+            LOG.warn("Validation error in the brokerRequest for /api/kom-form-enrollment: " + brokerRequest, e);
+            return new RedirectView(clientUrl + "?error=400");
+        }
+
+        Institution guestInstitution;
+        Institution homeInstitution;
+        try {
+            guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
+            homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
+        } catch (RemoteException e) {
+            LOG.warn("RemoteException error in the kom-form-enrollment request: " + brokerRequest, e);
+            return new RedirectView(clientUrl + "?error=" + e.getStatusCode().value());
+        }
+
+        LOG.debug(String.format("Received kom-form-enrollment request %s for correlation-id %s", brokerRequest, correlationId));
+
+        Map<String, Object> offering;
+        try {
+            offering = fetchOffering(guestInstitution, brokerRequest);
+        } catch (RuntimeException e) {
+            LOG.error("Error in fetching offering from " + guestInstitution.getName(), e);
+            HttpStatusCode statusCode = HttpStatus.BAD_REQUEST;
+            if (e instanceof HttpClientErrorException) {
+                statusCode = ((HttpClientErrorException) e).getStatusCode();
+            }
+            RemoteException remoteException = new RemoteException(statusCode, guestInstitution.getName(), e);
+            LOG.error("Reference number for client error correlation: " + remoteException.getReference());
+            return new RedirectView(clientUrl + "?error=" + statusCode.value());
+        }
+
+        Map<String, Object> body = buildCustomAgreementFields(offering, homeInstitution, guestInstitution);
+
+        Map<String, Object> result;
+        try {
+            result = doKomFormEnrollment(guestInstitution, correlationId, body);
+        } catch (HttpStatusCodeException | ResourceAccessException e) {
+            HttpStatusCode httpStatusCode = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException) e).getStatusCode() : HttpStatusCode.valueOf(REQUEST_TIMEOUT.value());
+            RemoteException remoteException = new RemoteException(httpStatusCode, e.getMessage(), e);
+
+            String responseBody = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException) e).getResponseBodyAsString() : e.getMessage();
+            LOG.error(String.format("Unexpected exception from /api/kom-form-enrollment: %s, reference number %s",
+                    responseBody, remoteException.getReference()));
+
+            return new RedirectView(clientUrl + "?error=" + httpStatusCode.value());
+        }
+
+        String redirect = (String) result.get("redirect");
+        LOG.debug(String.format("Redirecting to generiek client at %s for correlation-id %s", redirect, correlationId));
+
+        return new RedirectView(redirect, false);
+    }
+
+    private Map<String, Object> doKomFormEnrollment(Institution guestInstitution, String correlationId, Map<String, Object> body) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Correlation-ID", correlationId);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBasicAuth(guestInstitution.getRegistrationUser(), guestInstitution.getRegistrationPassword());
+        HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
+        String url = guestInstitution.getRegistrationEndpoint().toString() + "/kom-form-enrollment";
+
+        LOG.debug(String.format("Forwarding program and offering data by POST-ing to %s", url));
+
+        return this.exchange(url, HttpMethod.POST, requestEntity, HttpStatus.NOT_FOUND);
+    }
+
+    /*
+     * Extracting  the  fields generiek's CustomAgreementDetails needs out of the fetched offering.
+     */
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> buildCustomAgreementFields(Map<String, Object> offering, Institution homeInstitution, Institution guestInstitution) {
+        String offeringType = (String) offering.get("offeringType");
+        Map<String, Object> typedOffering = offeringType != null && offering.get(offeringType) instanceof Map
+                ? (Map<String, Object>) offering.get(offeringType) : null;
+
+        Object nameSource = typedOffering != null && typedOffering.get("name") != null
+                ? typedOffering.get("name") : offering.get("name");
+        Object academicSession = offering.get("academicSession");
+        Object startDate = offering.get("startDate") != null ? offering.get("startDate")
+                : (academicSession instanceof Map ? ((Map<String, Object>) academicSession).get("startDate") : null);
+        Object endDate = offering.get("endDate") != null ? offering.get("endDate")
+                : (academicSession instanceof Map ? ((Map<String, Object>) academicSession).get("endDate") : null);
+
+        Map<String, Object> fields = new HashMap<>();
+        putIfHasText(fields, "moduleNaam", extractOfferingName(nameSource));
+        putIfHasText(fields, "moduleCode", (String) offering.get("abbreviation"));
+        putIfHasText(fields, "onderwijsperiodeStart", toIsoDate(startDate));
+        putIfHasText(fields, "onderwijsperiodeEind", toIsoDate(endDate));
+        putIfHasText(fields, "thuisinstellingNaam", homeInstitution.getName());
+        putIfHasText(fields, "gastinstellingNaam", guestInstitution.getName());
+        return fields;
+    }
+
+    @SuppressWarnings("unchecked")
+    private String extractOfferingName(Object nameValue) {
+        if (nameValue instanceof String) {
+            return (String) nameValue;
+        }
+        if (nameValue instanceof List) {
+            return ((List<Map<String, Object>>) nameValue).stream()
+                    .map(entry -> (String) entry.get("value"))
+                    .filter(StringUtils::hasText)
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
+    }
+
+    private String toIsoDate(Object value) {
+        if (!(value instanceof String)) {
+            return null;
+        }
+        String date = (String) value;
+        return date.length() >= 10 ? date.substring(0, 10) : date;
+    }
+
+    private void putIfHasText(Map<String, Object> fields, String key, String value) {
+        if (StringUtils.hasText(value)) {
+            fields.put(key, value);
         }
     }
 
