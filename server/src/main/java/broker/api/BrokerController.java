@@ -427,7 +427,7 @@ public class BrokerController {
     }
 
     /*
-     * Extracting  the  fields generiek's CustomAgreementDetails needs out of the fetched offering.
+     * Extracting  the  fields CustomAgreementDetails in Intekenontvanger-generiek needs out of the fetched offering.
      */
     @SuppressWarnings("unchecked")
     private Map<String, Object> buildCustomAgreementFields(Map<String, Object> offering, Institution homeInstitution, Institution guestInstitution) {
