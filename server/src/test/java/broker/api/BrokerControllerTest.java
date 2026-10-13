@@ -168,7 +168,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .withBody(readFile("data/offering.json"))));
 
         String correlationID = "123456";
-        stubFor(post(urlPathMatching("/api/start/kom-form-enrollment"))
+        stubFor(post(urlPathMatching("/api/start/broker/manual-enrolment"))
                 .withHeader("X-Correlation-ID", new EqualToPattern(correlationID))
                 .withBasicAuth("user", "secret")
                 .withRequestBody(matchingJsonPath("$.moduleNaam",
@@ -195,7 +195,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .param("offeringId", "1")
                 .param("offeringType", "course")
                 .param("correlationID", correlationID)
-                .post("/api/kom-form-enrollment")
+                .post("/api/broker/manual-enrolment")
                 .then()
                 .header("Location", "http://localhost:8094?correlationID=" + correlationID);
     }
@@ -207,7 +207,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .header("Content-Type", APPLICATION_FORM_URLENCODED_VALUE)
                 .param("guestInstitutionSchacHome", "utrecht.nl")
                 .param("correlationID", "123456")
-                .post("/api/kom-form-enrollment")
+                .post("/api/broker/manual-enrolment")
                 .then()
                 .header("Location", "http://localhost:3003?error=400");
     }

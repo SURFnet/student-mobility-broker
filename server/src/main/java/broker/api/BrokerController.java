@@ -355,13 +355,13 @@ public class BrokerController {
     /*
      * Stateless counterpart to /api/broker that forwards the data to the guest institution to generate the KOM form.
      */
-    @PostMapping(value = "/api/kom-form-enrollment", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "/api/broker/manual-enrolment", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public View komFormEnrollment(@ModelAttribute BrokerRequest brokerRequest,
                                   @RequestParam("correlationID") String correlationId) {
         try {
             brokerRequest.validate();
         } catch (IllegalArgumentException e) {
-            LOG.warn("Validation error in the brokerRequest for /api/kom-form-enrollment: " + brokerRequest, e);
+            LOG.warn("Validation error in the brokerRequest for /api/broker/manual-enrolment: " + brokerRequest, e);
             return new RedirectView(clientUrl + "?error=400");
         }
 
@@ -371,11 +371,11 @@ public class BrokerController {
             guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
             homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
         } catch (RemoteException e) {
-            LOG.warn("RemoteException error in the kom-form-enrollment request: " + brokerRequest, e);
+            LOG.warn("RemoteException error in the broker/manual-enrolment request: " + brokerRequest, e);
             return new RedirectView(clientUrl + "?error=" + e.getStatusCode().value());
         }
 
-        LOG.debug(String.format("Received kom-form-enrollment request %s for correlation-id %s", brokerRequest, correlationId));
+        LOG.debug(String.format("Received broker/manual-enrolment request %s for correlation-id %s", brokerRequest, correlationId));
 
         Map<String, Object> offering;
         try {
@@ -401,7 +401,7 @@ public class BrokerController {
             RemoteException remoteException = new RemoteException(httpStatusCode, e.getMessage(), e);
 
             String responseBody = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException) e).getResponseBodyAsString() : e.getMessage();
-            LOG.error(String.format("Unexpected exception from /api/kom-form-enrollment: %s, reference number %s",
+            LOG.error(String.format("Unexpected exception from /api/broker/manual-enrolment: %s, reference number %s",
                     responseBody, remoteException.getReference()));
 
             return new RedirectView(clientUrl + "?error=" + httpStatusCode.value());
@@ -419,7 +419,7 @@ public class BrokerController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBasicAuth(guestInstitution.getRegistrationUser(), guestInstitution.getRegistrationPassword());
         HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
-        String url = guestInstitution.getRegistrationEndpoint().toString() + "/kom-form-enrollment";
+        String url = guestInstitution.getRegistrationEndpoint().toString() + "/broker/manual-enrolment";
 
         LOG.debug(String.format("Forwarding program and offering data by POST-ing to %s", url));
 
@@ -427,7 +427,7 @@ public class BrokerController {
     }
 
     /*
-     * Extracting  the  fields generiek's CustomAgreementDetails needs out of the fetched offering.
+     * Extracting  the  fields CustomAgreementDetails in Intekenontvanger-generiek needs out of the fetched offering.
      */
     @SuppressWarnings("unchecked")
     private Map<String, Object> buildCustomAgreementFields(Map<String, Object> offering, Institution homeInstitution, Institution guestInstitution) {
@@ -442,7 +442,10 @@ public class BrokerController {
                 : (academicSession instanceof Map ? ((Map<String, Object>) academicSession).get("startDate") : null);
         Object endDate = offering.get("endDate") != null ? offering.get("endDate")
                 : (academicSession instanceof Map ? ((Map<String, Object>) academicSession).get("endDate") : null);
-
+        Object enrollEndDate  = offering.get("enrollEndDate") != null ? offering.get("enrollEndDate")
+                : (academicSession instanceof Map ? ((Map<String, Object>) academicSession).get("enrollEndDate") : null);
+        Map<String, Object> organization = offering.get("organization") instanceof Map
+                ? (Map<String, Object>) offering.get("organization") : null;
         Map<String, Object> fields = new HashMap<>();
         putIfHasText(fields, "moduleNaam", extractOfferingName(nameSource));
         putIfHasText(fields, "moduleCode", (String) offering.get("abbreviation"));
@@ -450,6 +453,11 @@ public class BrokerController {
         putIfHasText(fields, "onderwijsperiodeEind", toIsoDate(endDate));
         putIfHasText(fields, "thuisinstellingNaam", homeInstitution.getName());
         putIfHasText(fields, "gastinstellingNaam", guestInstitution.getName());
+        putIfHasText(fields, "gastinstellingDeadline", toIsoDate(enrollEndDate));
+        putIfHasText(fields, "faculteit", organization != null ? extractOfferingName(organization.get("name")) : null);
+        putIfHasText(fields, "toetsing", typedOffering != null ? extractOfferingName(typedOffering.get("assessment")) : null);
+        putIfHasText(fields, "ingangseisen", typedOffering != null ? extractOfferingName(typedOffering.get("admissionRequirements")) : null);
+        putIfHasText(fields, "onderwijsvorm", typedOffering != null ? extractOfferingName(typedOffering.get("modeOfStudy")) : null);
         return fields;
     }
 
@@ -508,7 +516,7 @@ public class BrokerController {
     @SuppressWarnings("unchecked")
     private Map<String, Object> fetchOffering(Institution guestInstitution, BrokerRequest brokerRequest) {
         if (guestInstitution.isUseEduHubForOffering()) {
-            String uri = String.format("%s/%s/%s?expand=academicSession,%s",
+            String uri = String.format("%s/%s/%s?expand=academicSession,organization,%s",
                     this.eduHubGatewayUrl,
                     "offerings",
                     brokerRequest.getOfferingId(),
@@ -522,7 +530,7 @@ public class BrokerController {
             Map<String, Object> body = this.exchange(uri, HttpMethod.GET, new HttpEntity<>(headers));
             return (Map<String, Object>) ((Map<String, Object>) body.get("responses")).get(guestInstitution.getSchacHome());
         } else {
-            String uri = String.format("%s/%s?expand=academicSession,%s",
+            String uri = String.format("%s/%s?expand=academicSession,organization,%s",
                     guestInstitution.getCourseEndpoint(),
                     brokerRequest.getOfferingId(),
                     this.translateOfferingType(brokerRequest));
