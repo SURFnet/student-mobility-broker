@@ -176,6 +176,11 @@
     const toIsoDate = value => value && typeof value === "string" ? value.substring(0, 10) : undefined;
 
     const buildCustomAgreementData = () => {
+        //Already built server-side by /api/broker/manual-enrolment and handed back via /api/offering -
+        //reuse it rather than re-deriving (and risking drift from BrokerController.buildCustomAgreementFields)
+        if ($offering.customAgreementFields) {
+            return $offering.customAgreementFields;
+        }
         const anOffering = $offering.offering || {};
         const typedOffering = offeringType && anOffering[offeringType];
         const startDate = anOffering.startDate || (anOffering.academicSession && anOffering.academicSession.startDate);

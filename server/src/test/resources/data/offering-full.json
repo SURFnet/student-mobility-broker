@@ -1,0 +1,27 @@
+{
+  "offeringId": "223e4567-e89b-12d3-a456-134564174111",
+  "offeringType": "course",
+  "abbreviation": "QCF-2026",
+  "academicSession": {
+    "academicSessionId": "223e4567-e89b-12d3-a456-426614174111",
+    "name": "Fall semester 2026",
+    "startDate": "2026-09-01T00:00:00.000Z",
+    "endDate": "2027-01-31T00:00:00.000Z",
+    "enrollEndDate": "2026-11-09T00:00:00.000Z",
+    "ext": {}
+  },
+  "course": {
+    "courseId": "223e4567-e89b-12d3-a456-426614174222",
+    "name": "Quantum Computing Foundations",
+    "abbreviation": "QCF-2026",
+    "modeOfStudy": "full-time",
+    "assessment": "Presentations and written exam",
+    "admissionRequirements": "Completed first-year mathematics",
+    "ext": {}
+  },
+  "organization": {
+    "organizationId": "223e4567-e89b-12d3-a456-123514174333",
+    "name": "Creative Business",
+    "ext": {}
+  }
+}

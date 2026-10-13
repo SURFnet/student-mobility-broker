@@ -46,6 +46,7 @@ public class BrokerController {
 
     public static final String BROKER_REQUEST_SESSION_KEY = "BROKER_REQUEST_SESSION_KEY";
     public static final String OFFERING_SESSION_KEY = "OFFERING_SESSION_KEY";
+    public static final String CUSTOM_AGREEMENT_FIELDS_SESSION_KEY = "CUSTOM_AGREEMENT_FIELDS_SESSION_KEY";
 
     private static final Log LOG = LogFactory.getLog(BrokerController.class);
 
@@ -214,6 +215,7 @@ public class BrokerController {
      * Endpoint called by the GUI in first rendering
      */
     @GetMapping(value = "/api/offering")
+    @SuppressWarnings("unchecked")
     public Map<String, Object> offering(HttpServletRequest request) {
         BrokerRequest brokerRequest = getBrokerRequest(request, true);
         LOG.debug(String.format("Received request for offering for brokerRequest %s and session %s",
@@ -221,24 +223,26 @@ public class BrokerController {
 
         Institution guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
         Institution homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
-        Map<String, Object> offering;
-        try {
-            offering = fetchOffering(guestInstitution, brokerRequest);
-        } catch (RuntimeException e) {
-            LOG.error("Error in fetching offering from " + guestInstitution.getName(), e);
-            HttpStatusCode statusCode = HttpStatus.BAD_REQUEST;
-            if (e instanceof HttpClientErrorException) {
-                HttpClientErrorException ex = (HttpClientErrorException) e;
-                statusCode = ex.getStatusCode();
-                LOG.error("Response error in fetching offering: " + ex.getResponseBodyAsString(), ex);
+        //May already have been fetched eagerly by /api/broker/manual-enrolment
+        Map<String, Object> offering = (Map<String, Object>) request.getSession().getAttribute(OFFERING_SESSION_KEY);
+        if (offering == null) {
+            try {
+                offering = fetchOffering(guestInstitution, brokerRequest);
+            } catch (RuntimeException e) {
+                LOG.error("Error in fetching offering from " + guestInstitution.getName(), e);
+                HttpStatusCode statusCode = HttpStatus.BAD_REQUEST;
+                if (e instanceof HttpClientErrorException) {
+                    HttpClientErrorException ex = (HttpClientErrorException) e;
+                    statusCode = ex.getStatusCode();
+                    LOG.error("Response error in fetching offering: " + ex.getResponseBodyAsString(), ex);
+                }
+                RemoteException remoteException = new RemoteException(statusCode, guestInstitution.getName(), e);
+                LOG.error("Reference number for client error correlation: " + remoteException.getReference());
+                throw remoteException;
             }
-            RemoteException remoteException = new RemoteException(statusCode, guestInstitution.getName(), e);
-            LOG.error("Reference number for client error correlation: " + remoteException.getReference());
-            throw remoteException;
+            //Save the offering as we need it when starting the actual registration
+            request.getSession().setAttribute(OFFERING_SESSION_KEY, offering);
         }
-
-        //Save the offering as we need it when starting the actual registration
-        request.getSession().setAttribute(OFFERING_SESSION_KEY, offering);
 
         EnrollmentRequest enrollmentRequest = new EnrollmentRequest(
                 homeInstitution.getPersonsEndpoint(),
@@ -254,6 +258,11 @@ public class BrokerController {
         result.put("authenticationActionUrl", guestInstitution.getAuthenticationEndpoint());
         result.put("enrollmentRequest", enrollmentRequest);
         result.put("offering", offering);
+        //Pre-built by /api/broker/manual-enrolment, if that's how this session started
+        Map<String, Object> customAgreementFields = (Map<String, Object>) request.getSession().getAttribute(CUSTOM_AGREEMENT_FIELDS_SESSION_KEY);
+        if (customAgreementFields != null) {
+            result.put("customAgreementFields", customAgreementFields);
+        }
         return result;
     }
 
@@ -353,29 +362,28 @@ public class BrokerController {
     }
 
     /*
-     * Stateless counterpart to /api/broker that forwards the data to the guest institution to generate the KOM form.
+     * Counterpart to /api/broker for catalogs that already know the module/offering data up front.
+     * Behaves the same way as /api/broker (session-based, defers student authentication to the
+     * approve screen) but additionally fetches the offering eagerly and pre-builds the custom
+     * agreement fields, stashing them in the session so /api/offering can hand them to the client
+     * without the client having to re-derive them itself.
      */
     @PostMapping(value = "/api/broker/manual-enrolment", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public View komFormEnrollment(@ModelAttribute BrokerRequest brokerRequest,
-                                  @RequestParam("correlationID") String correlationId) {
-        try {
-            brokerRequest.validate();
-        } catch (IllegalArgumentException e) {
-            LOG.warn("Validation error in the brokerRequest for /api/broker/manual-enrolment: " + brokerRequest, e);
-            return new RedirectView(clientUrl + "?error=400");
-        }
-
+    public View komFormEnrollment(HttpServletRequest request, @ModelAttribute BrokerRequest brokerRequest) {
+        LOG.debug("Called by the external catalog form submit (manual enrolment) with BrokerRequest " + brokerRequest);
         Institution guestInstitution;
         Institution homeInstitution;
         try {
-            guestInstitution = getInstitution(brokerRequest.getGuestInstitutionSchacHome());
-            homeInstitution = getInstitution(brokerRequest.getHomeInstitutionSchacHome());
+            brokerRequest.validate();
+            homeInstitution = this.getInstitution(brokerRequest.getHomeInstitutionSchacHome());
+            guestInstitution = this.getInstitution(brokerRequest.getGuestInstitutionSchacHome());
+        } catch (IllegalArgumentException e) {
+            LOG.warn("Validation error in the brokerRequest for /api/broker/manual-enrolment: " + brokerRequest, e);
+            return new RedirectView(clientUrl + "?error=400");
         } catch (RemoteException e) {
             LOG.warn("RemoteException error in the broker/manual-enrolment request: " + brokerRequest, e);
             return new RedirectView(clientUrl + "?error=" + e.getStatusCode().value());
         }
-
-        LOG.debug(String.format("Received broker/manual-enrolment request %s for correlation-id %s", brokerRequest, correlationId));
 
         Map<String, Object> offering;
         try {
@@ -391,39 +399,25 @@ public class BrokerController {
             return new RedirectView(clientUrl + "?error=" + statusCode.value());
         }
 
-        Map<String, Object> body = buildCustomAgreementFields(offering, homeInstitution, guestInstitution);
+        Map<String, Object> customAgreementFields = buildCustomAgreementFields(offering, homeInstitution, guestInstitution);
 
-        Map<String, Object> result;
-        try {
-            result = doKomFormEnrollment(guestInstitution, correlationId, body);
-        } catch (HttpStatusCodeException | ResourceAccessException e) {
-            HttpStatusCode httpStatusCode = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException) e).getStatusCode() : HttpStatusCode.valueOf(REQUEST_TIMEOUT.value());
-            RemoteException remoteException = new RemoteException(httpStatusCode, e.getMessage(), e);
+        //Store if we need to redirect to queue-it
+        brokerRequest.setUseQueueIt(guestInstitution.isUseQueueIt());
+        //Prevent a very smart hack
+        brokerRequest.setQueueItSucceeded(false);
+        request.getSession().setAttribute(BROKER_REQUEST_SESSION_KEY, brokerRequest);
+        request.getSession().setAttribute(OFFERING_SESSION_KEY, offering);
+        request.getSession().setAttribute(CUSTOM_AGREEMENT_FIELDS_SESSION_KEY, customAgreementFields);
 
-            String responseBody = e instanceof HttpStatusCodeException ? ((HttpStatusCodeException) e).getResponseBodyAsString() : e.getMessage();
-            LOG.error(String.format("Unexpected exception from /api/broker/manual-enrolment: %s, reference number %s",
-                    responseBody, remoteException.getReference()));
+        LOG.debug(String.format("Started session %s for broker/manual-enrolment brokerRequest: %s",
+                request.getSession().getId(), brokerRequest));
 
-            return new RedirectView(clientUrl + "?error=" + httpStatusCode.value());
+        String queryParams = "?step=approve";
+        if (guestInstitution.isUseQueueIt()) {
+            queryParams += "&q=" + URLEncoder.encode(queueService.getRedirectUrl(guestInstitution),
+                    Charset.defaultCharset());
         }
-
-        String redirect = (String) result.get("redirect");
-        LOG.debug(String.format("Redirecting to generiek client at %s for correlation-id %s", redirect, correlationId));
-
-        return new RedirectView(redirect, false);
-    }
-
-    private Map<String, Object> doKomFormEnrollment(Institution guestInstitution, String correlationId, Map<String, Object> body) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Correlation-ID", correlationId);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBasicAuth(guestInstitution.getRegistrationUser(), guestInstitution.getRegistrationPassword());
-        HttpEntity<?> requestEntity = new HttpEntity<>(body, headers);
-        String url = guestInstitution.getRegistrationEndpoint().toString() + "/broker/manual-enrolment";
-
-        LOG.debug(String.format("Forwarding program and offering data by POST-ing to %s", url));
-
-        return this.exchange(url, HttpMethod.POST, requestEntity, HttpStatus.NOT_FOUND);
+        return new RedirectView(clientUrl + queryParams);
     }
 
     /*

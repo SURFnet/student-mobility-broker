@@ -161,43 +161,97 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
 
     }
 
+    /*
+     * /api/broker/manual-enrolment now behaves like /api/broker: session-based, no correlationID,
+     * defers authentication to the approve screen. It eagerly fetches the offering and pre-builds the
+     * custom agreement fields though, so they come back out of /api/offering's response.
+     */
     @Test
+    @SuppressWarnings("unchecked")
     public void komFormEnrollment() throws IOException {
         stubFor(get(urlPathMatching("/offerings/1")).willReturn(aResponse()
                 .withHeader("Content-Type", "application/json")
                 .withBody(readFile("data/offering.json"))));
 
-        String correlationID = "123456";
-        stubFor(post(urlPathMatching("/api/start/broker/manual-enrolment"))
-                .withHeader("X-Correlation-ID", new EqualToPattern(correlationID))
-                .withBasicAuth("user", "secret")
-                .withRequestBody(matchingJsonPath("$.moduleNaam",
-                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("Psychology for a Better World")))
-                .withRequestBody(matchingJsonPath("$.moduleCode",
-                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("Test-INFOMQNM-20FS")))
-                .withRequestBody(matchingJsonPath("$.onderwijsperiodeStart",
-                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("2020-08-17")))
-                .withRequestBody(matchingJsonPath("$.onderwijsperiodeEind",
-                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("2020-12-18")))
-                .withRequestBody(matchingJsonPath("$.thuisinstellingNaam",
-                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("Eindhoven University of Technology")))
-                .withRequestBody(matchingJsonPath("$.gastinstellingNaam",
-                        com.github.tomakehurst.wiremock.client.WireMock.equalTo("Utrecht University")))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("{\"redirect\":\"http://localhost:8094?correlationID=" + correlationID + "\"}")));
-
+        CookieFilter cookieFilter = new CookieFilter();
         given().redirects().follow(false)
+                .filter(cookieFilter)
                 .when()
                 .header("Content-Type", APPLICATION_FORM_URLENCODED_VALUE)
                 .param("homeInstitutionSchacHome", "eindhoven.nl")
                 .param("guestInstitutionSchacHome", "utrecht.nl")
                 .param("offeringId", "1")
                 .param("offeringType", "course")
-                .param("correlationID", correlationID)
                 .post("/api/broker/manual-enrolment")
                 .then()
-                .header("Location", "http://localhost:8094?correlationID=" + correlationID);
+                .header("Location", "http://localhost:3003?step=approve");
+
+        Map<String, Object> result = given()
+                .filter(cookieFilter)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/api/offering")
+                .as(new TypeRef<Map<String, Object>>() {
+                });
+
+        Map<String, Object> customAgreementFields = (Map<String, Object>) result.get("customAgreementFields");
+        assertNotNull(customAgreementFields);
+        assertEquals("Psychology for a Better World", customAgreementFields.get("moduleNaam"));
+        assertEquals("Test-INFOMQNM-20FS", customAgreementFields.get("moduleCode"));
+        assertEquals("2020-08-17", customAgreementFields.get("onderwijsperiodeStart"));
+        assertEquals("2020-12-18", customAgreementFields.get("onderwijsperiodeEind"));
+        assertEquals("Eindhoven University of Technology", customAgreementFields.get("thuisinstellingNaam"));
+        assertEquals("Utrecht University", customAgreementFields.get("gastinstellingNaam"));
+    }
+
+    /*
+     * Same shape as komFormEnrollment, but with a richer offering (organization + a typed "course"
+     * expansion carrying assessment/admissionRequirements/modeOfStudy, plus an enrollEndDate), to verify
+     * the newer custom-agreement fields (faculteit, toetsing, ingangseisen, onderwijsvorm,
+     * gastinstellingDeadline) are correctly extracted by buildCustomAgreementFields and surfaced via
+     * /api/offering's customAgreementFields.
+     */
+    @Test
+    @SuppressWarnings("unchecked")
+    public void komFormEnrollmentWithFullCustomAgreementFields() throws IOException {
+        stubFor(get(urlPathMatching("/offerings/1")).willReturn(aResponse()
+                .withHeader("Content-Type", "application/json")
+                .withBody(readFile("data/offering-full.json"))));
+
+        CookieFilter cookieFilter = new CookieFilter();
+        given().redirects().follow(false)
+                .filter(cookieFilter)
+                .when()
+                .header("Content-Type", APPLICATION_FORM_URLENCODED_VALUE)
+                .param("homeInstitutionSchacHome", "eindhoven.nl")
+                .param("guestInstitutionSchacHome", "utrecht.nl")
+                .param("offeringId", "1")
+                .param("offeringType", "course")
+                .post("/api/broker/manual-enrolment")
+                .then()
+                .header("Location", "http://localhost:3003?step=approve");
+
+        Map<String, Object> result = given()
+                .filter(cookieFilter)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/api/offering")
+                .as(new TypeRef<Map<String, Object>>() {
+                });
+
+        Map<String, Object> customAgreementFields = (Map<String, Object>) result.get("customAgreementFields");
+        assertNotNull(customAgreementFields);
+        assertEquals("Quantum Computing Foundations", customAgreementFields.get("moduleNaam"));
+        assertEquals("QCF-2026", customAgreementFields.get("moduleCode"));
+        assertEquals("2026-09-01", customAgreementFields.get("onderwijsperiodeStart"));
+        assertEquals("2027-01-31", customAgreementFields.get("onderwijsperiodeEind"));
+        assertEquals("Eindhoven University of Technology", customAgreementFields.get("thuisinstellingNaam"));
+        assertEquals("Utrecht University", customAgreementFields.get("gastinstellingNaam"));
+        assertEquals("Creative Business", customAgreementFields.get("faculteit"));
+        assertEquals("Presentations and written exam", customAgreementFields.get("toetsing"));
+        assertEquals("Completed first-year mathematics", customAgreementFields.get("ingangseisen"));
+        assertEquals("full-time", customAgreementFields.get("onderwijsvorm"));
+        assertEquals("2026-11-09", customAgreementFields.get("gastinstellingDeadline"));
     }
 
     @Test
@@ -206,7 +260,6 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
                 .when()
                 .header("Content-Type", APPLICATION_FORM_URLENCODED_VALUE)
                 .param("guestInstitutionSchacHome", "utrecht.nl")
-                .param("correlationID", "123456")
                 .post("/api/broker/manual-enrolment")
                 .then()
                 .header("Location", "http://localhost:3003?error=400");

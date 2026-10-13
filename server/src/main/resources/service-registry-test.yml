@@ -74,3 +74,21 @@
   useQueueIt: True
   queueItWaitingRoom: edubroker
   queueItSecret: secret
+- schacHome: generiek-e2e.nl
+  name: Generiek E2E Institution
+  abbreviation: GE2E
+  courseEndpoint: http://localhost:8081/offerings
+  courseAuthentication: NONE
+  privacyEndpoint: https://www.surf.nl/studentmobiliteit
+  personsEndpoint: http://localhost:8081/persons/me
+  personAuthentication: HEADER
+  associationsEndpoint: http://localhost:8081/associations
+  authenticationEndpoint: http://localhost:8092/api/enrollment
+  registrationEndpoint: http://localhost:8092/api/start
+  registrationUser: user
+  registrationPassword: secret
+  logoURI: https://static.surfconext.nl/logos/idp/ge2e.png
+  supportLink: "mailto:support@generiek-e2e.nl"
+  scopes: https://generiek-e2e/api inteken
+  useEduHubForOffering: False
+  useQueueIt: False
