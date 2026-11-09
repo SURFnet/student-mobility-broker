@@ -12,16 +12,31 @@
   },
   "course": {
     "courseId": "223e4567-e89b-12d3-a456-426614174222",
-    "name": "Quantum Computing Foundations",
+    "name": "Quantum Computing Training",
     "abbreviation": "QCF-2026",
     "modeOfStudy": "full-time",
     "assessment": "Presentations and written exam",
     "admissionRequirements": "Completed first-year mathematics",
+    "description": "An introduction to the principles of quantum computation.",
+    "studyLoad": {
+      "studyLoadUnit": "ects",
+      "value": 30
+    },
     "ext": {}
   },
   "organization": {
     "organizationId": "223e4567-e89b-12d3-a456-123514174333",
     "name": "Creative Business",
+    "addresses": [
+      {
+        "addressType": "visit",
+        "street": "Moreelsepark",
+        "streetNumber": "48",
+        "postalCode": "3511 EP",
+        "city": "Utrecht",
+        "countryCode": "NL"
+      }
+    ],
     "ext": {}
   }
 }

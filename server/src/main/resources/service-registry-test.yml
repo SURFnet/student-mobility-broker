@@ -74,9 +74,9 @@
   useQueueIt: True
   queueItWaitingRoom: edubroker
   queueItSecret: secret
-- schacHome: generiek-e2e.nl
-  name: Generiek E2E Institution
-  abbreviation: GE2E
+- schacHome: test-uni.nl
+  name: Test University
+  abbreviation: TU
   courseEndpoint: http://localhost:8081/offerings
   courseAuthentication: NONE
   privacyEndpoint: https://www.surf.nl/studentmobiliteit
@@ -87,8 +87,8 @@
   registrationEndpoint: http://localhost:8092/api/start
   registrationUser: user
   registrationPassword: secret
-  logoURI: https://static.surfconext.nl/logos/idp/ge2e.png
-  supportLink: "mailto:support@generiek-e2e.nl"
-  scopes: https://generiek-e2e/api inteken
+  logoURI: https://static.surfconext.nl/logos/idp/test-uni.png
+  supportLink: "mailto:support@test-uni.nl"
+  scopes: https://test-uni/api inteken
   useEduHubForOffering: False
   useQueueIt: False

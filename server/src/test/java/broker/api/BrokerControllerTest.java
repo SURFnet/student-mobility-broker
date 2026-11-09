@@ -241,7 +241,7 @@ public class BrokerControllerTest extends AbstractIntegrationTest {
 
         Map<String, Object> customAgreementFields = (Map<String, Object>) result.get("customAgreementFields");
         assertNotNull(customAgreementFields);
-        assertEquals("Quantum Computing Foundations", customAgreementFields.get("moduleNaam"));
+        assertEquals("Quantum Computing Advanced", customAgreementFields.get("moduleNaam"));
         assertEquals("QCF-2026", customAgreementFields.get("moduleCode"));
         assertEquals("2026-09-01", customAgreementFields.get("onderwijsperiodeStart"));
         assertEquals("2027-01-31", customAgreementFields.get("onderwijsperiodeEind"));

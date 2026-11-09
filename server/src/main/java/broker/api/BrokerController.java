@@ -451,8 +451,48 @@ public class BrokerController {
         putIfHasText(fields, "faculteit", organization != null ? extractOfferingName(organization.get("name")) : null);
         putIfHasText(fields, "toetsing", typedOffering != null ? extractOfferingName(typedOffering.get("assessment")) : null);
         putIfHasText(fields, "ingangseisen", typedOffering != null ? extractOfferingName(typedOffering.get("admissionRequirements")) : null);
+        putIfHasText(fields, "beschrijving", typedOffering != null ? extractOfferingName(typedOffering.get("description")) : null);
         putIfHasText(fields, "onderwijsvorm", typedOffering != null ? extractOfferingName(typedOffering.get("modeOfStudy")) : null);
+        putIfHasText(fields, "aantalEc", typedOffering != null ? extractStudyLoad(typedOffering.get("studyLoad")) : null);
+        Map<String, Object> organizationAddress = extractFirstAddress(organization);
+        putIfHasText(fields, "addressType", stringValue(organizationAddress, "addressType"));
+        putIfHasText(fields, "street", stringValue(organizationAddress, "street"));
+        putIfHasText(fields, "streetNumber", stringValue(organizationAddress, "streetNumber"));
+        putIfHasText(fields, "postalCode", stringValue(organizationAddress, "postalCode"));
+        putIfHasText(fields, "city", stringValue(organizationAddress, "city"));
+        putIfHasText(fields, "countryCode", stringValue(organizationAddress, "countryCode"));
         return fields;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> extractFirstAddress(Map<String, Object> organization) {
+        if (organization == null || !(organization.get("addresses") instanceof List)) {
+            return null;
+        }
+        return ((List<Object>) organization.get("addresses")).stream()
+                .filter(address -> address instanceof Map)
+                .map(address -> (Map<String, Object>) address)
+                .findFirst()
+                .orElse(null);
+    }
+
+    private String stringValue(Map<String, Object> map, String key) {
+        if (map == null) {
+            return null;
+        }
+        Object value = map.get(key);
+        if (value instanceof String) {
+            return (String) value;
+        }
+        return value instanceof Number ? String.valueOf(value) : null;
+    }
+
+    private String extractStudyLoad(Object studyLoad) {
+        if (!(studyLoad instanceof Map)) {
+            return null;
+        }
+        Object value = ((Map<?, ?>) studyLoad).get("value");
+        return value instanceof Number ? String.valueOf(((Number) value).doubleValue()) : null;
     }
 
     @SuppressWarnings("unchecked")

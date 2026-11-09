@@ -117,7 +117,7 @@ public class BrokerToGeneriekE2ETest extends AbstractIntegrationTest {
                 .when()
                 .header("Content-Type", APPLICATION_FORM_URLENCODED_VALUE)
                 .param("homeInstitutionSchacHome", "eindhoven.nl")
-                .param("guestInstitutionSchacHome", "generiek-e2e.nl")
+                .param("guestInstitutionSchacHome", "test-uni.nl")
                 .param("offeringId", "1")
                 .param("offeringType", "course")
                 .post("/api/broker/manual-enrolment")
@@ -191,14 +191,14 @@ public class BrokerToGeneriekE2ETest extends AbstractIntegrationTest {
 
         try (PDDocument document = PDDocument.load(pdf)) {
             String text = new PDFTextStripper().getText(document);
-            assertTrue(text.contains("Quantum Computing Foundations"));
+            assertTrue(text.contains("Quantum Computing Advanced"));
             assertTrue(text.contains("QCF-2026"));
             assertTrue(text.contains("Creative Business"));
             assertTrue(text.contains("full-time"));
             assertTrue(text.contains("Completed first-year mathematics"));
             assertTrue(text.contains("Presentations and written exam"));
             assertTrue(text.contains("Eindhoven University of Technology"));
-            assertTrue(text.contains("Generiek E2E Institution"));
+            assertTrue(text.contains("Test University"));
         }
     }
 }
